@@ -1,0 +1,39 @@
+CV: TrainTestSplit:
+-n_splits,int: 1
+-train_size,float: 0.7
+
+#CV: kfold:
+#-n_splits,int:10
+
+#CV: loader:
+#-group,int: 1,2,3,4,5,6,7,8,9,10
+#-offset,int: 0
+
+#CV: repeatedkfold:
+#-n_splits,int:10
+#-n_repeats,int:10
+
+# OIL
+#CV: repeatedkfold:
+#-n_splits,int:3
+#-n_repeats,int:20
+
+#CV: leaveoneout
+
+#CV: bootstrap:
+#-n_bootstraps,int: 100
+
+Baseline: MARP0
+#Baseline: MDARP0
+#Baseline: Median
+#Baseline: MARP0LOO
+
+Multiobj:
+-metrics: SA, SD
+-reference,float: -1, -1
+
+#Multiobj:
+#-metrics: MdAR, SdAR
+#-reference,float: 0, 0
+
+Preprocessing:

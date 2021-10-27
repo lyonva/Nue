@@ -1,0 +1,218 @@
+#Default
+
+#Grid Search:
+#-scoring: SA
+#-n_jobs,int: -1
+#-cv,int:10
+
+#Grid Search:
+#-scoring: SA, SD
+#-refit: HV
+#-n_jobs,int: -1
+#-cv,int:10
+
+Random Search:
+-scoring: SA
+-cv,int: 5
+-n_iter,int: 60
+-n_jobs,int: -1
+
+#Random Search:
+#-scoring: SA, SD
+#-refit: HV
+#-cv,int: 5
+#-n_iter,int: 60
+#-n_jobs,int: -1
+
+#Random Range Search:
+#-scoring: SA
+#-cv,int: 5
+#-n_iter,int: 60
+#-n_jobs,int: -1
+
+#DE:
+#-scoring: SA
+#-mutation_rate,float: 0.8
+#-crossover_rate,float: 0.7
+#-population_size,int: 6
+#-iterations,int: 10
+#-cv,int: 5
+#n_jobs,int: -2
+
+#DE:
+#-scoring: SA, SD
+#-refit: HV
+#-mutation_rate,float: 0.8
+#-crossover_rate,float: 0.7
+#-population_size,int: 6
+#-iterations,int: 10
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#Flash:
+#-scoring: SA
+#-budget,int: 60
+#-population_size,int: 2880
+#-initial_size,int:5
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#Flash:
+#-scoring: SA, SD
+#-refit: HV
+#-budget,int: 60
+#-population_size,int: 2880
+#-initial_size,int:5
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#Dodge:
+#-scoring: SA
+#-epsilon,float: 0.01
+#-initial_size,int: 12
+#-population_size,int: 60
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#Dodge:
+#-scoring: SA, SD
+#-refit: HV
+#-epsilon,float: 0.01
+#-initial_size,int: 12
+#-population_size,int: 60
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#OnePlusOne:
+#-budget,int: 60
+#-scoring: SA
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#OnePlusOne:
+#-budget,int: 60
+#-scoring: SA, SD
+#-refit: HV
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#cGA:
+#-budget,int: 60
+#-scoring: SA
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#cGA:
+#-budget,int: 60
+#-scoring: SA, SD
+#-refit: HV
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#GA:
+#-scoring: SA
+#-max_num_iteration,int: 14
+#-population_size,int: 5
+#-mutation_probability,float: 0.3
+#-elit_ratio,float: 0
+#-crossover_probability,float: 0.8
+#-parents_portion,float: 0.20
+#-crossover_type,str:uniform
+#-max_iteration_without_improv,int:None
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#GA:
+#-scoring: SA, SD
+#-refit: HV
+#-max_num_iteration,int: 14
+#-population_size,int: 5
+#-mutation_probability,float: 0.3
+#-elit_ratio,float: 0
+#-crossover_probability,float: 0.8
+#-parents_portion,float: 0.20
+#-crossover_type,str:uniform
+#-max_iteration_without_improv,int:None
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#PSO:
+#-budget,int: 60
+#-scoring: SA
+#-popsize,int: 20
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#PSO:
+#-budget,int: 60
+#-scoring: SA, SD
+#-refit: HV
+#-popsize,int: 20
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#BO:
+#-budget,int: 60
+#-scoring: SA
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#BO:
+#-budget,int: 60
+#-scoring: SA, SD
+#-refit: HV
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#Tabu:
+#-tabu_size,int: 5
+#-max_steps,int: 12
+#-neighborhood_size,int: 5
+#-scoring: SA
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#Tabu:
+#-tabu_size,int: 5
+#-max_steps,int: 12
+#-neighborhood_size,int: 5
+#-scoring: SA, SD
+#-refit: HV
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#Harmony:
+#-memory_size,int: 10
+#-memory_considering_rate,float: 0.9
+#-pitch_adjustment_rate,float: 0.5
+#-fret_width,float: 0.01
+#-max_steps,int: 50
+#-scoring: SA
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#Harmony:
+#-memory_size,int: 10
+#-memory_considering_rate,float: 0.9
+#-pitch_adjustment_rate,float: 0.5
+#-fret_width,float: 0.01
+#-max_steps,int: 50
+#-scoring: SA, SD
+#-refit: HV
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#Hyperband:
+#-budget,int: 60
+#-eta,int: 3
+#-scoring: SA
+#-cv,int: 5
+#-n_jobs,int: -1
+
+#Hyperband:
+#-budget,int: 60
+#-eta,int: 3
+#-scoring: SA, SD
+#-refit: HV
+#-cv,int: 5
+#-n_jobs,int: -1

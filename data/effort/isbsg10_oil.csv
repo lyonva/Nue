@@ -1,0 +1,38 @@
+UFP,IS,DP,LT,PPL,CA,FS,RS,N_effort,FPS
+B,Manufacturing,MR,3GL,PHP,IFPUG 4+,225,M1,1856,NESMA 2.2
+B,Manufacturing,MR,3GL,Java,IFPUG 4+,599,M2,10960,IFPUG 4.3
+B,Manufacturing,PC,3GL,Java,IFPUG 4+,333,M2,5661,Addendum to existing standards
+B,Banking,Proprietary,5GL,Proprietary Agile Platform,IFPUG 4+,748,M2,1518,Addendum to existing standards
+B,Manufacturing,MR,3GL,PL/I,IFPUG 4+,158,M1,3670,IFPUG 4.1
+B,Manufacturing,MR,3GL,Java,IFPUG 4+,427,M2,5620,Addendum to existing standards
+A,Utilities,Multi,4GL,ABAP,IFPUG 4+,461,M2,12149,IFPUG 4.1
+B,Service Industry,Proprietary,5GL,Proprietary Agile Platform,IFPUG 4+,257,M1,452,Addendum to existing standards
+B,Manufacturing,PC,4GL,.Net,IFPUG 4+,115,M1,441,IFPUG 4.1
+B,Medical & Health Care,Proprietary,5GL,Proprietary Agile Platform,IFPUG 4+,116,M1,112,IFPUG 4.1
+B,Manufacturing,PC,3GL,PYTHON,IFPUG 4+,323,M2,1663,Addendum to existing standards
+B,Manufacturing,PC,3GL,PHP,IFPUG 4+,134,M1,1964,Addendum to existing standards
+B,Manufacturing,PC,3GL,PHP,IFPUG 4+,292,M1,1182,Addendum to existing standards
+A,Service Industry,Multi,3GL,JavaScript,IFPUG 4+,399,M2,7037,Addendum to existing standards
+B,Manufacturing,MR,3GL,Java,IFPUG 4+,44,S,784,IFPUG 4.1
+B,Manufacturing,PC,3GL,Visual Basic,IFPUG 4+,298,M1,3552,IFPUG 4.1
+B,Manufacturing,PC,3GL,Java,IFPUG 4+,66,S,870,Addendum to existing standards
+B,Wholesale & Retail,Proprietary,5GL,Proprietary Agile Platform,IFPUG 4+,243,M1,257,IFPUG 4.1
+B,Manufacturing,Multi,3GL,RPL,IFPUG 4+,1105,L,14453,IFPUG 4.2
+B,Service Industry,Proprietary,5GL,Proprietary Agile Platform,IFPUG 4+,679,M2,326,IFPUG 4.1
+A,Government,MF,3GL,PL/I,IFPUG 4+,303,M2,8490,IFPUG 4.1
+B,Manufacturing,PC,3GL,PHP,IFPUG 4+,147,M1,730,Addendum to existing standards
+B,Government,Proprietary,5GL,Proprietary Agile Platform,IFPUG 4+,143,M1,98,Addendum to existing standards
+B,Manufacturing,PC,3GL,C++,IFPUG 4+,614,M2,3565,IFPUG 4.1
+A,Government,Multi,4GL,ABAP,IFPUG 4+,183,M1,7327,IFPUG 4.1
+B,Electronics & Computers,Proprietary,5GL,Proprietary Agile Platform,IFPUG 4+,138,M1,87,IFPUG 4.1
+B,Manufacturing,PC,4GL,BO,IFPUG 4+,129,M1,1371,Addendum to existing standards
+B,Manufacturing,PC,3GL,Java,IFPUG 4+,205,M1,3557,Addendum to existing standards
+B,Manufacturing,PC,3GL,PHP,IFPUG 4+,471,M2,1591,Addendum to existing standards
+B,Manufacturing,MF,3GL,PL/I,IFPUG 4+,97,S,1273,Addendum to existing standards
+B,Utilities,Proprietary,5GL,Proprietary Agile Platform,IFPUG 4+,1371,L,2274,Addendum to existing standards
+B,Manufacturing,Multi,3GL,Java,IFPUG 4+,291,M1,1926,IFPUG 4.1
+B,Education,Proprietary,5GL,Proprietary Agile Platform,IFPUG 4+,995,M2,614,IFPUG 4.1
+A,Service Industry,PC,4GL,.Net,NESMA,211,M1,1021,IFPUG 4.1
+A,Insurance,PC,4GL,Adobe Flex,NESMA,192,M1,2251,IFPUG 4.1
+A,Insurance,PC,4GL,Adobe Flex,NESMA,98,S,1012,IFPUG 4.1
+A,Government,Multi,3GL,C#,IFPUG 4+,112,M1,2134,IFPUG 4.1

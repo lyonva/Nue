@@ -1,0 +1,92 @@
+# Main
+
+#Ridge:
+#-alpha,float: 1; [5, 45, 10]; [50, 500, 25]
+
+RegressionTree:
+-min_samples_leaf,int: [1, 20, 1]
+-min_impurity_decrease,float: [-5, 0, 0.5, 10**x]
+-max_depth,int: [1, 20, 1]
+-criterion,str: mae
+
+#SVR:
+#-kernel,str: rbf, sigmoid
+#-gamma,float: [-3, -0.5, 0.25, 10**x]; auto, scale
+#-C,float: 1, 5, 15, 30; [50, 450, 50]; [500, 15000, 500]
+#-epsilon,float: [-3, -0.5, 0.25, 10**x]
+
+# Experimental CART
+#RegressionTree:
+#-min_samples_leaf,int: [1, 20, 1]
+#-min_impurity_decrease,float: [-3, 3, 0.25, 10**x]
+#-max_depth,int: [1, 20, 1]
+#-criterion,str: mae
+
+
+# Previous
+
+#OLS
+
+#MultilayerPerceptron:
+#-activation,str: relu
+#-alpha,float: [0.1, 0.5, 0.1]
+#-n_hidden,int: [100, 1000, 100]
+#-n_hidden,int: [100, 600, 100]
+#-n_layers,int: [2, 15, 1]
+#-max_iter,int: 300
+
+
+# Kernel experiments
+
+#mlp-sigmoid:
+#-alpha,float: 0.001
+#-n_hidden,int: [1, 10, 1, 5*x]
+#-n_layers,int: [1, 15, 1]
+#-max_iter,int: 1000
+
+#mlp-tanh:
+#-alpha,float: 0.001
+#-n_hidden,int: 5, 10, 25, 50, 75, 100, 150
+#-n_layers,int: [1, 10, 1]
+#-max_iter,int: 1000
+
+#mlp-relu:
+#-alpha,float: 0.001
+#-n_hidden,int: 5, 10, 25, 50, 75, 100, 150
+#-n_layers,int: [1, 10, 1]
+#-max_iter,int: 1000
+
+#SVR-rbf:
+#-gamma,float: [-3, 0, 1, 10**x]
+#-C,float: [0, 1.5, 0.5, 10**x]
+#-epsilon,float: [-3, 0, 1, 10**x]
+
+#SVR-poly:
+#-gamma,float: [-3, 0, 1, 10**x]
+#-C,float: [0, 1.5, 0.5, 10**x]
+#-epsilon,float: [-3, 0, 1, 10**x]
+
+#SVR-sigmoid:
+#-gamma,float: [-3, 0, 1, 10**x]
+#-C,float: [0, 1.5, 0.5, 10**x]
+#-epsilon,float: [-3, 0, 1, 10**x]
+
+
+# Other learners
+#GaussianProcesses
+#LinearRegression
+#SMOreg
+#AdditiveRegression
+#Bagging
+#ZeroR
+#DecisionStump
+#REPTree
+
+
+# OIL
+#RegressionTree:
+#-min_samples_leaf,int: [1, 12, 1]
+#-max_depth,int: [1, 12, 1]
+#-min_samples_split,int: [2, 20, 1]
+#-max_features,float: [0.01, 0.99, 0.05]
+#-criterion,str: mae

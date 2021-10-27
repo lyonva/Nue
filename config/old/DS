@@ -1,0 +1,149 @@
+# ISBSG Train
+
+# ISBSG UFP
+isbsg 2018 manual ifpug 4+ total_TRAIN.csv:
+-predict:normalised work effort level 1
+-na_values:
+
+# ISBSG BFC
+isbsg 2018 manual ifpug 4+ breakdown_TRAIN.csv:
+-predict:normalised work effort level 1
+-na_values:
+
+# COSMIC FFP
+isbsg 2018 manual cosmic total_TRAIN.csv:
+-predict:normalised work effort level 1
+-na_values:
+
+# COSMIC BFC
+isbsg 2018 manual cosmic breakdown_TRAIN.csv:
+-predict:normalised work effort level 1
+-na_values:
+
+
+# ISBSG complete (only use for train/test validation)
+# Or use for LOOCV
+#isbsg 2018 manual ifpug 4+ total.csv:
+#-predict:normalised work effort level 1
+#-na_values:
+
+#isbsg 2018 manual ifpug 4+ breakdown.csv:
+#-predict:normalised work effort level 1
+#-na_values:
+
+#isbsg 2018 manual cosmic total.csv:
+#-predict:normalised work effort level 1
+#-na_values:
+
+#isbsg 2018 manual cosmic breakdown.csv:
+#-predict:normalised work effort level 1
+#-na_values:
+
+# PROMISE/OIL Datasets and configurations:
+#kemerer.csv:
+#-predict:effortmm
+#-as_dummies:False
+#-exclude:id,duration,ksloc,rawfp
+
+#albrecht.csv:
+#-predict:effort
+#-as_dummies:False
+#-exclude:fpadj,rawfpcounts,adjfp
+
+#isbsg10.csv:
+#-predict:s_effort
+#-quotechar:'
+#-as_dummies:False
+#-exclude: id, year, ot, ag, at, dt, n_effort_level1, n_effort,n_pdr1, n_pdr, sdr, pet, pit, i_date, pas, resource_level, mts, ats, r_pwe_npa,p_uwe, case_tool, um, hma, hardware1, language1, os1,ide, dt1, dbs1, cs1, ws1, ms1, op1, fpsa, rta,bat, sp_cmmi, sp_iso, sp_tickit, min_defects, maj_defects,x_defects, tot_defects, ub_bu, ub_l, ub_du, ub_cu,imarket, t_platform, d_embedded, se, sea, sem, e_estimate,e_estimate_method, dde, ddem, c_estimate, cec, cem,e_tool, e_comments, ec_date, sr?, sr, r_fpc, r_fpa,p_defects, s_defects, d_defects, min_b_defects, maj_b_defects,x_b_defects, tot_b_defects, min_t_defects, maj_t_defects,x_t_defects, tot_t_defects, min_i_defects, maj_i_defects,x_i_defects, tot_i_defects
+
+#china.csv:
+#-predict:effort
+#-as_dummies:False
+#-exclude:added,changed,deleted,pdr_afp,pdr_ufp,npdr_afp,npdu_ufp,dev.type,duration,n_effort,afp,id
+
+#finnish.csv:
+#-predict:dev.eff.hrs.
+#-as_dummies:False
+#-exclude:id,prod,lnsize,lneff
+
+#miyazaki94.csv:
+#-predict:mm
+#-as_dummies:False
+#-exclude:id,kloc
+
+#maxwell.csv:
+#-predict:effort
+#-as_dummies:False
+#-exclude:syear,duration,time
+
+#desharnais.csv:
+#-predict:effort
+#-as_dummies:False
+#-na_values:"?"
+#-exclude:project,length,yearend,envergure,pointsnonajust,language
+#-drop:37,43,65,74
+
+#kitchenham.csv:
+#-predict:actual.effort
+#-as_dummies:False
+#-na_values:"?"
+#-exclude:project,actual.start.date,actual.duration,estimated.completion.date,first.estimate,first.estimate.method
+
+
+# Sarro et al. configuration
+#china.csv:
+#-predict:effort
+#-as_dummies:False
+#-exclude:afp,added,changed,deleted,pdr_afp,pdr_ufp,npdr_afp,npdu_ufp,resource,dev.type,duration,n_effort
+
+#desharnais.csv:
+#-predict:effort
+#-as_dummies:False
+#-na_values:"?"
+#-exclude:project,length,yearend,envergure,pointsnonajust,language
+#-drop:37,43,65,74
+
+#finnish.csv:
+#-predict:dev.eff.hrs.
+#-as_dummies:False
+#-exclude:id,prod,lnsize,lneff
+
+#maxwell.csv:
+#-predict:effort
+#-as_dummies:False
+#-exclude:syear,app,har,dba,ifc,source,telonuse,duration,time
+
+#miyazaki94.csv:
+#-predict:mm
+#-as_dummies:False
+#-exclude:id,kloc,escrn,eform,efile
+
+
+# Deprecated ISBSG
+#ISBSG 2018 IFPUG 4+.csv:
+#-predict:summary work effort
+#-na_values:
+#-as_dummies:True
+
+#ISBSG 2018 COSMIC.csv:
+#-predict:summary work effort
+#-na_values:
+#-as_dummies:True
+
+
+# Previous framework datasets
+
+#4 (63) BFC CTX EFF.csv:
+#-predict:Esfuerzo
+#-na_values:
+#-as_dummies:True
+
+#7 (72) BFC DFTF CTX EFF.arff.csv:
+#-predict:Esfuerzo
+#-na_values:"?"
+#-as_dummies:True
+
+#china.csv:
+#-predict:effort
+#-as_dummies:False
+

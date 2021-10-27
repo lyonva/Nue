@@ -1,0 +1,24 @@
+none
+
+#variancethreshold:
+#-threshold,float: 0, 0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5
+
+#CorrelationPercentile:
+#-percentile,int: [10, 90, 10]
+
+#boruta
+
+#randomforest
+
+#RFE
+
+#kbest
+
+#percentile
+
+#fpr
+
+#fdr
+
+#fwe
+

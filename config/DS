@@ -1,0 +1,6 @@
+desharnais.csv:
+-predict:effort
+-as_dummies:False
+-na_values:"?"
+-exclude:project,length,yearend,envergure,pointsnonajust,language
+-drop:37,43,65,74
