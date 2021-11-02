@@ -1,4 +1,4 @@
-desharnais.csv:
+effort/desharnais.csv:
 -predict:effort
 -as_dummies:False
 -na_values:"?"

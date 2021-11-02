@@ -2,29 +2,29 @@
 import numpy as np
 import pandas as pd
 
-from database.dataset_db import dataset_db
-from database.dt_db import dt_db
-from database.as_db import as_db
-from database.mlt_db import mlt_db
-from database.pt_db import pt_db
-from database.bl_db import bl_db
-from database.cv_db import cv_db
+from map import dataset_db as ds_db
+from map import transformation_db as dt_db
+from map import selection_db as as_db
+from map import learning_db as mlt_db
+from map import tuning_db as pt_db
+from map import baseline_db as bl_db
+from map import validation_db as cv_db
 from sklearn.metrics import make_scorer
-from comp.Loader import Loader
-from comp.LoaderCV import LoaderCV
-from comp.Evaluation import Evaluation
-from comp.Preprocessing import Preprocessing
+from reading import Loader
+from validation import LoaderCV
+from evaluation import Evaluation
+from transformation import Preprocessing
 from joblib import Memory
 from shutil import rmtree
 from tempfile import mkdtemp
-from comp.Selector import NumericalSelector
-from comp.Imputer import FillImputer, SimplerImputer, KNNImputerDF
-from comp.DataTransformation import OneHotEncoding
-from comp.Pareto import get_pareto_front
+from selection import NumericalSelector
+from transformation import FillImputer, SimplerImputer, KNNImputerDF
+from transformation import OneHotEncoding
+from evaluation import get_pareto_front
 
 
 from sklearn.pipeline import Pipeline
-from comp.Pipeline import FeatureJoin
+from pipeline import FeatureJoin
 import datetime
 import time
 
@@ -42,7 +42,7 @@ simplefilter("ignore", category=ConvergenceWarning)
 
 # Load configuration
 FW, DS, DT, AS, PT, LA, EM = Loader().load_config()
-datasets = dataset_db.get(DS)
+datasets = ds_db.get(DS)
 data_transformation = dt_db.get(DT)
 as_techniques = as_db.get(AS)
 pt_techniques = pt_db.get(PT)
