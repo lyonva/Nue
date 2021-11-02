@@ -1,4 +1,4 @@
-from comp.Baseline import Baseline
+from baseline import Baseline
 import numpy as np
 
 class MARP0(Baseline):

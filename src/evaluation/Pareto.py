@@ -1,4 +1,4 @@
-from comp.Evaluation import Evaluation
+from evaluation import Evaluation
 import numpy as np
 
 def get_pareto_front(cv_results, metric_names):

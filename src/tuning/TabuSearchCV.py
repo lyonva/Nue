@@ -1,10 +1,10 @@
 from sklearn.model_selection._search import BaseSearchCV
 import numpy as np
 from abc import ABCMeta
-from comp.tuning.helper import grid_to_bounds, grid_types, cast_parameters, aggregate_dict, random_population
+from tuning import grid_to_bounds, grid_types, cast_parameters, aggregate_dict, random_population
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from comp.tuning.TabuSearch import TabuSearch
+from tuning import TabuSearch
 
 # Tabu Search for a NeverGrad algorithm
 # Using the implementation of the Solid library

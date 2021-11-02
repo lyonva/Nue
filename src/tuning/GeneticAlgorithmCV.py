@@ -1,6 +1,6 @@
 from sklearn.model_selection._search import BaseSearchCV
 import numpy as np
-from comp.tuning.helper import grid_to_bounds, grid_types, cast_parameters, aggregate_dict, random_population, UnknownParameterTypeError
+from tuning import grid_to_bounds, grid_types, cast_parameters, aggregate_dict, random_population, UnknownParameterTypeError
 import pandas as pd
 from geneticalgorithm import geneticalgorithm as ga
 

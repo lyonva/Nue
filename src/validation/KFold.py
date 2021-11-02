@@ -1,4 +1,4 @@
-from Cross_Validation import Cross_Validation
+from validation import Cross_Validation
 from sklearn.model_selection import train_test_split
 
 # TODO Change KFold to

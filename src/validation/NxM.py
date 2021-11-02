@@ -1,4 +1,4 @@
-from comp.Cross_Validation import Cross_Validation
+from validation import Cross_Validation
 from sklearn.model_selection import RepeatedKFold
 
 class NxM(Cross_Validation):

@@ -1,6 +1,6 @@
 from sklearn.model_selection._search import BaseSearchCV
 import numpy as np
-from comp.tuning.helper import grid_to_bounds, grid_types, cast_parameters, aggregate_dict
+from tuning import grid_to_bounds, grid_types, cast_parameters, aggregate_dict
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor

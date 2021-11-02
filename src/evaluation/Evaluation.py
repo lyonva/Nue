@@ -1,9 +1,9 @@
 import numpy as np
 from scipy.stats.mstats import gmean
 from scipy.stats import spearmanr
-from comp.MARP0 import MARP0
-from comp.MDARP0 import MDARP0
-from comp.MARP0LOO import MARP0LOO
+from baseline import MARP0
+from baseline import MDARP0
+from baseline import MARP0LOO
 
 class Evaluation:
     
