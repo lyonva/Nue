@@ -1,18 +1,9 @@
-from database.Database import Database
+from map import Database
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
-from comp.Parameter_Tuning import *
-from comp.tuning.DefaultCV import DefaultCV
-from comp.tuning.DifferentialEvolutionCV import DifferentialEvolutionCV
-from comp.tuning.FlashCV import FlashCV
-from comp.tuning.DodgeCV import DodgeCV
-from comp.tuning.RandomRangeSearchCV import RandomRangeSearchCV
-from comp.tuning.NeverGradCV import NeverGradCV
-from comp.tuning.TabuSearchCV import TabuSearchCV
-from comp.tuning.HarmonySearchCV import HarmonySearchCV
-from comp.tuning.HyperbandCV import HyperbandCV
-from comp.tuning.GeneticAlgorithmCV import GeneticAlgorithmCV
-from comp.tuning.BayesianOptimizationCV import BayesianOptimizationCV
+from tuning import Parameter_Tuning, DefaultCV, DifferentialEvolutionCV, FlashCV, DodgeCV, \
+    RandomRangeSearchCV, NeverGradCV, TabuSearchCV, HarmonySearchCV, HyperbandCV, \
+    GeneticAlgorithmCV, BayesianOptimizationCV
 
 
 # class DummyPT:
@@ -35,7 +26,7 @@ from comp.tuning.BayesianOptimizationCV import BayesianOptimizationCV
     
     
     
-pt_db = Database(Parameter_Tuning, {"none":DefaultCV,
+tuning_db = Database(Parameter_Tuning, {"none":DefaultCV,
                                         "default":DefaultCV,
                                         "grid search":GridSearchCV,
                                         "random search":RandomizedSearchCV,

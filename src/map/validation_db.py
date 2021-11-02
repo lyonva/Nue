@@ -1,8 +1,8 @@
 from sklearn.model_selection import *
-from comp.LoaderCV import LoaderCV
-from comp.BootstrapCV import BootstrapCV
+from validation import LoaderCV
+from validation import BootstrapCV
 
-cv_db = { "repeatedkfold" : RepeatedKFold,
+validation_db = { "repeatedkfold" : RepeatedKFold,
          "leaveoneout" : LeaveOneOut,
          "loo" : LeaveOneOut,
          "kfold" : KFold,

@@ -1,3 +1,4 @@
+from map import Database
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.gaussian_process import GaussianProcessRegressor
@@ -5,12 +6,11 @@ from sklearn.ensemble import BaggingRegressor
 from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.dummy import DummyRegressor
-from database.Database import Database
-from comp.Machine_Learning_Technique import Machine_Learning_Technique
-from comp.MLPReg import MLPReg
+from learning import Learner
+from learning import MLPReg
 
 
-mlt_db = Database(Machine_Learning_Technique,
+learning_db = Database(Learner,
                   {"knn":KNeighborsRegressor,
                     "mlp":MLPReg,
                     "multilayerperceptron":MLPReg,

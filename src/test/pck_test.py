@@ -48,7 +48,6 @@ def test_imports():
     # Reading/IO package
     from reading import Dataset
     from reading import Loader
-    from reading import LoaderCV
 
     # Selection package
     from selection import FeatureSelection
@@ -56,10 +55,13 @@ def test_imports():
     from selection import NumericalSelector
     from selection import AttributeSelector
     from selection import VariantThreshold
+    from selection import BorutaSelector
+    from selection import DummySelector
 
     # Transformation package
     from transformation import DataTransformation
     from transformation import OneHotEncoding
+    from transformation import StandardScaling
     from transformation import FillImputer
     from transformation import SimplerImputer
     from transformation import KNNImputerDF
@@ -85,3 +87,14 @@ def test_imports():
     from validation import KFold
     from validation import NxM
     from validation import TestCV
+    from validation import LoaderCV
+
+    # Map package
+    from map import Database
+    from map import selection_db
+    from map import baseline_db
+    from map import validation_db
+    from map import dataset_db
+    from map import transformation_db
+    from map import learning_db
+    from map import tuning_db
