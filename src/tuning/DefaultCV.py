@@ -6,12 +6,12 @@ import numpy as np
 class DefaultCV(BaseSearchCV):
     
     def __init__(self, estimator, search_space,
-                 *, scoring=None, n_jobs=None, iid='deprecated', refit=True,
+                 *, scoring=None, n_jobs=None, refit=True,
                  cv=None, verbose=0, pre_dispatch='2*n_jobs', error_score=np.nan,
                  return_train_score=True):
         super().__init__(
             estimator=estimator, scoring=scoring,
-            n_jobs=n_jobs, iid=iid, refit=refit, cv=cv, verbose=verbose,
+            n_jobs=n_jobs, refit=refit, cv=cv, verbose=verbose,
             pre_dispatch=pre_dispatch, error_score=error_score,
             return_train_score=return_train_score)
         self.search_space = search_space # Unused, for compatibility

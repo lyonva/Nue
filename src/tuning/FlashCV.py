@@ -12,12 +12,12 @@ from sklearn.tree import DecisionTreeRegressor
 # Adapted to the scikit learn BaseSearchCV class
 class FlashCV(BaseSearchCV):
     def __init__(self, estimator, search_space, budget, population_size, initial_size,
-                 *, scoring=None, n_jobs=None, iid='deprecated', refit=True,
+                 *, scoring=None, n_jobs=None, refit=True,
                  cv=None, verbose=0, pre_dispatch='2*n_jobs', error_score=np.nan,
                  return_train_score=True):
         super().__init__(
             estimator=estimator, scoring=scoring,
-            n_jobs=n_jobs, iid=iid, refit=refit, cv=cv, verbose=verbose,
+            n_jobs=n_jobs, refit=refit, cv=cv, verbose=verbose,
             pre_dispatch=pre_dispatch, error_score=error_score,
             return_train_score=return_train_score)
         self.search_space = search_space
