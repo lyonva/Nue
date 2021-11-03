@@ -4,4 +4,6 @@ CV: traintestsplit:
 
 Baseline: MARP0
 
+Mode: classification
+
 Preprocessing:
