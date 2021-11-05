@@ -12,7 +12,7 @@ class DataTransformation:
 class OneHotEncoding(OneHotEncoder):
     def transform(self, X):
         res = super().transform(X)
-        return pd.DataFrame(res, columns=self.get_feature_names(X.columns))
+        return pd.DataFrame(res, columns=self.get_feature_names_out(X.columns))
 
 class StandardScaling(StandardScaler):
     def transform(self, X, copy=None):

@@ -1,4 +1,4 @@
-from map import Database
+from map import DatabaseTwoClass
 from sklearn.neighbors import KNeighborsRegressor, KNeighborsClassifier
 from sklearn.linear_model import LinearRegression, Ridge, RidgeClassifier
 from sklearn.gaussian_process import GaussianProcessRegressor
@@ -18,7 +18,7 @@ svm_class = [SVC, SVR]
 cart_class = [DecisionTreeClassifier, DecisionTreeRegressor]
 
 # Order: Classification, Regression
-learning_db = Database(Learner,
+learning_db = DatabaseTwoClass(Learner,
                   { 
                     "dummy":[DummyClassifier, DummyRegressor],
                     "knn": knn_class,

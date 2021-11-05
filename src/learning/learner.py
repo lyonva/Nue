@@ -1,4 +1,6 @@
-class Learner:
+from utils import ps
+
+class Learner(ps):
     """
     Class:
         Learner
@@ -64,6 +66,10 @@ class Learner:
             return self.regression
         if problem == "classification":
             return self.classification
+        
+        # If neither, and it is not none, it is undefined
+        if problem is not None:
+            return None
 
         # If parameter is none, we have to figure out what can we do
         if problem is None:

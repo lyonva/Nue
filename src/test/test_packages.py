@@ -15,6 +15,7 @@ import pytest
 # from transformation import *
 # from tuning import *
 # from validation import *
+# from utils import *
 
 
 def test_imports():
@@ -23,6 +24,9 @@ def test_imports():
         Tests that every importable class works, and can be imported from the package.
         Should be updated as more classes are added.
     """
+
+    # Util package
+    from utils import ps
 
     # Baseline package
     from baseline import baseline

@@ -95,6 +95,8 @@ for ds in datasets:
     # dataframe = prep.process(dataframe)
     X = dataframe[ dataframe.columns.difference([ds.predict]) ]
     Y = dataframe[ ds.predict ]
+    # Type of problem: classification or regression
+    problem = mode if ds.problem == "None" else ds.problem
     
     if type(cv) == LoaderCV:
         cv.set_data( ds.id )
@@ -123,13 +125,13 @@ for ds in datasets:
                         
                             print("-"*30)
                             print( current_time.strftime("%d/%m/%Y %H:%M:%S") )
-                            print("Dataset: %s" % ds.name)
-                            print("Current iteration: %d" % iteration)
-                            print("DT: %s" % dtt.name)
-                            print("AS: %s" % ast.name)
-                            print("LA: %s" % mlt.name)
-                            print("PT: %s" % pst.name)
-                            print("Metric: %s" % pst.parameters["scoring"] if "scoring" in pst.parameters else "None")
+                            print(f"Dataset: {ds.name} ({problem})")
+                            print(f"Current iteration: {iteration}")
+                            print(f"DT: {dtt.name}")
+                            print(f"AS: {ast.name}")
+                            print(f"LA: {mlt.name}")
+                            print(f"PT: {pst.name}")
+                            print(f"Metric: {pst.parameters['scoring'] if 'scoring' in pst.parameters else 'None'}")
                             print("-"*30)
                             
                             # Depending on algorithm
@@ -162,7 +164,7 @@ for ds in datasets:
                             # Finally, train the scheme
                             dttt = dtt.dt_class(**dt_param)
                             
-                            model = mlt.ml_class(**ml_param)
+                            model = mlt.get_class(problem)(**ml_param)
                             
                             # if AS is wrapper, use model as estimator
                             if "wrapper" in as_param.keys():
