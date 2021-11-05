@@ -10,5 +10,6 @@
 # -protected:sex,age_cat,race
 
 fairness/GermanData_processed.csv:
+-problem:classification
 -predict:employment=Unemployed
 -protected:sex,age

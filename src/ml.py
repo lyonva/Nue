@@ -49,7 +49,8 @@ pt_techniques = pt_db.get(PT)
 ml_techniques = mlt_db.get(LA)
 
 # Mode
-mode = FW["mode"][0] if "mode" in FW.keys() else "classification"
+# Type of problem to be solved
+mode = FW["problem"][0] if "problem" in FW.keys() else "classification"
 
 # Pre processing
 # prep = Preprocessing(remove_missing_columns = 0.25, missing_value_handling  = Missing_Value_Handling.MEAN)
