@@ -19,9 +19,9 @@ import pytest
 
 def test_imports():
     """
-        Test Imports
-        Tests that every importable class works, and can be imported from the package
-        Should be updated as more classes are added
+        Test Imports.
+        Tests that every importable class works, and can be imported from the package.
+        Should be updated as more classes are added.
     """
 
     # Baseline package
@@ -91,6 +91,7 @@ def test_imports():
 
     # Map package
     from map import Database
+    from map import DatabaseTwoClass
     from map import selection_db
     from map import baseline_db
     from map import validation_db
