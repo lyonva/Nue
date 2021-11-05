@@ -1,6 +1,7 @@
 import pandas as pd
+from utils import ps
 
-class Dataset:
+class Dataset(ps):
     data_path = ""
     
     def __init__(self, name, dummy, params):

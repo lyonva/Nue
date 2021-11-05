@@ -1,4 +1,6 @@
-class Parameter_Tuning:
+from utils import ps
+
+class Optimizer(ps):
     
     def __init__(self, name, pt_class, parameters):
         self.name = name

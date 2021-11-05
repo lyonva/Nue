@@ -1,6 +1,6 @@
 from sklearn.model_selection._search import BaseSearchCV
 import numpy as np
-from tuning import grid_to_bounds, grid_types, cast_parameters
+from optimization import grid_to_bounds, grid_types, cast_parameters
 
 # Differential Evolution
 # Based on the implementation by Tianpei Xia

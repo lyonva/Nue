@@ -13,7 +13,7 @@ import pytest
 # from reading import *
 # from selection import *
 # from transformation import *
-# from tuning import *
+# from optimization import *
 # from validation import *
 # from utils import *
 
@@ -72,18 +72,18 @@ def test_imports():
     from transformation import Missing_Value_Handling
     from transformation import Preprocessing
 
-    # Tuning package
-    from tuning import Parameter_Tuning
-    from tuning import DefaultCV
-    from tuning import BayesianOptimizationCV
-    from tuning import DifferentialEvolutionCV
-    from tuning import DodgeCV
-    from tuning import GeneticAlgorithmCV
-    from tuning import HarmonySearchCV
-    from tuning import HyperbandCV
-    from tuning import NeverGradCV
-    from tuning import RandomRangeSearchCV
-    from tuning import TabuSearchCV
+    # Optimization package
+    from optimization import Optimizer
+    from optimization import DefaultCV
+    from optimization import BayesianOptimizationCV
+    from optimization import DifferentialEvolutionCV
+    from optimization import DodgeCV
+    from optimization import GeneticAlgorithmCV
+    from optimization import HarmonySearchCV
+    from optimization import HyperbandCV
+    from optimization import NeverGradCV
+    from optimization import RandomRangeSearchCV
+    from optimization import TabuSearchCV
 
     # Validation package
     from validation import Cross_Validation
@@ -102,4 +102,4 @@ def test_imports():
     from map import dataset_db
     from map import transformation_db
     from map import learning_db
-    from map import tuning_db
+    from map import optimization_db

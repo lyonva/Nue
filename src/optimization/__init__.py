@@ -1,5 +1,5 @@
 # Base
-from .Parameter_Tuning import Parameter_Tuning
+from .Optimizer import Optimizer
 from .helper import (UnknownParameterTypeError, grid_to_bounds, grid_types,
     cast_parameters,aggregate_dict, random_population)
 from .DefaultCV import DefaultCV
@@ -20,7 +20,7 @@ from .TabuSearch import TabuSearch
 from .TabuSearchCV import TabuSearchCV
 
 __all__ = [ 
-    "Parameter_Tuning",
+    "Optimizer",
     "BayesianOptimizationCV",
     "DifferentialEvolutionCV",
     "DodgeCV",

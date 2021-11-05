@@ -6,7 +6,7 @@ from map import dataset_db as ds_db
 from map import transformation_db as dt_db
 from map import selection_db as as_db
 from map import learning_db as mlt_db
-from map import tuning_db as pt_db
+from map import optimization_db as pt_db
 from map import baseline_db as bl_db
 from map import validation_db as cv_db
 from sklearn.metrics import make_scorer

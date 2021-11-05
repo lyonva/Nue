@@ -1,10 +1,10 @@
 from sklearn.model_selection._search import BaseSearchCV
 import numpy as np
 from abc import ABCMeta
-from tuning import grid_to_bounds, grid_types, cast_parameters, aggregate_dict, random_population
+from optimization import grid_to_bounds, grid_types, cast_parameters, aggregate_dict, random_population
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from tuning import Hyperband
+from optimization import Hyperband
 
 # Hyperband algorithm
 # Using the implementation of the Hyperband repository
