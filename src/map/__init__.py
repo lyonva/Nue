@@ -1,4 +1,4 @@
-from .Database import Database, DatabaseTwoClass
+from .Database import Database, DatabaseTwoClass, DatabaseNoClass
 from .selection_db import selection_db
 from .baseline_db import baseline_db
 from .validation_db import validation_db
@@ -9,7 +9,8 @@ from .optimization_db import optimization_db
 
 __all__ = [ 
     "Database",
-    "DatabaseTwoClass"
+    "DatabaseTwoClass",
+    "DatabaseNoClass",
     "selection_db",
     "baseline_db",
     "validation_db",

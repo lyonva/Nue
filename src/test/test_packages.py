@@ -27,6 +27,7 @@ def test_imports():
 
     # Util package
     from utils import ps
+    from utils import get_problem_type
 
     # Baseline package
     from baseline import baseline
@@ -96,6 +97,7 @@ def test_imports():
     # Map package
     from map import Database
     from map import DatabaseTwoClass
+    from map import DatabaseNoClass
     from map import selection_db
     from map import baseline_db
     from map import validation_db

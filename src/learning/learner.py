@@ -8,6 +8,12 @@ class Learner(ps):
         Represents an scikit-learn object.
         Interface adds hyper-parameters for easiness at tuning.
         Supports classification/regression.
+    Attributes:
+        - name,str: Name of the learner, used only for searching purposes.
+        - problem,str: Whether learner is for classification, regression, or both.
+        - classification,class: scikit learn class used for classification, if any.
+        - regression,class: scikit learn class used for regression, if any.
+        - parameters,dict: default hyperparameters for either class.
     """
     def __init__(self, name, classification = None, regression = None, parameters = {}):
         """
