@@ -1,9 +1,18 @@
 from baseline import Baseline
 import numpy as np
+from utils import ps
 
 class Median(Baseline):
+    """
+    Class:
+        Median
+    Description:
+        Deterministic prediction baseline algorithm.
+        Always guesses using the median of actual data.
+        Returns mean and standard deviation of predictions.
+    """
     
-    def fit(self, actual):
+    def predict(self, actual):
         res = 0
         std = 0
         n = actual.size
@@ -15,6 +24,6 @@ class Median(Baseline):
         res = np.mean(samples)
         std = np.std(samples)
             
-        return res, std
+        return ps({"center":res, "scale":std})
     
     

@@ -1,9 +1,18 @@
 from baseline import Baseline
 import numpy as np
+from utils import ps
 
 class MARP0(Baseline):
+    """
+    Class:
+        MARP0
+    Description:
+        Random prediction baseline algorithm.
+        Randomly guesses by picking one of the actual values (except actual result).
+        Returns mean and standard deviation of predictions.
+    """
     
-    def fit(self, actual):
+    def predict(self, actual):
         res = 0
         std = 0
         n = actual.size
@@ -32,6 +41,6 @@ class MARP0(Baseline):
         
         std = np.std(samples)
             
-        return res, std
+        return ps({"center":res, "scale":std})
     
     

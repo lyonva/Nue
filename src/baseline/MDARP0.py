@@ -1,9 +1,18 @@
 from baseline import Baseline
 import numpy as np
+from utils import ps
 
 class MDARP0(Baseline):
+    """
+    Class:
+        MdARP0
+    Description:
+        Random prediction baseline algorithm.
+        Randomly guesses by picking one of the actual values (except actual result).
+        Returns median and standard deviation instead of mean.
+    """
     
-    def fit(self, actual):
+    def predict(self, actual):
         res = 0
         std = 0
         n = actual.size
@@ -18,6 +27,6 @@ class MDARP0(Baseline):
         res = np.median(samples)
         std = np.std(samples)
             
-        return res, std
+        return ps({"center":res, "scale":std})
     
     
