@@ -1,17 +1,17 @@
-effort/desharnais.csv:
--problem:regression
--predict:effort
--as_dummies:False
--na_values:"?"
--exclude:project,length,yearend,envergure,pointsnonajust,language
--drop:37,43,65,74
+#effort/desharnais.csv:
+#-problem:regression
+#-predict:effort
+#-as_dummies:False
+#-na_values:"?"
+#-exclude:project,length,yearend,envergure,pointsnonajust,language
+#-drop:37,43,65,74
 
 # fairness/compas-scores-two-years_processed.csv:
 # -problem:classification
 # -predict:Probability
 # -protected:sex,age_cat,race
 
-# fairness/GermanData_processed.csv:
-# -problem:classification
-# -predict:employment=Unemployed
-# -protected:sex,age
+fairness/GermanData_processed.csv:
+-problem:classification
+-predict:employment=Unemployed
+-protected:sex,age

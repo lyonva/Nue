@@ -57,11 +57,6 @@ mode = get_problem_type(FW["problem"][0] if "problem" in FW.keys() else "classif
 # Pre processing
 prep = Preprocessing( **(FW["preprocessing"] if "preprocessing" in FW.keys() else {}) )
 
-# Baseline and multiobjective
-baseline = bl_db[ FW["baseline"][0] if "baseline" in FW.keys() else "none" ]
-multiobj = FW["multiobj"]["metrics"] if "multiobj" in FW.keys() and "metrics" in FW["multiobj"].keys() else []
-reference = FW["multiobj"]["reference"] if "multiobj" in FW.keys() and "reference" in FW["multiobj"].keys() else []
-
 # Cross Validation
 # Defaults to 80:20 train test split
 cv = cv_db[ FW["cv"][0] if "cv" in FW.keys() else "traintestsplit" ]( **(FW["cv"][1] if "cv" in FW.keys() else {"n_splits":1, "test_size":0.2}) )
@@ -83,7 +78,7 @@ output_pareto_df = pd.DataFrame(columns=out_cols)
 output_pareto_file = "result-pareto-" + right_now.strftime('%Y-%m-%d_%H-%M-%S') + ".csv"
 
 # Dataset Loop
-for ds in datasets:
+for n_ds, ds in enumerate(datasets):
     ds.set_datapath("data/")
     dataframe = ds.get_dataframe()
 
@@ -118,17 +113,18 @@ for ds in datasets:
                     
                     # Parameter tuning
                     for pst in pt_techniques:
-                            current_time = datetime.datetime.now()    
-                        
+                            current_time = datetime.datetime.now()
+                            
+                            pst_scoring = f"({pst.parameters['scoring']})" if 'scoring' in pst.parameters else ''
+                            
                             print("-"*30)
                             print( current_time.strftime("%d/%m/%Y %H:%M:%S") )
-                            print(f"Dataset: {ds.name} ({problem})")
-                            print(f"Current iteration: {iteration}")
+                            print(f"Dataset: {ds.name} ({problem}) [{n_ds+1}/{len(datasets)}]")
+                            print(f"Current iteration: {iteration+1}/{cv.get_n_splits(dataframe)}")
                             print(f"DT: {dtt.name}")
                             print(f"AS: {ast.name}")
                             print(f"LA: {mlt.name}")
-                            print(f"PT: {pst.name}")
-                            print(f"Metric: {pst.parameters['scoring'] if 'scoring' in pst.parameters else 'None'}")
+                            print(f"PT: {pst.name} {pst_scoring}")
                             print("-"*30)
                             
                             # Depending on algorithm
