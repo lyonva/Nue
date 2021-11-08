@@ -131,7 +131,6 @@ class DatabaseNoClass(Database):
             __init__
         Description:
             Returns an instance of DatabaseNoClass.
-            Does not support user-defined arguments.
         Input:
             - classtype,class: Container class, all returned items are of this type.
             - base_params: mapping of name into default parameters
@@ -141,24 +140,27 @@ class DatabaseNoClass(Database):
         self.classtype = classtype
         self.base_params = base_params
 
-    def get_one(self, name):
+    def get_one(self, item):
         """
         Function:
             get_one
         Description:
-            Gets container class and hyper params.
-            From a name and (user defined) hyper parameters of a method.
-            User-defined parameters are given priority
+            Gets container class.
+            From a name and (user defined) settings.
+            User-defined settings are given priority
         Input:
-            - name,str: Name of metric
+            - item,list: Pair of (name, settings) values
         Output:
             Instance of the container class.
         """
         try:
+            name, params = item
             if name.lower() in self.base_params.keys():
                 base = self.base_params[name].copy()
             else:
                 base = {}
+            for k in params:
+                base[k] = params[k]
             return self.classtype( name, **base )
         except Exception as e:
             raise e

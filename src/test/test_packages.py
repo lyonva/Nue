@@ -42,6 +42,11 @@ def test_imports():
     # Evaluation/Metrics package
     from evaluation import Evaluation
     from evaluation import get_pareto_front
+    from evaluation import Metric
+    from evaluation import get_metrics_problem
+    from evaluation import evaluate
+    from evaluation import get_all_scorers
+    from evaluation import get_metrics_by_name
 
     # Learning package
     from learning import Learner
@@ -105,3 +110,4 @@ def test_imports():
     from map import transformation_db
     from map import learning_db
     from map import optimization_db
+    from map import metric_db

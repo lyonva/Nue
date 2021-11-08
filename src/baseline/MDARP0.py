@@ -27,6 +27,6 @@ class MDARP0(Baseline):
         res = np.median(samples)
         std = np.std(samples)
             
-        return ps({"center":res, "scale":std})
+        return ps(**{"center":res, "scale":std})
     
     

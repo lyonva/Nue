@@ -157,7 +157,7 @@ class Loader:
         AS = self.load_file("AS", False)
         PT = self.load_file("PT")
         LA = self.load_file("LA")
-        EM = self.load_file_simple("EM")
+        EM = self.load_file("EM")
         
         return FW, DS, DT, AS, PT, LA, EM
         

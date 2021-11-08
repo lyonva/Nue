@@ -23,7 +23,7 @@ metric_db = DatabaseNoClass(
             "hi" : None,
             "baseline" : "None"
         },
-        "mdar" : {
+        "sa" : {
             "formula" : sa,
             "problem" : "regression",
             "greater_is_better" : True,
@@ -31,7 +31,7 @@ metric_db = DatabaseNoClass(
             "hi" : 1,
             "baseline" : "marp0"
         },
-        "mdar" : {
+        "effect_size" : {
             "formula" : effect_size,
             "problem" : "regression",
             "greater_is_better" : True,

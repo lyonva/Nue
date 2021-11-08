@@ -72,4 +72,18 @@ class Metric(ps):
         Output:
             callable, for use by sklearn.
         """
-        return make_scorer( self.get_function(), greater_is_better = self.greater_is_better )
+        return make_scorer( self.get_formula(), greater_is_better = self.greater_is_better )
+    
+    def evaluate( self, y, y_pred ):
+        """
+        Function:
+            evaluate
+        Description:
+            Calculates a metric form a given input.
+        Input:
+            - y,list: List of the true y values
+            - y_pred,list: List of predicted y values
+        Output:
+            Float value of the metric.
+        """
+        return self.get_formula()(y, y_pred)

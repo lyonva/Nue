@@ -1,7 +1,7 @@
 Default
 
 Random Search:
--scoring: SA
+-scoring: sa
 -n_iter,int: 64
 -cv,int: 2
 -n_jobs,int: -1

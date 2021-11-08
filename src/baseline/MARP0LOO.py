@@ -42,6 +42,6 @@ class MARP0LOO(Baseline):
         
         std = np.std(samples)
             
-        return ps({"center":res, "scale":std})
+        return ps(**{"center":res, "scale":std})
     
     
