@@ -1,8 +1,11 @@
 from evaluation import Metric
-from evaluation.formulas.formulas_effort import sdar
 from map import DatabaseNoClass
 from evaluation.formulas import mar, mdar, sa, effect_size
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, precision_score,\
+    recall_score, f1_score
+
+def warpTwoArg(f):
+    return lambda x, y : f(x, y)
 
 metric_db = DatabaseNoClass(
     Metric,
@@ -43,12 +46,36 @@ metric_db = DatabaseNoClass(
         
         # Classification
         "accuracy" : {
-            "formula" : lambda x, y, z: accuracy_score(y, z),
+            "formula" : warpTwoArg(accuracy_score),
             "problem" : "classification",
             "greater_is_better" : True,
             "lo" : 0,
             "hi" : 1,
             "baseline" : "None"
         },
+        "precision" : {
+            "formula" : warpTwoArg(precision_score),
+            "problem" : "classification",
+            "greater_is_better" : True,
+            "lo" : 0,
+            "hi" : 1,
+            "baseline" : "None"
+        },
+        "recall" : {
+            "formula" : warpTwoArg(recall_score),
+            "problem" : "classification",
+            "greater_is_better" : True,
+            "lo" : 0,
+            "hi" : 1,
+            "baseline" : "None"
+        },
+        "f1" : {
+            "formula" : warpTwoArg(f1_score),
+            "problem" : "classification",
+            "greater_is_better" : True,
+            "lo" : 0,
+            "hi" : 1,
+            "baseline" : "None"
+        }
     }
 )

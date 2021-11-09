@@ -34,14 +34,14 @@ import datetime
 import time
 
 # Ingnore convergence warnings
-# from warnings import simplefilter
-# from sklearn.exceptions import ConvergenceWarning
-# simplefilter("ignore", category=ConvergenceWarning)
+from warnings import simplefilter
+from sklearn.exceptions import ConvergenceWarning
+simplefilter("ignore", category=ConvergenceWarning)
 
 ## Prelude: Setup of the framework
 
 # Load configuration
-FW, DS, DT, AS, PT, LA, EM = Loader().load_config()
+FW, DS, DT, AS, PT, LA, EM = Loader("config/fairness/").load_config()
 datasets = ds_db.get(DS)
 data_transformation = dt_db.get(DT)
 as_techniques = as_db.get(AS)
@@ -254,6 +254,8 @@ for n_ds, ds in enumerate(datasets):
                                 duration = end_time - start_time
                                 
                                 results = evaluate(Y_test, prediction, metrics, problem)
+                                
+                                # print(Y_test, prediction)
                                 
                                 # Output results
                                 # Add results to output file

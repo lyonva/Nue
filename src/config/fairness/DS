@@ -6,10 +6,10 @@
 #-exclude:project,length,yearend,envergure,pointsnonajust,language
 #-drop:37,43,65,74
 
-# fairness/compas-scores-two-years_processed.csv:
-# -problem:classification
-# -predict:Probability
-# -protected:sex,age_cat,race
+fairness/compas-scores-two-years_processed.csv:
+-problem:classification
+-predict:Probability
+-protected:sex,age_cat,race
 
 fairness/GermanData_processed.csv:
 -problem:classification

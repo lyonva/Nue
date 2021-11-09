@@ -1,6 +1,7 @@
 from utils import ps, get_problem_type
 from map import baseline_db
 from sklearn.metrics import make_scorer
+from inspect import signature
 
 class Metric(ps):
     """
@@ -58,7 +59,15 @@ class Metric(ps):
         Output:
             callable
         """
-        return lambda y, y_pred : self.formula(self, y, y_pred)
+        n_args = len(signature(self.formula).parameters)
+        if n_args < 2:
+            return None
+        elif n_args == 2:
+            return self.formula
+        elif n_args == 3:
+            return lambda y, y_pred : self.formula(self, y, y_pred)
+        else:
+            return None
     
     def make_scorer(self):
         """
