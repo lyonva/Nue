@@ -2,8 +2,6 @@ CV: traintestsplit:
 -test_size,float:0.3
 -n_splits,int:1
 
-Baseline: MARP0
-
-Mode: classification
+Problem: regression
 
 Preprocessing:

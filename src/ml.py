@@ -1,14 +1,18 @@
+## Imports
 # Libraries
 import numpy as np
 import pandas as pd
 
+# Databases of techniques
 from map import dataset_db as ds_db
 from map import transformation_db as dt_db
 from map import selection_db as as_db
 from map import learning_db as mlt_db
-from map import tuning_db as pt_db
+from map import optimization_db as pt_db
 from map import baseline_db as bl_db
 from map import validation_db as cv_db
+from map import metric_db as em_db
+
 from sklearn.metrics import make_scorer
 from reading import Loader
 from validation import LoaderCV
@@ -20,8 +24,9 @@ from tempfile import mkdtemp
 from selection import NumericalSelector
 from transformation import FillImputer, SimplerImputer, KNNImputerDF
 from transformation import OneHotEncoding
-from evaluation import get_pareto_front
-
+from evaluation import get_pareto_front, evaluate, \
+    get_metrics_problem, get_all_scorers, get_metrics_by_name
+from utils import get_problem_type
 
 from sklearn.pipeline import Pipeline
 from pipeline import FeatureJoin
@@ -29,40 +34,28 @@ import datetime
 import time
 
 # Ingnore convergence warnings
-from  warnings import simplefilter
-
+from warnings import simplefilter
 from sklearn.exceptions import ConvergenceWarning
 simplefilter("ignore", category=ConvergenceWarning)
 
-# Prelude
-
-
-# Data sets
-#datasets = [db.dataset_isbsg]
+## Prelude: Setup of the framework
 
 # Load configuration
-FW, DS, DT, AS, PT, LA, EM = Loader().load_config()
+FW, DS, DT, AS, PT, LA, EM = Loader("config/fairness/").load_config()
 datasets = ds_db.get(DS)
 data_transformation = dt_db.get(DT)
 as_techniques = as_db.get(AS)
 pt_techniques = pt_db.get(PT)
 ml_techniques = mlt_db.get(LA)
+metrics = em_db.get(EM)
+metric_names = [ m.name for m in metrics ]
 
 # Mode
-mode = FW["mode"][0] if "mode" in FW.keys() else "classification"
+# Type of problem to be solved
+mode = get_problem_type(FW["problem"][0] if "problem" in FW.keys() else "classification")
 
 # Pre processing
-# prep = Preprocessing(remove_missing_columns = 0.25, missing_value_handling  = Missing_Value_Handling.MEAN)
-
 prep = Preprocessing( **(FW["preprocessing"] if "preprocessing" in FW.keys() else {}) )
-
-# Baseline and multiobjective
-baseline = bl_db[ FW["baseline"][0] if "baseline" in FW.keys() else "none" ]
-multiobj = FW["multiobj"]["metrics"] if "multiobj" in FW.keys() and "metrics" in FW["multiobj"].keys() else []
-reference = FW["multiobj"]["reference"] if "multiobj" in FW.keys() and "reference" in FW["multiobj"].keys() else []
-
-# Evaluation metrics
-eva = Evaluation(EM, baseline, multiobj, reference)
 
 # Cross Validation
 # Defaults to 80:20 train test split
@@ -72,7 +65,7 @@ cv = cv_db[ FW["cv"][0] if "cv" in FW.keys() else "traintestsplit" ]( **(FW["cv"
 # Output dataframe
 right_now = datetime.datetime.now()
 
-out_cols = np.append(np.append(["DS", "Iteration", "DP", "AS", "PT", "LA", "PT metric", "Duration (s)"], EM), ["Models built", "Parameters"])
+out_cols = np.append(np.append(["DS", "Iteration", "DP", "AS", "PT", "LA", "PT metric", "Duration (s)"], metric_names), ["Models built", "Parameters"])
 output_df = pd.DataFrame(columns=out_cols)
 output_file = "result-" + right_now.strftime('%Y-%m-%d_%H-%M-%S') + ".csv"
 
@@ -85,7 +78,7 @@ output_pareto_df = pd.DataFrame(columns=out_cols)
 output_pareto_file = "result-pareto-" + right_now.strftime('%Y-%m-%d_%H-%M-%S') + ".csv"
 
 # Dataset Loop
-for ds in datasets:
+for n_ds, ds in enumerate(datasets):
     ds.set_datapath("data/")
     dataframe = ds.get_dataframe()
 
@@ -94,6 +87,8 @@ for ds in datasets:
     # dataframe = prep.process(dataframe)
     X = dataframe[ dataframe.columns.difference([ds.predict]) ]
     Y = dataframe[ ds.predict ]
+    # Type of problem: classification or regression
+    problem = mode if ds.problem == "None" else ds.problem
     
     if type(cv) == LoaderCV:
         cv.set_data( ds.id )
@@ -118,17 +113,18 @@ for ds in datasets:
                     
                     # Parameter tuning
                     for pst in pt_techniques:
-                            current_time = datetime.datetime.now()    
-                        
+                            current_time = datetime.datetime.now()
+                            
+                            pst_scoring = f"({pst.parameters['scoring']})" if 'scoring' in pst.parameters else ''
+                            
                             print("-"*30)
                             print( current_time.strftime("%d/%m/%Y %H:%M:%S") )
-                            print("Dataset: %s" % ds.name)
-                            print("Current iteration: %d" % iteration)
-                            print("DT: %s" % dtt.name)
-                            print("AS: %s" % ast.name)
-                            print("LA: %s" % mlt.name)
-                            print("PT: %s" % pst.name)
-                            print("Metric: %s" % pst.parameters["scoring"] if "scoring" in pst.parameters else "None")
+                            print(f"Dataset: {ds.name} ({problem}) [{n_ds+1}/{len(datasets)}]")
+                            print(f"Current iteration: {iteration+1}/{cv.get_n_splits(dataframe)}")
+                            print(f"DT: {dtt.name}")
+                            print(f"AS: {ast.name}")
+                            print(f"LA: {mlt.name}")
+                            print(f"PT: {pst.name} {pst_scoring}")
                             print("-"*30)
                             
                             # Depending on algorithm
@@ -161,7 +157,7 @@ for ds in datasets:
                             # Finally, train the scheme
                             dttt = dtt.dt_class(**dt_param)
                             
-                            model = mlt.ml_class(**ml_param)
+                            model = mlt.get_class(problem)(**ml_param)
                             
                             # if AS is wrapper, use model as estimator
                             if "wrapper" in as_param.keys():
@@ -206,11 +202,9 @@ for ds in datasets:
                                 new_scoring = None
                                 
                                 if multiobj_optim:
-                                    new_scoring = {}
-                                    for name in met_name:
-                                        new_scoring[name] = make_scorer( eva.get_function(name), greater_is_better = eva.get_greater_is_better(name) )
+                                    new_scoring = get_all_scorers(get_metrics_by_name(metrics, met_name), problem)
                                 else:
-                                    new_scoring = make_scorer( eva.get_function(met_name), greater_is_better = eva.get_greater_is_better(met_name) )
+                                    new_scoring = get_metrics_by_name(metrics, [met_name])[0].make_scorer()
                                 
                                 pt_parameters["scoring"] = new_scoring
                             
@@ -226,7 +220,7 @@ for ds in datasets:
                                     # If refit is not on metrics, we add it
                                     refit_name = pt_parameters["refit"]
                                     if refit_name not in pt_parameters["scoring"].keys():
-                                        pt_parameters["scoring"][refit_name] = make_scorer( eva.get_function(refit_name), greater_is_better = eva.get_greater_is_better(refit_name) )
+                                        pt_parameters["scoring"][refit_name] = get_metrics_by_name(metrics, [refit_name])[0].make_scorer()
                                 
                             search = pst.pt_class( pipe, search_space, **pt_parameters )
                             
@@ -242,7 +236,7 @@ for ds in datasets:
                             if multiobj_optim:
                                 pareto_front = get_pareto_front( search.cv_results_, pst.parameters["scoring"] )
                                 best_params = [ search.cv_results_["params"][i] for i in pareto_front ]
-                                multiobj_res_df = pd.DataFrame(columns=EM) # Separate dataset for pareto front
+                                multiobj_res_df = pd.DataFrame(columns=metric_names) # Separate dataset for pareto front
                                 duration_pareto = 0 # Duration counter
                                 models_built_pareto = 0 # Models built counter
                             else:
@@ -259,7 +253,9 @@ for ds in datasets:
                                 end_time = time.time()
                                 duration = end_time - start_time
                                 
-                                metrics = eva.evaluate(Y_test, prediction)
+                                results = evaluate(Y_test, prediction, metrics, problem)
+                                
+                                # print(Y_test, prediction)
                                 
                                 # Output results
                                 # Add results to output file
@@ -267,8 +263,8 @@ for ds in datasets:
                                 row = [ds.name, iteration, dtt.name, ast.name, pst.name, mlt.name, scoring]
                                 row.append( "%.4f" % duration )
                                 
-                                for metric in metrics.keys():
-                                    row.append( "%.4f" % metrics[metric] )
+                                for metric in results.keys():
+                                    row.append( "%.4f" % results[metric] )
                                 
                                 row.append( "%d" % models_built )
                                 row.append( search.best_params_ )
@@ -283,9 +279,9 @@ for ds in datasets:
                                     
                                     # Store metrics in another frame to calculate aggregation for front
                                     front_row = []
-                                    for metric in metrics.keys():
-                                        front_row.append( metrics[metric] )
-                                    multiobj_res_df = multiobj_res_df.append( pd.DataFrame( [front_row], columns = EM ) )
+                                    for metric in results.keys():
+                                        front_row.append( results[metric] )
+                                    multiobj_res_df = multiobj_res_df.append( pd.DataFrame( [front_row], columns = metric_names ) )
                                     
                                 else:
                                     output_df = output_df.append( pd.DataFrame( [row], columns = out_cols ) )
@@ -320,7 +316,7 @@ for ds in datasets:
                                 row = [ds.name, iteration, dtt.name, ast.name, pst.name, mlt.name, scoring]
                                 row.append( "%.4f" % duration_pareto )
                                 
-                                for metric in EM:
+                                for metric in metric_names:
                                     row.append( "%.4f" % metrics_front[metric] )
                                 
                                 row.append( "%d" % models_built )
@@ -332,3 +328,4 @@ for ds in datasets:
                         
                             # Clear cache
                             rmtree(location)
+

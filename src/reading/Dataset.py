@@ -1,6 +1,7 @@
 import pandas as pd
+from utils import ps
 
-class Dataset:
+class Dataset(ps):
     data_path = ""
     
     def __init__(self, name, dummy, params):
@@ -10,6 +11,12 @@ class Dataset:
         self.params = params
         
         self.predict = params["predict"].lower()
+
+        problem = "None"
+        if "problem" in params.keys():
+            problem = params["problem"].lower()
+        self.problem = problem
+
         exclude = []
         if "exclude" in params.keys():
             exclude = params["exclude"]

@@ -1,8 +1,9 @@
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import StandardScaler
+from utils import ps
 
-class DataTransformation:
+class DataTransformation(ps):
     
     def __init__(self, name = "None", dt_class = None, parameters = {}):
         self.name = name
@@ -12,7 +13,7 @@ class DataTransformation:
 class OneHotEncoding(OneHotEncoder):
     def transform(self, X):
         res = super().transform(X)
-        return pd.DataFrame(res, columns=self.get_feature_names(X.columns))
+        return pd.DataFrame(res, columns=self.get_feature_names_out(X.columns))
 
 class StandardScaling(StandardScaler):
     def transform(self, X, copy=None):

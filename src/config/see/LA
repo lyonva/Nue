@@ -1,11 +1,10 @@
-RegressionTree:
--criterion,str: mae
+CART:
+-criterion,str: absolute_error
 -min_samples_leaf,int: [1, 20, 1]
 -min_impurity_decrease,float: [-5, 0, 0.5, 10**x]
 -max_depth,int: [1, 20, 1]
 
 SVR:
 -kernel,str: rbf, sigmoid
--gamma,float: [-3, -0.5, 0.25, 10**x]; auto, scale
--C,float: 1, 5, 15, 30; [50, 450, 50]; [500, 15000, 500]
+-gamma,float: [-3, -0.5, 0.25, 10**x]; auto, scale-C,float: 1, 5, 15, 30; [50, 450, 50]; [500, 15000, 500]
 -epsilon,float: [-3, -0.5, 0.25, 10**x]

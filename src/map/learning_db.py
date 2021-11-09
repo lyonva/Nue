@@ -1,47 +1,53 @@
-from map import Database
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.linear_model import LinearRegression, Ridge
+from map import DatabaseTwoClass
+from sklearn.neighbors import KNeighborsRegressor, KNeighborsClassifier
+from sklearn.linear_model import LinearRegression, Ridge, RidgeClassifier
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.ensemble import BaggingRegressor
-from sklearn.svm import SVR
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.dummy import DummyRegressor
+from sklearn.svm import SVR, SVC
+from sklearn.tree import DecisionTreeRegressor, DecisionTreeClassifier
+from sklearn.dummy import DummyRegressor, DummyClassifier
 from learning import Learner
 from learning import MLPReg
 
 
-learning_db = Database(Learner,
-                  {"knn":KNeighborsRegressor,
-                    "mlp":MLPReg,
-                    "multilayerperceptron":MLPReg,
-                    "mlp-sigmoid":MLPReg,
-                    "mlp-tanh":MLPReg,
-                    "mlp-relu":MLPReg,
-                    "lr":LinearRegression,
-                    "ols":LinearRegression,
-                    "linearregression":LinearRegression,
-                    "gp":GaussianProcessRegressor,
-                    "gaussianprocesses":GaussianProcessRegressor,
-                    "ridgeregression":Ridge,
-                    "ridge":Ridge,
-                    "svr":SVR, "svm":SVR, "smoreg":SVR,
-                    "svr-rbf":SVR,
-                    "svr-poly":SVR,
-                    "svr-sigmoid":SVR,
-                    "additiveregression":GaussianProcessRegressor,
-                    "bagging":BaggingRegressor,
-                    "zeror":DummyRegressor,
-                    "decisionstump":DecisionTreeRegressor,
-                    "reptree":DecisionTreeRegressor,
-                    "regressiontree":DecisionTreeRegressor
+knn_class = [KNeighborsClassifier, KNeighborsRegressor]
+lr_class = [None, LinearRegression]
+gpr_class = [None, GaussianProcessRegressor]
+rr_class = [RidgeClassifier, Ridge]
+svm_class = [SVC, SVR]
+cart_class = [DecisionTreeClassifier, DecisionTreeRegressor]
+
+# Order: Classification, Regression
+learning_db = DatabaseTwoClass(Learner,
+                  { 
+                    "dummy":[DummyClassifier, DummyRegressor],
+                    "knn": knn_class,
+                    # Left out for now
+                    # "mlp":MLPReg,
+                    # "multilayerperceptron":MLPReg,
+                    # "mlp-sigmoid":MLPReg,
+                    # "mlp-tanh":MLPReg,
+                    # "mlp-relu":MLPReg,
+                    "lr":lr_class,
+                    "ols":lr_class,
+                    "linearregression":lr_class,
+                    "gp":gpr_class,
+                    "gaussianprocesses":gpr_class,
+                    "ridgeregression":rr_class,
+                    "ridge":rr_class,
+                    "svr":svm_class,
+                    "svc":svm_class,
+                    "svm":svm_class,
+                    # Removed for now
+                    # "bagging":BaggingRegressor,
+                    "decisionstump":cart_class,
+                    "reptree":cart_class,
+                    "regressiontree":cart_class,
+                    "cart":cart_class,
                     },
                   {"decisionstump":{"max_depth",1} ,
-                   "additiveregression":{"max_depth",1},
-                   "bagging":{"base_estimator",DecisionTreeRegressor(max_depth = 1)},
-                   "mlp-sigmoid":{"activation":"logistic"},
-                   "mlp-tanh":{"activation":"tanh"},
-                   "mlp-relu":{"activation":"relu"},
-                   "svr-rbf":{"kernel":"rbf"},
-                   "svr-poly":{"kernel":"poly"},
-                   "svr-sigmoid":{"kernel":"sigmoid"}
+                  #  "bagging":{"base_estimator",DecisionTreeRegressor(max_depth = 1)},
+                  #  "mlp-sigmoid":{"activation":"logistic"},
+                  #  "mlp-tanh":{"activation":"tanh"},
+                  #  "mlp-relu":{"activation":"relu"},
                    })

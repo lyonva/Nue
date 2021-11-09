@@ -1,7 +1,7 @@
 from map import Database
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
-from tuning import Parameter_Tuning, DefaultCV, DifferentialEvolutionCV, FlashCV, DodgeCV, \
+from optimization import Optimizer, DefaultCV, DifferentialEvolutionCV, FlashCV, DodgeCV, \
     RandomRangeSearchCV, NeverGradCV, TabuSearchCV, HarmonySearchCV, HyperbandCV, \
     GeneticAlgorithmCV, BayesianOptimizationCV
 
@@ -26,7 +26,7 @@ from tuning import Parameter_Tuning, DefaultCV, DifferentialEvolutionCV, FlashCV
     
     
     
-tuning_db = Database(Parameter_Tuning, {"none":DefaultCV,
+optimization_db = Database(Optimizer, {"none":DefaultCV,
                                         "default":DefaultCV,
                                         "grid search":GridSearchCV,
                                         "random search":RandomizedSearchCV,

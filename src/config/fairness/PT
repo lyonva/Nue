@@ -1,0 +1,15 @@
+#Default
+
+#Random Search:
+#-scoring: sa
+#-n_iter,int: 64
+#-cv,int: 2
+#-n_jobs,int: -1
+
+Default
+
+Random Search:
+-scoring: accuracy
+-n_iter,int: 64
+-cv,int: 2
+-n_jobs,int: -1

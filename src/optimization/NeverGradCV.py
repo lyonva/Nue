@@ -1,6 +1,6 @@
 from sklearn.model_selection._search import BaseSearchCV
 import numpy as np
-from tuning import grid_to_bounds, grid_types, cast_parameters, aggregate_dict
+from optimization import grid_to_bounds, grid_types, cast_parameters, aggregate_dict
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import nevergrad as ng

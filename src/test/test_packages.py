@@ -13,16 +13,21 @@ import pytest
 # from reading import *
 # from selection import *
 # from transformation import *
-# from tuning import *
+# from optimization import *
 # from validation import *
+# from utils import *
 
 
 def test_imports():
     """
-        Test Imports
-        Tests that every importable class works, and can be imported from the package
-        Should be updated as more classes are added
+        Test Imports.
+        Tests that every importable class works, and can be imported from the package.
+        Should be updated as more classes are added.
     """
+
+    # Util package
+    from utils import ps
+    from utils import get_problem_type
 
     # Baseline package
     from baseline import baseline
@@ -37,6 +42,11 @@ def test_imports():
     # Evaluation/Metrics package
     from evaluation import Evaluation
     from evaluation import get_pareto_front
+    from evaluation import Metric
+    from evaluation import get_metrics_problem
+    from evaluation import evaluate
+    from evaluation import get_all_scorers
+    from evaluation import get_metrics_by_name
 
     # Learning package
     from learning import Learner
@@ -68,18 +78,18 @@ def test_imports():
     from transformation import Missing_Value_Handling
     from transformation import Preprocessing
 
-    # Tuning package
-    from tuning import Parameter_Tuning
-    from tuning import DefaultCV
-    from tuning import BayesianOptimizationCV
-    from tuning import DifferentialEvolutionCV
-    from tuning import DodgeCV
-    from tuning import GeneticAlgorithmCV
-    from tuning import HarmonySearchCV
-    from tuning import HyperbandCV
-    from tuning import NeverGradCV
-    from tuning import RandomRangeSearchCV
-    from tuning import TabuSearchCV
+    # Optimization package
+    from optimization import Optimizer
+    from optimization import DefaultCV
+    from optimization import BayesianOptimizationCV
+    from optimization import DifferentialEvolutionCV
+    from optimization import DodgeCV
+    from optimization import GeneticAlgorithmCV
+    from optimization import HarmonySearchCV
+    from optimization import HyperbandCV
+    from optimization import NeverGradCV
+    from optimization import RandomRangeSearchCV
+    from optimization import TabuSearchCV
 
     # Validation package
     from validation import Cross_Validation
@@ -91,10 +101,13 @@ def test_imports():
 
     # Map package
     from map import Database
+    from map import DatabaseTwoClass
+    from map import DatabaseNoClass
     from map import selection_db
     from map import baseline_db
     from map import validation_db
     from map import dataset_db
     from map import transformation_db
     from map import learning_db
-    from map import tuning_db
+    from map import optimization_db
+    from map import metric_db
