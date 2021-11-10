@@ -2,6 +2,8 @@ from utils import ps, get_problem_type
 from map import baseline_db
 from sklearn.metrics import make_scorer
 from inspect import signature
+from abc import ABC, abstractmethod
+from sklearn.metrics import _PredictScorer
 
 class Metric(ps):
     """
@@ -27,7 +29,7 @@ class Metric(ps):
         Function:
             __init__
         Description:
-            Instances a Learner, storing name, class, and default parameters.
+            Instances a Metric, storing all attributes.
         Input:
             - name,str: Name of metric
             - formula,callable: Function of form f(self, y, y_pred) that returns something.
@@ -37,7 +39,7 @@ class Metric(ps):
             - hi,float or None: Reference point, theorethical highest possible value.
             - baseline,str: Baseline object name to calculate this metric.
         Output:
-            Instance of the Learner.
+            Instance of the Metric.
         """
         self.name = name
         self.formula = formula
@@ -96,3 +98,120 @@ class Metric(ps):
             Float value of the metric.
         """
         return self.get_formula()(y, y_pred)
+
+
+class MetricX(ABC, Metric, _PredictScorer):
+    """
+    Class:
+        MetricX
+    Description:
+        Abstract class, requires definition of score method
+        Represents an evaluation metric that requires a dataset column.
+        Made as a scikit learn scorer.
+    Attributes:
+        - feature,str: name of feature to calculate metric.
+    Constants: Should be set by constructor of each subclass
+        - name,str: Name of metric
+        - problem,str: Whether metric is for classification, regression, or both.
+        - greater_is_better,bool: Whether a learner/optimizer should increase this metric or not.
+        - lo,float or None: Reference point, theorethical lowest possible value.
+        - hi,float or None: Reference point, theorethical highest possible value.
+        - baseline,class: Baseline object to calculate this metric.
+    """
+    
+    def __init__(self, feature = None):
+        """
+        Function:
+            __init__
+        Description:
+            Instances a MetricX, storing all attributes.
+        Input:
+            - feature,str: name of feature to calculate metric.
+        Output:
+            Instance of the MetricX.
+        """
+        self.feature = feature
+        self.setConstants()
+    
+    def make_scorer(self):
+        """
+        Function:
+            make_scorer
+        Description:
+            Returns a scikit_learn scorer.
+            As we are one, return self.
+        Input:
+            None
+        Output:
+            self
+        """
+        return self
+    
+    @abstractmethod
+    def setConstants(self):
+        """
+        Function:
+            setConstants
+        Description:
+            Sets the constants of the MetriX.
+            Should be implemented by each subclass.
+        Input:
+            None.
+        Output:
+            None. Should modify attributes.
+        """
+        pass
+    
+    def _score(self, method_caller, estimator, X, y_true, sample_weight=None):
+        """
+        Function:
+            _score
+        Description:
+            Scikit learn score.
+            We override it to be able to access X as we calculate the metric.
+            Description from scikit-learn:
+         
+        Evaluate predicted target values for X relative to y_true.
+        Parameters
+        ----------
+        method_caller : callable
+            Returns predictions given an estimator, method name, and other
+            arguments, potentially caching results.
+        estimator : object
+            Trained estimator to use for scoring. Must have a `predict`
+            method; the output of that is used to compute the score.
+        X : {array-like, sparse matrix}
+            Test data that will be fed to estimator.predict.
+        y_true : array-like
+            Gold standard target values for X.
+        sample_weight : array-like of shape (n_samples,), default=None
+            Sample weights.
+        Returns
+        -------
+        score : float
+            Score function applied to prediction of estimator on X.
+        """
+
+        y_pred = method_caller(estimator, "predict", X)
+        if sample_weight is not None:
+            return self._sign * self._score_func(
+                y_true, y_pred, X, sample_weight=sample_weight, **self._kwargs
+            )
+        else:
+            return self._sign * self._score_func(y_true, y_pred, X, **self._kwargs)
+    
+    @abstractmethod
+    def _score_func(self, y_true, y_pred, X):
+        """
+        Function:
+            _score_func
+        Description:
+            Calculate and return the metric.
+        Input:
+            - y_true,list: List of actual y values.
+            - y_pred,list: List of predicted y values.
+            - X,dataframe: Columns that the model predicted on.
+        Output:
+            None. Should modify attributes.
+        """
+        pass

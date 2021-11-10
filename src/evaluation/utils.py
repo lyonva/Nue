@@ -56,3 +56,17 @@ def get_metrics_by_name(metrics, names):
             List of metric objects that match names
     """
     return [ m for m in metrics if m.name in names ]
+
+def get_metricx_list(type, features):
+    """
+        Function:
+            get_metricx_list
+        Description:
+            Return an instance of a MetricX for each feature name on a list.
+        Input:
+            - type,class: The MetricX object to instance.
+            - features,list: List of feature names.
+        Output:
+            Dictionary of MetricX objects, one per feature.
+    """
+    return dict([ (f"{type().name}-{f}" , type(f) ) for f in features ])

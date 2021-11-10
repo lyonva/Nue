@@ -43,10 +43,12 @@ def test_imports():
     from evaluation import Evaluation
     from evaluation import get_pareto_front
     from evaluation import Metric
+    from evaluation import MetricX
     from evaluation import get_metrics_problem
     from evaluation import evaluate
     from evaluation import get_all_scorers
     from evaluation import get_metrics_by_name
+    from evaluation import get_metricx_list
 
     # Learning package
     from learning import Learner
