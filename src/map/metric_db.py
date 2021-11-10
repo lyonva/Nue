@@ -1,4 +1,4 @@
-from evaluation import Metric, AOD, EOD
+from evaluation import Metric, AOD, EOD, SPD, DI, FR
 from map import DatabaseNoClass
 from evaluation.formulas import mar, mdar, sa, effect_size
 from sklearn.metrics import accuracy_score, precision_score,\
@@ -88,5 +88,8 @@ metric_db = DatabaseNoClass(
         # Fairness
         "aod" : { "class" : AOD },
         "eod" : { "class" : EOD },
+        "spd" : { "class" : SPD },
+        "di" : { "class" : DI },
+        "fr" : { "class" : FR },
     }
 )

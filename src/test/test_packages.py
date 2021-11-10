@@ -44,6 +44,7 @@ def test_imports():
     from evaluation import get_pareto_front
     from evaluation import Metric
     from evaluation import MetricX
+    from evaluation import MetricFull
     from evaluation import get_metrics_problem
     from evaluation import evaluate
     from evaluation import get_all_scorers
@@ -52,6 +53,9 @@ def test_imports():
     from evaluation import get_metrics_dataset
     from evaluation import AOD
     from evaluation import EOD
+    from evaluation import SPD
+    from evaluation import DI
+    from evaluation import FR
 
     # Learning package
     from learning import Learner

@@ -41,7 +41,7 @@ def get_metrics_problem(metrics, problem):
     """
     return [ e for e in metrics if e.problem == problem ]
 
-def evaluate(y, y_pred, X, metrics):
+def evaluate(y, y_pred, X, estimator, metrics):
     """
         Function:
             evaluate
@@ -56,7 +56,7 @@ def evaluate(y, y_pred, X, metrics):
         Output:
             List of metric objects that match problem
     """
-    return dict( [(m.name, m.evaluate(y, y_pred, X = X)) for m in metrics ] )
+    return dict( [(m.name, m.evaluate(y, y_pred, X = X, estimator = estimator)) for m in metrics ] )
 
 def get_all_scorers( metrics ):
     """

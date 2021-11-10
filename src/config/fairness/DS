@@ -6,6 +6,16 @@
 #-exclude:project,length,yearend,envergure,pointsnonajust,language
 #-drop:37,43,65,74
 
+fairness/adult_processed.csv:
+-problem:classification
+-predict:Probability
+-secondary:sex,race
+
+fairness/bank_processed.csv:
+-problem:classification
+-predict:Probability
+-secondary:age
+
 fairness/compas-scores-two-years_processed.csv:
 -problem:classification
 -predict:Probability
@@ -13,5 +23,10 @@ fairness/compas-scores-two-years_processed.csv:
 
 fairness/GermanData_processed.csv:
 -problem:classification
--predict:employment=Unemployed
+-predict:Probability
+-secondary:sex
+
+fairness/default_processed.csv:
+-problem:classification
+-predict:Probability
 -secondary:sex

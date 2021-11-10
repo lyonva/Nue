@@ -259,7 +259,7 @@ for n_ds, ds in enumerate(datasets):
                                 end_time = time.time()
                                 duration = end_time - start_time
                                 
-                                results = evaluate(Y_test, prediction, X_test, ds_metrics)
+                                results = evaluate(Y_test, prediction, X_test, pipe, ds_metrics)
                                 
                                 # print(Y_test, prediction)
                                 

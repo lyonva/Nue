@@ -1,5 +1,27 @@
-from evaluation import MetricX
+# Metric implementation based on the xFair:
+# https://github.com/anonymous12138/biasmitigation/blob/main/Measure.py
+
+from evaluation import MetricX, MetricFull
 from sklearn.metrics import confusion_matrix
+import numpy as np
+
+def flip_privilege(X, feature):
+    """
+    Function:
+        flip_privilege
+    Description:
+        Flips values of privileged attribute.
+        Attributes in unpriviledged remain the same.
+        In other words, sets all values to 0
+    Input:
+        - X,dataframe: Columns that the model predicted on.
+        - feature,str: Name of the feature.
+    Output:
+        Copy of dataframe
+    """
+    X_new = X.copy()
+    X_new[feature] = np.where(X_new[feature]==1, 0, 1)
+    return X_new
 
 def slice_privilege(X):
     """
@@ -8,16 +30,15 @@ def slice_privilege(X):
     Description:
         Returns 2 masks, i.e. lists of booleans.
         Indicating if index corresponds with (un)privileged class.
-        We assume privilege classes are 0 in the data.
+        We assume privilege classes are 1 in the data.
     Input:
-        - X,dataframe: Columns that the model predicted on.
-        - feature,str: Name of the feature.
+        - X,column: Protected attribute column.
     Output:
         2 lists of booleans.
         First is mask of privileged class.
         Second is mask for unprivileged class.
     """
-    return X == 0, X == 1
+    return X == 1, X == 0
 
 def get_confusion(y_true, y_pred, X):
     """
@@ -76,8 +97,8 @@ class AOD(MetricX):
     def setConstants(self):
         self.name = "aod"
         self.problem = "classification"
-        self.greater_is_better = True
-        self.lo = 0
+        self.greater_is_better = False
+        self.lo = -1
         self.hi = 1
         self.baseline = None
     
@@ -102,8 +123,8 @@ class EOD(MetricX):
     def setConstants(self):
         self.name = "eod"
         self.problem = "classification"
-        self.greater_is_better = True
-        self.lo = 0
+        self.greater_is_better = False
+        self.lo = -1
         self.hi = 1
         self.baseline = None
     
@@ -112,3 +133,81 @@ class EOD(MetricX):
         tpr_unpr = conf["unpr"]["tp"]/( conf["unpr"]["tp"] + conf["unpr"]["fn"] )
         tpr_priv = conf["priv"]["tp"]/( conf["priv"]["tp"] + conf["priv"]["fn"] )
         return tpr_unpr - tpr_priv
+
+class SPD(MetricX):
+    """
+    Class:
+        SPD
+    Description:
+        MetricX of Statistical Party Difference
+        Difference between probability of unprivileged group
+        (protected attribute PA = 0) gets favorable prediction (Y = 1)
+        & probability of privileged group (protected attribute PA = 1)
+        gets favorable prediction (Y = 1)
+    """
+    
+    def setConstants(self):
+        self.name = "spd"
+        self.problem = "classification"
+        self.greater_is_better = False
+        self.lo = -1
+        self.hi = 1
+        self.baseline = None
+    
+    def _score_func(self, y_true, y_pred, X):
+        conf = get_confusion(y_true, y_pred, X)
+        p_favo_priv = (conf["priv"]["tp"] + conf["priv"]["fp"]) / (conf["priv"]["tp"] + conf["priv"]["fp"] + conf["priv"]["tn"] + conf["priv"]["fn"])
+        p_favo_unpr = (conf["unpr"]["tp"] + conf["unpr"]["fp"]) / (conf["unpr"]["tp"] + conf["unpr"]["fp"] + conf["unpr"]["tn"] + conf["unpr"]["fn"])
+        return p_favo_unpr - p_favo_priv
+
+class DI(MetricX):
+    """
+    Class:
+        DI
+    Description:
+        MetricX of Disparate Impact
+        Ratio between probability of unprivileged group
+        (protected attribute PA = 0) gets favorable prediction (Y = 1)
+        & probability of privileged group (protected attribute PA = 1)
+        gets favorable prediction (Y = 1)
+    """
+    
+    def setConstants(self):
+        self.name = "di"
+        self.problem = "classification"
+        self.greater_is_better = False
+        self.lo = -1
+        self.hi = 1
+        self.baseline = None
+    
+    def _score_func(self, y_true, y_pred, X):
+        conf = get_confusion(y_true, y_pred, X)
+        p_favo_priv = (conf["priv"]["tp"] + conf["priv"]["fp"]) / (conf["priv"]["tp"] + conf["priv"]["fp"] + conf["priv"]["tn"] + conf["priv"]["fn"])
+        p_favo_unpr = (conf["unpr"]["tp"] + conf["unpr"]["fp"]) / (conf["unpr"]["tp"] + conf["unpr"]["fp"] + conf["unpr"]["tn"] + conf["unpr"]["fn"])
+        return 1 - p_favo_unpr / p_favo_priv
+
+class FR(MetricFull):
+    """
+    Class:
+        FR
+    Description:
+        MetricFull of Flip Rate
+        The ratio of instances whose predicted label (Y) will change
+        when flipping their protected attributes (e.g., PA=1 to PA=0).
+    """
+
+    def setConstants(self):
+        self.name = "fr"
+        self.problem = "classification"
+        self.greater_is_better = False
+        self.lo = 0
+        self.hi = 1
+        self.baseline = None
+
+    def _score_func(self, y_true, y_pred, X, estimator):
+        X_flip = flip_privilege(X, self.feature)
+        y_flip = np.array( estimator.predict(X_flip) )
+        n = X.shape[0]
+        same = np.count_nonzero( np.array(y_pred) == y_flip )
+        return (n-same)/n
+        

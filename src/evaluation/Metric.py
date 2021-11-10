@@ -241,5 +241,83 @@ class MetricX(ABC, Metric, _PredictScorer):
         """
         pass
     
-    def evaluate(self, y, y_pred, X = None):
+    def evaluate(self, y, y_pred, X = None, **kwargs):
         return self._score_func(y, y_pred, X[self.feature])
+
+
+class MetricFull(MetricX, _PredictScorer):
+    """
+    Class:
+        MetricFull
+    Description:
+        Abstract class, requires definition of score method
+        Represents an evaluation metric that requires the complete dataset
+        as well as the prediction method.
+        Focuses on one feature at a time.
+    Attributes:
+        - feature,str: name of feature to calculate metric.
+    Constants: Should be set by constructor of each subclass
+        - name,str: Name of metric
+        - problem,str: Whether metric is for classification, regression, or both.
+        - greater_is_better,bool: Whether a learner/optimizer should increase this metric or not.
+        - lo,float or None: Reference point, theorethical lowest possible value.
+        - hi,float or None: Reference point, theorethical highest possible value.
+        - baseline,class: Baseline object to calculate this metric.
+    """
+    
+    def _score(self, method_caller, estimator, X, y_true, sample_weight=None):
+        """
+        Function:
+            _score
+        Description:
+            Scikit learn score.
+            We override it to be able to access X and estimator as we calculate the metric.
+            Description from scikit-learn:
+         
+        Evaluate predicted target values for X relative to y_true.
+        Parameters
+        ----------
+        method_caller : callable
+            Returns predictions given an estimator, method name, and other
+            arguments, potentially caching results.
+        estimator : object
+            Trained estimator to use for scoring. Must have a `predict`
+            method; the output of that is used to compute the score.
+        X : {array-like, sparse matrix}
+            Test data that will be fed to estimator.predict.
+        y_true : array-like
+            Gold standard target values for X.
+        sample_weight : array-like of shape (n_samples,), default=None
+            Sample weights.
+        Returns
+        -------
+        score : float
+            Score function applied to prediction of estimator on X.
+        """
+
+        y_pred = method_caller(estimator, "predict", X)
+        if sample_weight is not None:
+            return self._sign * self._score_func(
+                y_true, y_pred, X, estimator, sample_weight=sample_weight, **self._kwargs
+            )
+        else:
+            return self._sign * self._score_func(y_true, y_pred, X, estimator, **self._kwargs)
+    
+    @abstractmethod
+    def _score_func(self, y_true, y_pred, X, estimator):
+        """
+        Function:
+            _score_func
+        Description:
+            Calculate and return the metric.
+        Input:
+            - y_true,list: List of actual y values.
+            - y_pred,list: List of predicted y values.
+            - X,dataframe: Columns that the model predicted on.
+        Output:
+            None. Should modify attributes.
+        """
+        pass
+    
+    def evaluate(self, y, y_pred, X = None, estimator = None):
+        return self._score_func(y, y_pred, X, estimator)
