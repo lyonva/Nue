@@ -149,6 +149,8 @@ class MetricX(ABC, Metric, _PredictScorer):
         self.setConstants()
         if feature != None:
             self.name += "-" + feature
+        self._sign = 1 if self.greater_is_better else -1
+        self._kwargs = {}
     
     def make_scorer(self):
         """

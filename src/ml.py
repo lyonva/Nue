@@ -221,7 +221,7 @@ for n_ds, ds in enumerate(datasets):
                                 # If it is not manually defined
                                 # Use the first metric
                                 if "refit" not in pt_parameters:
-                                    pt_parameters["refit"] = pt_parameters["scoring"].keys[0]
+                                    pt_parameters["refit"] = list(pt_parameters["scoring"].keys())[0]
                                 else:
                                     # If refit is not on metrics, we add it
                                     refit_name = pt_parameters["refit"]
@@ -240,9 +240,9 @@ for n_ds, ds in enumerate(datasets):
                             # Otherwise, just use the best parameters
                             best_params = []
                             if multiobj_optim:
-                                pareto_front = get_pareto_front( search.cv_results_, pst.parameters["scoring"] )
+                                pareto_front = get_pareto_front( search.cv_results_, pt_parameters["scoring"] )
                                 best_params = [ search.cv_results_["params"][i] for i in pareto_front ]
-                                multiobj_res_df = pd.DataFrame(columns=metric_names) # Separate dataset for pareto front
+                                multiobj_res_df = None # Separate dataset for pareto front
                                 duration_pareto = 0 # Duration counter
                                 models_built_pareto = 0 # Models built counter
                             else:
@@ -294,10 +294,12 @@ for n_ds, ds in enumerate(datasets):
                                     models_built_pareto += models_built
                                     
                                     # Store metrics in another frame to calculate aggregation for front
-                                    front_row = []
-                                    for metric in results.keys():
-                                        front_row.append( results[metric] )
-                                    multiobj_res_df = multiobj_res_df.append( pd.DataFrame( [front_row], columns = metric_names ) )
+                                    results1 = dict([ (k, [v]) for k, v in results.items() ])
+                                    front_row = pd.DataFrame.from_dict(results1)
+                                    if multiobj_res_df is None:
+                                        multiobj_res_df = front_row
+                                    else:
+                                        multiobj_res_df = pd.concat( [multiobj_res_df, front_row] )
                                     
                                 else:
                                     if output_df is None:
@@ -333,18 +335,28 @@ for n_ds, ds in enumerate(datasets):
                                 metrics_front = multiobj_res_df.mean(axis = 0)
                                 
                                 # Construct row in a format similar to normal frame
-                                row = [ds.name, iteration, dtt.name, ast.name, pst.name, mlt.name, scoring]
-                                row.append( "%.4f" % duration_pareto )
-                                
-                                for metric in metric_names:
-                                    row.append( "%.4f" % metrics_front[metric] )
-                                
-                                row.append( "%d" % models_built )
-                                row.append( "pareto front" )
+                                row = {"DS": ds.name,
+                                    "Iteration": iteration,
+                                    "DT" : dtt.name,
+                                    "AS" : ast.name,
+                                    "LA" : mlt.name,
+                                    "PT" : pst.name,
+                                    "PT scoring" : scoring,
+                                    "Duration" : duration_pareto,
+                                    "Models built" : models_built,
+                                    "Best params" : "pareto front",
+                                    **metrics_front
+                                }
+                                row = dict([ (k, [v]) for k, v in row.items() ])
+                                result_frame = pd.DataFrame.from_dict(row)
                                 
                                 # Save to dataframe
-                                output_df = output_df.append( pd.DataFrame( [row], columns = out_cols ) )
-                                output_df.to_csv(output_file, index=False)
+                                if output_df is None:
+                                    output_df = result_frame
+                                else:
+                                    output_df = pd.concat( [output_df, result_frame] )
+                                    
+                                    output_df.to_csv(output_file, index=False)
                         
                             # Clear cache
                             rmtree(location)
