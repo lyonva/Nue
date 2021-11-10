@@ -49,6 +49,7 @@ def test_imports():
     from evaluation import get_all_scorers
     from evaluation import get_metrics_by_name
     from evaluation import get_metricx_list
+    from evaluation import get_metrics_dataset
     from evaluation import AOD
     from evaluation import EOD
 

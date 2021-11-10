@@ -25,7 +25,7 @@ from selection import NumericalSelector
 from transformation import FillImputer, SimplerImputer, KNNImputerDF
 from transformation import OneHotEncoding
 from evaluation import get_pareto_front, evaluate, \
-    get_metrics_problem, get_all_scorers, get_metrics_by_name
+    get_metrics_dataset, get_all_scorers, get_metrics_by_name
 from utils import get_problem_type
 
 from sklearn.pipeline import Pipeline
@@ -48,7 +48,6 @@ as_techniques = as_db.get(AS)
 pt_techniques = pt_db.get(PT)
 ml_techniques = mlt_db.get(LA)
 metrics = em_db.get(EM)
-metric_names = [ m.name for m in metrics ]
 
 # Mode
 # Type of problem to be solved
@@ -65,8 +64,9 @@ cv = cv_db[ FW["cv"][0] if "cv" in FW.keys() else "traintestsplit" ]( **(FW["cv"
 # Output dataframe
 right_now = datetime.datetime.now()
 
-out_cols = np.append(np.append(["DS", "Iteration", "DP", "AS", "PT", "LA", "PT metric", "Duration (s)"], metric_names), ["Models built", "Parameters"])
-output_df = pd.DataFrame(columns=out_cols)
+# out_cols = np.append(np.append(["DS", "Iteration", "DP", "AS", "PT", "LA", "PT metric", "Duration (s)"], metric_names), ["Models built", "Parameters"])
+# output_df = pd.DataFrame(columns=out_cols)
+output_df = None
 output_file = "result-" + right_now.strftime('%Y-%m-%d_%H-%M-%S') + ".csv"
 
 # Hyper-parameter output df
@@ -74,7 +74,8 @@ output_tuning_df = None
 output_tuning_file = "result-hpt-" + right_now.strftime('%Y-%m-%d_%H-%M-%S') + ".csv"
 
 # Pareto-frint output df
-output_pareto_df = pd.DataFrame(columns=out_cols)
+# output_pareto_df = pd.DataFrame(columns=out_cols)
+output_pareto_df = None
 output_pareto_file = "result-pareto-" + right_now.strftime('%Y-%m-%d_%H-%M-%S') + ".csv"
 
 # Dataset Loop
@@ -126,6 +127,10 @@ for n_ds, ds in enumerate(datasets):
                             print(f"LA: {mlt.name}")
                             print(f"PT: {pst.name} {pst_scoring}")
                             print("-"*30)
+                            
+                            # Get metrics that are applicable only to this dataset
+                            ds_metrics = get_metrics_dataset(ds, metrics, problem)
+                            metric_names = [ m.name for m in metrics ]
                             
                             # Depending on algorithm
                             # Select set of parameters to evaluate
@@ -195,16 +200,17 @@ for n_ds, ds in enumerate(datasets):
                             pt_parameters = pst.parameters.copy()
                             if "scoring" in pt_parameters.keys():
                                 met_name = pt_parameters["scoring"]
-                                multiobj_optim = type(met_name) == list
                                 
                                 # We now convert the scoring from name to a function
                                 # Or to a dict of functions in the case of multi-objective
-                                new_scoring = None
+                                opt_metrics = get_metrics_dataset(ds, get_metrics_by_name(metrics, met_name), problem)
+                                new_scoring = get_all_scorers( opt_metrics )
                                 
-                                if multiobj_optim:
-                                    new_scoring = get_all_scorers(get_metrics_by_name(metrics, met_name), problem)
-                                else:
-                                    new_scoring = get_metrics_by_name(metrics, [met_name])[0].make_scorer()
+                                multiobj_optim = len(new_scoring) > 1
+                                
+                                # If only one metric, we dont need dict
+                                if not(multiobj_optim):
+                                    new_scoring = list(new_scoring.values())[0]
                                 
                                 pt_parameters["scoring"] = new_scoring
                             
@@ -253,26 +259,36 @@ for n_ds, ds in enumerate(datasets):
                                 end_time = time.time()
                                 duration = end_time - start_time
                                 
-                                results = evaluate(Y_test, prediction, metrics, problem)
+                                results = evaluate(Y_test, prediction, X_test, ds_metrics)
                                 
                                 # print(Y_test, prediction)
                                 
                                 # Output results
                                 # Add results to output file
+                                # np.append(np.append(["DS", "Iteration", "DP", "AS", "PT", "LA", "PT metric", "Duration (s)"], metric_names), ["Models built", "Parameters"])
                                 scoring = pst.parameters["scoring"] if "scoring" in pst.parameters.keys() else "None"
-                                row = [ds.name, iteration, dtt.name, ast.name, pst.name, mlt.name, scoring]
-                                row.append( "%.4f" % duration )
-                                
-                                for metric in results.keys():
-                                    row.append( "%.4f" % results[metric] )
-                                
-                                row.append( "%d" % models_built )
-                                row.append( search.best_params_ )
+                                row = {"DS": ds.name,
+                                    "Iteration": iteration,
+                                    "DT" : dtt.name,
+                                    "AS" : ast.name,
+                                    "LA" : mlt.name,
+                                    "PT" : pst.name,
+                                    "PT scoring" : scoring,
+                                    "Duration" : duration,
+                                    "Models built" : models_built,
+                                    "Best params" : str(search.best_params_),
+                                    **results
+                                }
+                                row = dict([ (k, [v]) for k, v in row.items() ])
+                                result_frame = pd.DataFrame.from_dict(row)
                                 
                                 # Save results as file
                                 # Each iteration just in case
                                 if multiobj_optim:
-                                    output_pareto_df = output_pareto_df.append( pd.DataFrame( [row], columns = out_cols ) )
+                                    if output_pareto_df is None:
+                                        output_pareto_df = result_frame
+                                    else:
+                                        output_pareto_df = pd.concat( [output_pareto_df, result_frame] )
                                     output_pareto_df.to_csv(output_pareto_file, index=False)
                                     duration_pareto += duration
                                     models_built_pareto += models_built
@@ -284,7 +300,11 @@ for n_ds, ds in enumerate(datasets):
                                     multiobj_res_df = multiobj_res_df.append( pd.DataFrame( [front_row], columns = metric_names ) )
                                     
                                 else:
-                                    output_df = output_df.append( pd.DataFrame( [row], columns = out_cols ) )
+                                    if output_df is None:
+                                        output_df = result_frame
+                                    else:
+                                        output_df = pd.concat( [output_df, result_frame] )
+                                    
                                     output_df.to_csv(output_file, index=False)
                                 
                                 

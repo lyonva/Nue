@@ -123,21 +123,20 @@ class DatabaseNoClass(Database):
         e.x. Metrics, which are just a formula.
     Attributes:
         Same as Database, with the exception of mapping.
+        Class is also contained on each instance, under name "class"
     """
 
-    def __init__(self, classtype, base_params = {}):
+    def __init__(self, base_params = {}):
         """
         Function:
             __init__
         Description:
             Returns an instance of DatabaseNoClass.
         Input:
-            - classtype,class: Container class, all returned items are of this type.
-            - base_params: mapping of name into default parameters
+            - base_params: mapping of name into default parameters, including class
         Output:
             Instance of DatabaseNoClass
         """
-        self.classtype = classtype
         self.base_params = base_params
 
     def get_one(self, item):
@@ -157,11 +156,12 @@ class DatabaseNoClass(Database):
             name, params = item
             if name.lower() in self.base_params.keys():
                 base = self.base_params[name].copy()
+                base.pop("class")
             else:
                 base = {}
             for k in params:
                 base[k] = params[k]
-            return self.classtype( name, **base )
+            return self.base_params[name]["class"]( name, **base )
         except Exception as e:
             raise e
             return None

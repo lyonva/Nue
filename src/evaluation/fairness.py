@@ -1,14 +1,14 @@
 from evaluation import MetricX
 from sklearn.metrics import confusion_matrix
 
-def slice_privilege(X, feature):
+def slice_privilege(X):
     """
     Function:
         slice_privilege
     Description:
         Returns 2 masks, i.e. lists of booleans.
         Indicating if index corresponds with (un)privileged class.
-        We assume privilege classes are 1 in the data.
+        We assume privilege classes are 0 in the data.
     Input:
         - X,dataframe: Columns that the model predicted on.
         - feature,str: Name of the feature.
@@ -17,9 +17,9 @@ def slice_privilege(X, feature):
         First is mask of privileged class.
         Second is mask for unprivileged class.
     """
-    return X[feature] == 1, X[feature] == 0
+    return X == 0, X == 1
 
-def get_confusion(y_true, y_pred, X, feature):
+def get_confusion(y_true, y_pred, X):
     """
     Function:
         get_confusion
@@ -47,13 +47,13 @@ def get_confusion(y_true, y_pred, X, feature):
             },
         }
     """
-    priv, unpriv = slice_privilege(X, feature)
+    priv, unpriv = slice_privilege(X)
     priv_true, priv_pred = y_true[priv], y_pred[priv]
     unpr_true, unpr_pred = y_true[unpriv], y_pred[unpriv]
     
     res = {}
-    for name, y_true, y_pred in zip( ["priv", "unpriv"], [priv_true, unpr_true], [priv_pred, unpr_pred] ):
-        tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+    for name, true, pred in zip( ["priv", "unpr"], [priv_true, unpr_true], [priv_pred, unpr_pred] ):
+        tn, fp, fn, tp = confusion_matrix(true, pred).ravel()
         res[name] = {
             "tp" : tp,
             "tn" : tn,
@@ -63,7 +63,7 @@ def get_confusion(y_true, y_pred, X, feature):
     return res
     
 
-def AOD(MetriX):
+class AOD(MetricX):
     """
     Class:
         AOD
@@ -82,7 +82,7 @@ def AOD(MetriX):
         self.baseline = None
     
     def _score_func(self, y_true, y_pred, X):
-        conf = get_confusion(y_true, y_pred, X, self.feature)
+        conf = get_confusion(y_true, y_pred, X)
         tpr_unpr = conf["unpr"]["tp"]/( conf["unpr"]["tp"] + conf["unpr"]["fn"] )
         fpr_unpr = conf["unpr"]["fp"]/( conf["unpr"]["fp"] + conf["unpr"]["tn"] )
         tpr_priv = conf["priv"]["tp"]/( conf["priv"]["tp"] + conf["priv"]["fn"] )
@@ -90,7 +90,7 @@ def AOD(MetriX):
         return ((fpr_unpr - fpr_priv) + (tpr_unpr - tpr_priv)) / 2
 
 
-def EOD(MetriX):
+class EOD(MetricX):
     """
     Class:
         EOD
@@ -108,7 +108,7 @@ def EOD(MetriX):
         self.baseline = None
     
     def _score_func(self, y_true, y_pred, X):
-        conf = get_confusion(y_true, y_pred, X, self.feature)
+        conf = get_confusion(y_true, y_pred, X)
         tpr_unpr = conf["unpr"]["tp"]/( conf["unpr"]["tp"] + conf["unpr"]["fn"] )
         tpr_priv = conf["priv"]["tp"]/( conf["priv"]["tp"] + conf["priv"]["fn"] )
         return tpr_unpr - tpr_priv

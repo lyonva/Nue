@@ -1,9 +1,23 @@
 from utils import ps, get_problem_type
-from map import baseline_db
 from sklearn.metrics import make_scorer
 from inspect import signature
 from abc import ABC, abstractmethod
 from sklearn.metrics._scorer import _PredictScorer
+
+# Local baseline DB
+# To avoid circular imports
+from baseline import MARP0
+from baseline import MDARP0
+from baseline import Median
+from baseline import MARP0LOO
+
+baselines = { "None" : None,
+         "marp0" : MARP0(),
+         "mdarp0" : MDARP0(),
+         "median" : Median(),
+         "marp0loo" : MARP0LOO()
+}
+
 
 class Metric(ps):
     """
@@ -47,7 +61,7 @@ class Metric(ps):
         self.problem = get_problem_type(problem)
         self.lo = lo
         self.hi = hi
-        self.baseline = baseline_db[baseline]
+        self.baseline = baselines[baseline]
     
     def get_formula(self):
         """
@@ -85,7 +99,7 @@ class Metric(ps):
         """
         return make_scorer( self.get_formula(), greater_is_better = self.greater_is_better )
     
-    def evaluate( self, y, y_pred ):
+    def evaluate( self, y, y_pred, **kwargs ):
         """
         Function:
             evaluate
@@ -119,19 +133,22 @@ class MetricX(ABC, Metric, _PredictScorer):
         - baseline,class: Baseline object to calculate this metric.
     """
     
-    def __init__(self, feature = None):
+    def __init__(self, name = None, feature = None):
         """
         Function:
             __init__
         Description:
             Instances a MetricX, storing all attributes.
         Input:
+            - name,str: Unused
             - feature,str: name of feature to calculate metric.
         Output:
             Instance of the MetricX.
         """
         self.feature = feature
         self.setConstants()
+        if feature != None:
+            self.name += "-" + feature
     
     def make_scorer(self):
         """
@@ -161,7 +178,7 @@ class MetricX(ABC, Metric, _PredictScorer):
         Output:
             None. Should modify attributes.
         """
-        self.name = None
+        self.name = ""
         self.problem = None
         self.greater_is_better = None
         self.lo = None
@@ -201,10 +218,10 @@ class MetricX(ABC, Metric, _PredictScorer):
         y_pred = method_caller(estimator, "predict", X)
         if sample_weight is not None:
             return self._sign * self._score_func(
-                y_true, y_pred, X, sample_weight=sample_weight, **self._kwargs
+                y_true, y_pred, X[self.feature], sample_weight=sample_weight, **self._kwargs
             )
         else:
-            return self._sign * self._score_func(y_true, y_pred, X, **self._kwargs)
+            return self._sign * self._score_func(y_true, y_pred, X[self.feature], **self._kwargs)
     
     @abstractmethod
     def _score_func(self, y_true, y_pred, X):
@@ -221,3 +238,6 @@ class MetricX(ABC, Metric, _PredictScorer):
             None. Should modify attributes.
         """
         pass
+    
+    def evaluate(self, y, y_pred, X = None):
+        return self._score_func(y, y_pred, X[self.feature])

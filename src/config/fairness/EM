@@ -4,3 +4,5 @@ accuracy
 precision
 recall
 f1
+aod
+eod
