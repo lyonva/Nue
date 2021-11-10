@@ -30,3 +30,13 @@ fairness/default_processed.csv:
 -problem:classification
 -predict:Probability
 -secondary:sex
+
+fairness/heart_processed.csv:
+-problem:classification
+-predict:Probability
+-secondary:age
+
+fairness/h181_processed.csv:
+-problem:classification
+-predict:Probability
+-secondary:race

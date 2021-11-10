@@ -116,7 +116,7 @@ for n_ds, ds in enumerate(datasets):
                     for pst in pt_techniques:
                             current_time = datetime.datetime.now()
                             
-                            pst_scoring = f"({pst.parameters['scoring']})" if 'scoring' in pst.parameters else ''
+                            pst_scoring = f"({  pst.parameters['scoring'] if type(pst.parameters['scoring']) == str else ', '.join(pst.parameters['scoring'])   })" if 'scoring' in pst.parameters else ''
                             
                             print("-"*30)
                             print( current_time.strftime("%d/%m/%Y %H:%M:%S") )
@@ -227,7 +227,7 @@ for n_ds, ds in enumerate(datasets):
                                     refit_name = pt_parameters["refit"]
                                     if refit_name not in pt_parameters["scoring"].keys():
                                         pt_parameters["scoring"][refit_name] = get_metrics_by_name(metrics, [refit_name])[0].make_scorer()
-                                
+                            
                             search = pst.pt_class( pipe, search_space, **pt_parameters )
                             
                             start_time = time.time()

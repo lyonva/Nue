@@ -158,7 +158,7 @@ class SPD(MetricX):
         conf = get_confusion(y_true, y_pred, X)
         p_favo_priv = (conf["priv"]["tp"] + conf["priv"]["fp"]) / (conf["priv"]["tp"] + conf["priv"]["fp"] + conf["priv"]["tn"] + conf["priv"]["fn"])
         p_favo_unpr = (conf["unpr"]["tp"] + conf["unpr"]["fp"]) / (conf["unpr"]["tp"] + conf["unpr"]["fp"] + conf["unpr"]["tn"] + conf["unpr"]["fn"])
-        return p_favo_unpr - p_favo_priv
+        return np.abs(p_favo_unpr - p_favo_priv)
 
 class DI(MetricX):
     """
@@ -176,7 +176,7 @@ class DI(MetricX):
         self.name = "di"
         self.problem = "classification"
         self.greater_is_better = False
-        self.lo = -1
+        self.lo = 0
         self.hi = 1
         self.baseline = None
     
@@ -184,7 +184,10 @@ class DI(MetricX):
         conf = get_confusion(y_true, y_pred, X)
         p_favo_priv = (conf["priv"]["tp"] + conf["priv"]["fp"]) / (conf["priv"]["tp"] + conf["priv"]["fp"] + conf["priv"]["tn"] + conf["priv"]["fn"])
         p_favo_unpr = (conf["unpr"]["tp"] + conf["unpr"]["fp"]) / (conf["unpr"]["tp"] + conf["unpr"]["fp"] + conf["unpr"]["tn"] + conf["unpr"]["fn"])
-        return 1 - p_favo_unpr / p_favo_priv
+        if p_favo_priv != 0:
+            return np.abs(1 - p_favo_unpr / p_favo_priv)
+        else:
+            return 0
 
 class FR(MetricFull):
     """
