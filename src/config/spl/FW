@@ -1,0 +1,11 @@
+#CV: traintestsplit:
+#-test_size,float:0.3
+#-n_splits,int:1
+
+CV: repeatedkfold:
+-n_splits,int: 5
+-n_repeats,int: 1
+
+Problem: classification
+
+Preprocessing:
