@@ -155,12 +155,18 @@ class MetricX(ABC, Metric, _PredictScorer):
         Description:
             Sets the constants of the MetriX.
             Should be implemented by each subclass.
+            This is a template.
         Input:
             None.
         Output:
             None. Should modify attributes.
         """
-        pass
+        self.name = None
+        self.problem = None
+        self.greater_is_better = None
+        self.lo = None
+        self.hi = None
+        self.baseline = None
     
     def _score(self, method_caller, estimator, X, y_true, sample_weight=None):
         """
