@@ -30,11 +30,11 @@ def test_imports():
     from utils import get_problem_type
 
     # Baseline package
-    from baseline import baseline
-    from baseline import marp0
-    from baseline import marp0loo
-    from baseline import mdarp0
-    from baseline import median
+    from baseline import Baseline
+    from baseline import MARP0
+    from baseline import MARP0LOO
+    from baseline import MDARP0
+    from baseline import Median
 
     # Dimensionality package
     from dimensionality import Solver

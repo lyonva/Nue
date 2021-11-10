@@ -3,7 +3,7 @@ from map import baseline_db
 from sklearn.metrics import make_scorer
 from inspect import signature
 from abc import ABC, abstractmethod
-from sklearn.metrics import _PredictScorer
+from sklearn.metrics._scorer import _PredictScorer
 
 class Metric(ps):
     """
