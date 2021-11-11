@@ -16,6 +16,13 @@ class Dataset(ps):
         if "problem" in params.keys():
             problem = params["problem"].lower()
         self.problem = problem
+        
+        secondary = []
+        if "secondary" in params.keys():
+            secondary = params["secondary"]
+        if type(secondary) != list:
+            secondary = [secondary]
+        self.secondary = list(secondary)
 
         exclude = []
         if "exclude" in params.keys():

@@ -13,3 +13,9 @@ Random Search:
 -n_iter,int: 64
 -cv,int: 2
 -n_jobs,int: -1
+
+Random Search:
+-scoring: accuracy, aod
+-n_iter,int: 64
+-cv,int: 2
+-n_jobs,int: -1
