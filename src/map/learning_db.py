@@ -2,7 +2,7 @@ from map import DatabaseTwoClass
 from sklearn.neighbors import KNeighborsRegressor, KNeighborsClassifier
 from sklearn.linear_model import LinearRegression, Ridge, RidgeClassifier
 from sklearn.gaussian_process import GaussianProcessRegressor
-from sklearn.ensemble import BaggingRegressor
+from sklearn.ensemble import BaggingRegressor, RandomForestClassifier, RandomForestRegressor
 from sklearn.svm import SVR, SVC
 from sklearn.tree import DecisionTreeRegressor, DecisionTreeClassifier
 from sklearn.dummy import DummyRegressor, DummyClassifier
@@ -16,6 +16,7 @@ gpr_class = [None, GaussianProcessRegressor]
 rr_class = [RidgeClassifier, Ridge]
 svm_class = [SVC, SVR]
 cart_class = [DecisionTreeClassifier, DecisionTreeRegressor]
+rf_class = [RandomForestClassifier, RandomForestRegressor]
 
 # Order: Classification, Regression
 learning_db = DatabaseTwoClass(Learner,
@@ -44,6 +45,8 @@ learning_db = DatabaseTwoClass(Learner,
                     "reptree":cart_class,
                     "regressiontree":cart_class,
                     "cart":cart_class,
+                    "rf":rf_class,
+                    "randomforest":rf_class,
                     },
                   {"decisionstump":{"max_depth",1} ,
                   #  "bagging":{"base_estimator",DecisionTreeRegressor(max_depth = 1)},

@@ -30,11 +30,11 @@ def test_imports():
     from utils import get_problem_type
 
     # Baseline package
-    from baseline import baseline
-    from baseline import marp0
-    from baseline import marp0loo
-    from baseline import mdarp0
-    from baseline import median
+    from baseline import Baseline
+    from baseline import MARP0
+    from baseline import MARP0LOO
+    from baseline import MDARP0
+    from baseline import Median
 
     # Dimensionality package
     from dimensionality import Solver
@@ -43,10 +43,19 @@ def test_imports():
     from evaluation import Evaluation
     from evaluation import get_pareto_front
     from evaluation import Metric
+    from evaluation import MetricX
+    from evaluation import MetricFull
     from evaluation import get_metrics_problem
     from evaluation import evaluate
     from evaluation import get_all_scorers
     from evaluation import get_metrics_by_name
+    from evaluation import get_metricx_list
+    from evaluation import get_metrics_dataset
+    from evaluation import AOD
+    from evaluation import EOD
+    from evaluation import SPD
+    from evaluation import DI
+    from evaluation import FR
 
     # Learning package
     from learning import Learner
