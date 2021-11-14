@@ -41,7 +41,7 @@ simplefilter("ignore", category=ConvergenceWarning)
 ## Prelude: Setup of the framework
 
 # Load configuration
-FW, DS, DT, AS, PT, LA, EM = Loader("config/spl/").load_config()
+FW, DS, DT, AS, PT, LA, EM = Loader("config/fairness/").load_config()
 datasets = ds_db.get(DS)
 data_transformation = dt_db.get(DT)
 as_techniques = as_db.get(AS)
