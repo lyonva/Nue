@@ -1,4 +1,4 @@
-from .dataset import Dataset
+from .Dataset import Dataset
 from .loader import Loader
 
 __all__ = [
