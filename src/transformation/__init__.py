@@ -1,4 +1,5 @@
-from .DataTransformation import DataTransformation, OneHotEncoding, StandardScaling
+from .DataTransformation import DataTransformation, OneHotEncoding, StandardScaling,\
+    MinMaxScaling
 from .imputer import SimplerImputer, FillImputer, KNNImputerDF
 from .Preprocessing import Missing_Value_Handling, Preprocessing
 
@@ -10,5 +11,6 @@ __all__ = [
     "FillImputer",
     "KNNImputerDF",
     "Missing_Value_Handling",
-    "Preprocessing"
+    "Preprocessing",
+    "MinMaxScaling",
 ]

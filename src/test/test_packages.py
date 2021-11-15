@@ -86,6 +86,7 @@ def test_imports():
     from transformation import KNNImputerDF
     from transformation import Missing_Value_Handling
     from transformation import Preprocessing
+    from transformation import MinMaxScaling
 
     # Optimization package
     from optimization import Optimizer
