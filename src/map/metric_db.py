@@ -4,9 +4,6 @@ from evaluation.formulas import mar, mdar, sa, effect_size
 from sklearn.metrics import accuracy_score, precision_score,\
     recall_score, f1_score
 
-def warpTwoArg(f):
-    return lambda x, y : f(x, y)
-
 metric_db = DatabaseNoClass(
     {
         # Effort estimation
@@ -50,7 +47,7 @@ metric_db = DatabaseNoClass(
         # Classification
         "accuracy" : {
             "class" : Metric,
-            "formula" : warpTwoArg(accuracy_score),
+            "formula" : accuracy_score,
             "problem" : "classification",
             "greater_is_better" : True,
             "lo" : 0,
@@ -59,30 +56,33 @@ metric_db = DatabaseNoClass(
         },
         "precision" : {
             "class" : Metric,
-            "formula" : warpTwoArg(precision_score),
+            "formula" : precision_score,
             "problem" : "classification",
             "greater_is_better" : True,
             "lo" : 0,
             "hi" : 1,
-            "baseline" : "None"
+            "baseline" : "None",
+            "zero_division" : 0,
         },
         "recall" : {
             "class" : Metric,
-            "formula" : warpTwoArg(recall_score),
+            "formula" : recall_score,
             "problem" : "classification",
             "greater_is_better" : True,
             "lo" : 0,
             "hi" : 1,
-            "baseline" : "None"
+            "baseline" : "None",
+            "zero_division" : 0,
         },
         "f1" : {
             "class" : Metric,
-            "formula" : warpTwoArg(f1_score),
+            "formula" : f1_score,
             "problem" : "classification",
             "greater_is_better" : True,
             "lo" : 0,
             "hi" : 1,
-            "baseline" : "None"
+            "baseline" : "None",
+            "zero_division" : 0,
         },
         
         # Fairness

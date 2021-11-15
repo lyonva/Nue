@@ -19,7 +19,7 @@ baselines = { "None" : None,
 }
 
 
-class Metric(ps):
+class Metric(ps, _PredictScorer):
     """
     Class:
         Metric
@@ -38,7 +38,7 @@ class Metric(ps):
     """
 
     def __init__(self,  name, *, formula = None, problem = "none",
-                greater_is_better = False, lo = None, hi = None, baseline = "None"):
+                greater_is_better = False, lo = None, hi = None, baseline = "None", **kwargs):
         """
         Function:
             __init__
@@ -62,6 +62,11 @@ class Metric(ps):
         self.lo = lo
         self.hi = hi
         self.baseline = baselines[baseline]
+        
+        # _PredictScorer features
+        self._sign = 1 if self.greater_is_better else -1
+        self._score_func = self.get_formula()
+        self._kwargs = kwargs
     
     def get_formula(self):
         """
@@ -75,15 +80,19 @@ class Metric(ps):
         Output:
             callable
         """
+        args = signature(self.formula).parameters
         n_args = len(signature(self.formula).parameters)
         if n_args < 2:
+            # Scorers require at least 2 parameters
             return None
-        elif n_args == 2:
-            return self.formula
-        elif n_args == 3:
-            return lambda y, y_pred : self.formula(self, y, y_pred)
+        elif list(args)[0] == "self":
+            # If requires access to self parameters
+            # Make a wrapper around it
+            def scoring(y, y_pred, **kwargs):
+                return self.formula(self, y, y_pred, **kwargs)
+            return scoring
         else:
-            return None
+            return self.formula
     
     def make_scorer(self):
         """
@@ -91,13 +100,13 @@ class Metric(ps):
             make_scorer
         Description:
             Returns a scikit_learn scorer.
-            Done to train models.
+            As we are one, return self.
         Input:
             None
         Output:
-            callable, for use by sklearn.
+            self
         """
-        return make_scorer( self.get_formula(), greater_is_better = self.greater_is_better )
+        return self
     
     def evaluate( self, y, y_pred, **kwargs ):
         """
@@ -111,10 +120,10 @@ class Metric(ps):
         Output:
             Float value of the metric.
         """
-        return self.get_formula()(y, y_pred)
+        return self._score_func(y, y_pred, **self._kwargs)
 
 
-class MetricX(ABC, Metric, _PredictScorer):
+class MetricX(ABC, Metric):
     """
     Class:
         MetricX
@@ -151,20 +160,6 @@ class MetricX(ABC, Metric, _PredictScorer):
             self.name += "-" + feature
         self._sign = 1 if self.greater_is_better else -1
         self._kwargs = {}
-    
-    def make_scorer(self):
-        """
-        Function:
-            make_scorer
-        Description:
-            Returns a scikit_learn scorer.
-            As we are one, return self.
-        Input:
-            None
-        Output:
-            self
-        """
-        return self
     
     @abstractmethod
     def setConstants(self):
