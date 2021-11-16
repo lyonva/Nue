@@ -3,6 +3,7 @@ import numpy as np
 from utils import ps
 from sklearn.neighbors import NearestNeighbors
 from pandas.api.types import is_numeric_dtype
+import pandas as pd
 
 def data_slice(df, feature_vals):
     """
@@ -69,6 +70,7 @@ class FairSmoteSelector(BaseEstimator, ps):
     def transmute(self, X, y):
         df = X.copy()
         df["target"] = y
+        new_df = df.copy()
         
         # Calculate size of largest group
         n = max( [ sub.shape[0] for sub in data_slice(df, self._joint_val) ] )
@@ -96,16 +98,16 @@ class FairSmoteSelector(BaseEstimator, ps):
                                 new_val = np.random.choice( options )
                         new_candidate[c] = [new_val]
                     new_candidate = pd.DataFrame.from_dict(new_candidate)
-                    df = pd.concat( [df, new_candidate] )
+                    new_df = pd.concat( [new_df, new_candidate] )
             else:
                 raise Exception("Insufficient data in a group.")
         
-        X, y = df[df.columns.difference(["target"])], df["target"]
+        X, y = new_df[new_df.columns.difference(["target"])], new_df["target"]
         return X, y
         
-                            
-                
-    
+    def fit_transmute(self, X, y = None, **fit_args):
+        self.fit(X, y, **fit_args)
+        return self.transmute(X, y)
 
 if __name__ == "__main__":
     import pandas as pd

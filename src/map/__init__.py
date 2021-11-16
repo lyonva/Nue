@@ -7,6 +7,7 @@ from .transformation_db import transformation_db
 from .learning_db import learning_db
 from .optimization_db import optimization_db
 from .metric_db import metric_db
+from .preprocessing_db import preprocessing_db
 
 __all__ = [ 
     "Database",
@@ -19,5 +20,6 @@ __all__ = [
     "transformation_db",
     "learning_db",
     "optimization_db",
-    "metric_db"
+    "metric_db",
+    "preprocessing_db",
 ]

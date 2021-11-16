@@ -153,12 +153,13 @@ class Loader:
     def load_config(self):
         FW = self.load_file_large("FW")
         DS = self.load_file("DS")
+        PP = self.load_file("PP", False)
         DT = self.load_file("DT", False)
         AS = self.load_file("AS", False)
         PT = self.load_file("PT")
         LA = self.load_file("LA")
         EM = self.load_file("EM")
         
-        return FW, DS, DT, AS, PT, LA, EM
+        return FW, DS, PP, DT, AS, PT, LA, EM
         
         

@@ -5,6 +5,7 @@ import pytest
 
 # Uncomment when you have no idea what is failing
 # Or if you need to test everything
+# from preprocessing import *
 # from baseline import *
 # from dimensionality import *
 # from evaluation import *
@@ -28,6 +29,10 @@ def test_imports():
     # Util package
     from utils import ps
     from utils import get_problem_type
+    
+    # Preprocessing package
+    from preprocessing import PreProcessor
+    from preprocessing import FairSmoteSelector
 
     # Baseline package
     from baseline import Baseline
