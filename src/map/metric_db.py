@@ -1,4 +1,4 @@
-from evaluation import Metric, AOD, EOD, SPD, DI, FR
+from evaluation import Metric, AOD, EOD, SPD, DI, FR, D2H
 from map import DatabaseNoClass
 from evaluation.formulas import mar, mdar, sa, effect_size
 from sklearn.metrics import accuracy_score, precision_score,\
@@ -6,6 +6,11 @@ from sklearn.metrics import accuracy_score, precision_score,\
 
 metric_db = DatabaseNoClass(
     {
+        # Generic
+        "d2h" : {
+            "class" : D2H,
+        },
+        
         # Effort estimation
         "mar" : {
             "class" : Metric,

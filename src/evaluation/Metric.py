@@ -38,7 +38,8 @@ class Metric(ps, _PredictScorer):
     """
 
     def __init__(self,  name, *, formula = None, problem = "none",
-                greater_is_better = False, lo = None, hi = None, baseline = "None", **kwargs):
+                greater_is_better = False, lo = None, hi = None, baseline = "None",
+                composite = None, **kwargs):
         """
         Function:
             __init__
@@ -52,6 +53,7 @@ class Metric(ps, _PredictScorer):
             - lo,float or None: Reference point, theorethical lowest possible value.
             - hi,float or None: Reference point, theorethical highest possible value.
             - baseline,str: Baseline object name to calculate this metric.
+            - composite,str: List of sub-metrics they require.
         Output:
             Instance of the Metric.
         """
@@ -62,6 +64,7 @@ class Metric(ps, _PredictScorer):
         self.lo = lo
         self.hi = hi
         self.baseline = baselines[baseline]
+        self.composite = composite
         
         # _PredictScorer features
         self._sign = 1 if self.greater_is_better else -1
@@ -106,6 +109,7 @@ class Metric(ps, _PredictScorer):
         Output:
             self
         """
+        self._score_func = self.get_formula() # Update if there have been changes
         return self
     
     def evaluate( self, y, y_pred, **kwargs ):
@@ -120,7 +124,8 @@ class Metric(ps, _PredictScorer):
         Output:
             Float value of the metric.
         """
-        return self._score_func(y, y_pred, **self._kwargs)
+        self._score_func = self.get_formula() # Update if there have been changes
+        return self._score_func(y, y_pred)
 
 
 class MetricX(ABC, Metric):
@@ -142,7 +147,7 @@ class MetricX(ABC, Metric):
         - baseline,class: Baseline object to calculate this metric.
     """
     
-    def __init__(self, name = None, feature = None):
+    def __init__(self, name = None, feature = None, **kwargs):
         """
         Function:
             __init__
@@ -156,10 +161,16 @@ class MetricX(ABC, Metric):
         """
         self.feature = feature
         self.setConstants()
+        # Override name
+        if name is not None:
+            self.name = name
         if feature != None:
             self.name += "-" + feature
         self._sign = 1 if self.greater_is_better else -1
         self._kwargs = {}
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+        
     
     @abstractmethod
     def setConstants(self):
@@ -219,6 +230,9 @@ class MetricX(ABC, Metric):
             )
         else:
             return self._sign * self._score_func(y_true, y_pred, X[self.feature], **self._kwargs)
+    
+    def get_formula(self):
+        return self._score_func
     
     @abstractmethod
     def _score_func(self, y_true, y_pred, X):

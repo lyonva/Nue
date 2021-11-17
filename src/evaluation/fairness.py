@@ -98,8 +98,9 @@ class AOD(MetricX):
         self.name = "aod"
         self.problem = "classification"
         self.greater_is_better = False
-        self.lo = -1
+        self.lo = 0
         self.hi = 1
+        self.unifeature = True
         self.baseline = None
     
     def _score_func(self, y_true, y_pred, X):
@@ -108,7 +109,7 @@ class AOD(MetricX):
         fpr_unpr = conf["unpr"]["fp"]/( conf["unpr"]["fp"] + conf["unpr"]["tn"] )
         tpr_priv = conf["priv"]["tp"]/( conf["priv"]["tp"] + conf["priv"]["fn"] )
         fpr_priv = conf["priv"]["fp"]/( conf["priv"]["fp"] + conf["priv"]["tn"] )
-        return ((fpr_unpr - fpr_priv) + (tpr_unpr - tpr_priv)) / 2
+        return np.abs(((fpr_unpr - fpr_priv) + (tpr_unpr - tpr_priv)) / 2)
 
 
 class EOD(MetricX):
@@ -124,15 +125,16 @@ class EOD(MetricX):
         self.name = "eod"
         self.problem = "classification"
         self.greater_is_better = False
-        self.lo = -1
+        self.lo = 0
         self.hi = 1
+        self.unifeature = True
         self.baseline = None
     
     def _score_func(self, y_true, y_pred, X):
         conf = get_confusion(y_true, y_pred, X)
         tpr_unpr = conf["unpr"]["tp"]/( conf["unpr"]["tp"] + conf["unpr"]["fn"] )
         tpr_priv = conf["priv"]["tp"]/( conf["priv"]["tp"] + conf["priv"]["fn"] )
-        return tpr_unpr - tpr_priv
+        return np.abs(tpr_unpr - tpr_priv)
 
 class SPD(MetricX):
     """
@@ -150,8 +152,9 @@ class SPD(MetricX):
         self.name = "spd"
         self.problem = "classification"
         self.greater_is_better = False
-        self.lo = -1
+        self.lo = 0
         self.hi = 1
+        self.unifeature = True
         self.baseline = None
     
     def _score_func(self, y_true, y_pred, X):
@@ -178,6 +181,7 @@ class DI(MetricX):
         self.greater_is_better = False
         self.lo = 0
         self.hi = 1
+        self.unifeature = True
         self.baseline = None
     
     def _score_func(self, y_true, y_pred, X):
@@ -205,6 +209,7 @@ class FR(MetricFull):
         self.greater_is_better = False
         self.lo = 0
         self.hi = 1
+        self.unifeature = True
         self.baseline = None
 
     def _score_func(self, y_true, y_pred, X, estimator):
