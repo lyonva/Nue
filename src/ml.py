@@ -219,9 +219,8 @@ for n_ds, ds in enumerate(datasets):
                                     
                                     # We now convert the scoring from name to a function
                                     # Or to a dict of functions in the case of multi-objective
-                                    opt_metrics = get_metrics_dataset(ds, get_metrics_by_name(metrics, met_name), problem)
+                                    opt_metrics = get_metrics_dataset(ds, metrics, problem, names = met_name)
                                     new_scoring = get_all_scorers( opt_metrics )
-                                    
                                     multiobj_optim = len(new_scoring) > 1
                                     
                                     # If only one metric, we dont need dict

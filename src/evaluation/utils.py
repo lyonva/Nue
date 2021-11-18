@@ -1,7 +1,7 @@
 from evaluation import MetricX
 from copy import copy
 
-def get_metrics_dataset(df, metrics, problem):
+def get_metrics_dataset(df, metrics, problem, names = None):
     """
         Function:
             get_metrics_dataset
@@ -15,10 +15,14 @@ def get_metrics_dataset(df, metrics, problem):
             - df,Dataset: Dataset object
             - metrics,list: List of Metric objects
             - problem,str: Type of problem
+            - names,list: If not none, only picks the names selected
         Output:
             List of metric objects that match problem
     """
     metrics = get_metrics_problem(metrics, problem)
+    all_metrics = metrics
+    if names is not None:
+        metrics = get_metrics_by_name( metrics, names )
     new_metrics = []
     for m in metrics:
         if isinstance(m, MetricX) and m.unifeature:
@@ -29,7 +33,7 @@ def get_metrics_dataset(df, metrics, problem):
     for m in new_metrics:
         if hasattr(m, 'composite') and type(m.composite) is list:
             m.name += " (" + "+".join( m.composite ) + ")"
-            m.composite = [ mi for mi in metrics if mi.name in m.composite ] # Get metric object
+            m.composite = [ mi for mi in all_metrics if mi.name in m.composite ] # Get metric object
             m.composite = get_metrics_dataset(df, m.composite, problem) # Get correct settings
     return new_metrics
             
