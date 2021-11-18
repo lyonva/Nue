@@ -1,4 +1,3 @@
-from evaluation import MetricX
 from copy import copy
 
 def get_metrics_dataset(df, metrics, problem, names = None):
@@ -25,7 +24,7 @@ def get_metrics_dataset(df, metrics, problem, names = None):
         metrics = get_metrics_by_name( metrics, names )
     new_metrics = []
     for m in metrics:
-        if isinstance(m, MetricX) and m.unifeature:
+        if m.unifeature:
             new_metrics += get_metricx_list( m.__class__, df.secondary )
         else:
             new_metrics += [copy(m)]
@@ -67,7 +66,7 @@ def evaluate(y, y_pred, X, estimator, metrics):
         Output:
             List of metric objects that match problem
     """
-    return dict( [(m.name, m.evaluate(y, y_pred, X = X, estimator = estimator)) for m in metrics ] )
+    return dict( [(m.name, m.evaluate(y, y_pred, X, estimator)) for m in metrics ] )
 
 def get_all_scorers( metrics ):
     """

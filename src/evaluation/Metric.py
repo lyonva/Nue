@@ -18,124 +18,15 @@ baselines = { "None" : None,
          "marp0loo" : MARP0LOO()
 }
 
-
-class Metric(ps, _PredictScorer):
+class MetricScorer(ABC, ps, _PredictScorer):
     """
     Class:
-        Metric
-    Description:
-        Represents an evaluation metric.
-        Functions for both regression and optimization.
-    Attributes:
-        - name,str: Name of metric
-        - formula,callable: Function that returns something.
-            Takes the form: f(self, y, y_pred)
-        - problem,str: Whether metric is for classification, regression, or both.
-        - greater_is_better,bool: Whether a learner/optimizer should increase this metric or not.
-        - lo,float or None: Reference point, theorethical lowest possible value.
-        - hi,float or None: Reference point, theorethical highest possible value.
-        - baseline,class: Baseline object to calculate this metric.
-    """
-
-    def __init__(self,  name, *, formula = None, problem = "none",
-                greater_is_better = False, lo = None, hi = None, baseline = "None",
-                composite = None, **kwargs):
-        """
-        Function:
-            __init__
-        Description:
-            Instances a Metric, storing all attributes.
-        Input:
-            - name,str: Name of metric
-            - formula,callable: Function of form f(self, y, y_pred) that returns something.
-            - problem,str: Whether metric is for classification, regression, or both.
-            - greater_is_better,bool: Whether a learner/optimizer should increase this metric or not.
-            - lo,float or None: Reference point, theorethical lowest possible value.
-            - hi,float or None: Reference point, theorethical highest possible value.
-            - baseline,str: Baseline object name to calculate this metric.
-            - composite,str: List of sub-metrics they require.
-        Output:
-            Instance of the Metric.
-        """
-        self.name = name
-        self.formula = formula
-        self.greater_is_better = greater_is_better
-        self.problem = get_problem_type(problem)
-        self.lo = lo
-        self.hi = hi
-        self.baseline = baselines[baseline]
-        self.composite = composite
-        
-        # _PredictScorer features
-        self._sign = 1 if self.greater_is_better else -1
-        self._score_func = self.get_formula()
-        self._kwargs = kwargs
-    
-    def get_formula(self):
-        """
-        Function:
-            get_formula
-        Description:
-            Returns function in the form f(y, y_pred).
-            This is done so certain functions have access to baseline.
-        Input:
-            None
-        Output:
-            callable
-        """
-        args = signature(self.formula).parameters
-        n_args = len(signature(self.formula).parameters)
-        if n_args < 2:
-            # Scorers require at least 2 parameters
-            return None
-        elif list(args)[0] == "self":
-            # If requires access to self parameters
-            # Make a wrapper around it
-            def scoring(y, y_pred, **kwargs):
-                return self.formula(self, y, y_pred, **kwargs)
-            return scoring
-        else:
-            return self.formula
-    
-    def make_scorer(self):
-        """
-        Function:
-            make_scorer
-        Description:
-            Returns a scikit_learn scorer.
-            As we are one, return self.
-        Input:
-            None
-        Output:
-            self
-        """
-        self._score_func = self.get_formula() # Update if there have been changes
-        return self
-    
-    def evaluate( self, y, y_pred, **kwargs ):
-        """
-        Function:
-            evaluate
-        Description:
-            Calculates a metric form a given input.
-        Input:
-            - y,list: List of the true y values
-            - y_pred,list: List of predicted y values
-        Output:
-            Float value of the metric.
-        """
-        self._score_func = self.get_formula() # Update if there have been changes
-        return self._score_func(y, y_pred)
-
-
-class MetricX(ABC, Metric):
-    """
-    Class:
-        MetricX
+        MetricScorer
     Description:
         Abstract class, requires definition of score method
-        Represents an evaluation metric that requires a dataset column.
-        Made as a scikit learn scorer.
+        Represents an evaluation metric that requires the complete dataset
+        as well as the prediction method.
+        Focuses on one feature at a time.
     Attributes:
         - feature,str: name of feature to calculate metric.
     Constants: Should be set by constructor of each subclass
@@ -170,7 +61,6 @@ class MetricX(ABC, Metric):
         self._kwargs = {}
         for k, v in kwargs.items():
             setattr(self, k, v)
-        
     
     @abstractmethod
     def setConstants(self):
@@ -192,87 +82,7 @@ class MetricX(ABC, Metric):
         self.lo = None
         self.hi = None
         self.baseline = None
-    
-    def _score(self, method_caller, estimator, X, y_true, sample_weight=None):
-        """
-        Function:
-            _score
-        Description:
-            Scikit learn score.
-            We override it to be able to access X as we calculate the metric.
-            Description from scikit-learn:
-         
-        Evaluate predicted target values for X relative to y_true.
-        Parameters
-        ----------
-        method_caller : callable
-            Returns predictions given an estimator, method name, and other
-            arguments, potentially caching results.
-        estimator : object
-            Trained estimator to use for scoring. Must have a `predict`
-            method; the output of that is used to compute the score.
-        X : {array-like, sparse matrix}
-            Test data that will be fed to estimator.predict.
-        y_true : array-like
-            Gold standard target values for X.
-        sample_weight : array-like of shape (n_samples,), default=None
-            Sample weights.
-        Returns
-        -------
-        score : float
-            Score function applied to prediction of estimator on X.
-        """
-
-        y_pred = method_caller(estimator, "predict", X)
-        if sample_weight is not None:
-            return self._sign * self._score_func(
-                y_true, y_pred, X[self.feature], sample_weight=sample_weight, **self._kwargs
-            )
-        else:
-            return self._sign * self._score_func(y_true, y_pred, X[self.feature], **self._kwargs)
-    
-    def get_formula(self):
-        return self._score_func
-    
-    @abstractmethod
-    def _score_func(self, y_true, y_pred, X):
-        """
-        Function:
-            _score_func
-        Description:
-            Calculate and return the metric.
-        Input:
-            - y_true,list: List of actual y values.
-            - y_pred,list: List of predicted y values.
-            - X,dataframe: Columns that the model predicted on.
-        Output:
-            None. Should modify attributes.
-        """
-        pass
-    
-    def evaluate(self, y, y_pred, X = None, **kwargs):
-        return self._score_func(y, y_pred, X[self.feature])
-
-
-class MetricFull(MetricX, _PredictScorer):
-    """
-    Class:
-        MetricFull
-    Description:
-        Abstract class, requires definition of score method
-        Represents an evaluation metric that requires the complete dataset
-        as well as the prediction method.
-        Focuses on one feature at a time.
-    Attributes:
-        - feature,str: name of feature to calculate metric.
-    Constants: Should be set by constructor of each subclass
-        - name,str: Name of metric
-        - problem,str: Whether metric is for classification, regression, or both.
-        - greater_is_better,bool: Whether a learner/optimizer should increase this metric or not.
-        - lo,float or None: Reference point, theorethical lowest possible value.
-        - hi,float or None: Reference point, theorethical highest possible value.
-        - baseline,class: Baseline object to calculate this metric.
-    """
+        self.composite = None
     
     def _score(self, method_caller, estimator, X, y_true, sample_weight=None):
         """
@@ -312,8 +122,11 @@ class MetricFull(MetricX, _PredictScorer):
         else:
             return self._sign * self._score_func(y_true, y_pred, X, estimator, **self._kwargs)
     
+    def make_scorer(self):
+        return self
+    
     @abstractmethod
-    def _score_func(self, y_true, y_pred, X, estimator):
+    def _score_func(self, y_true, y_pred, X = None, estimator = None):
         """
         Function:
             _score_func
@@ -327,6 +140,9 @@ class MetricFull(MetricX, _PredictScorer):
             None. Should modify attributes.
         """
         pass
+    
+    def get_formula(self):
+        return self._score_func
     
     def evaluate(self, y, y_pred, X = None, estimator = None):
         return self._score_func(y, y_pred, X, estimator)

@@ -1,6 +1,6 @@
-from evaluation import MetricFull
+from evaluation import MetricScorer
 
-class D2H(MetricFull):
+class D2H(MetricScorer):
     """
     Class:
         D2H

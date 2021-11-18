@@ -1,7 +1,7 @@
 # Metric implementation based on the xFair:
 # https://github.com/anonymous12138/biasmitigation/blob/main/Measure.py
 
-from evaluation import MetricX, MetricFull
+from evaluation import MetricScorer
 from sklearn.metrics import confusion_matrix
 import numpy as np
 
@@ -74,7 +74,15 @@ def get_confusion(y_true, y_pred, X):
     
     res = {}
     for name, true, pred in zip( ["priv", "unpr"], [priv_true, unpr_true], [priv_pred, unpr_pred] ):
-        tn, fp, fn, tp = confusion_matrix(true, pred).ravel()
+        result = confusion_matrix(true, pred).ravel()
+        tn, fp, fn, tp = 0, 0, 0, 0
+        if len(result) == 1:
+            if  np.array_equal(y_true, y_pred):
+                tp = result[0]
+            else:
+                tn = result[0]
+        elif len(result) == 4:
+            tn, fp, fn, tp = confusion_matrix(true, pred).ravel()
         res[name] = {
             "tp" : tp,
             "tn" : tn,
@@ -84,7 +92,7 @@ def get_confusion(y_true, y_pred, X):
     return res
     
 
-class AOD(MetricX):
+class AOD(MetricScorer):
     """
     Class:
         AOD
@@ -103,16 +111,23 @@ class AOD(MetricX):
         self.unifeature = True
         self.baseline = None
     
-    def _score_func(self, y_true, y_pred, X):
+    def _score_func(self, y_true, y_pred, X, estimator):
+        X = X[ self.feature ]
         conf = get_confusion(y_true, y_pred, X)
-        tpr_unpr = conf["unpr"]["tp"]/( conf["unpr"]["tp"] + conf["unpr"]["fn"] )
-        fpr_unpr = conf["unpr"]["fp"]/( conf["unpr"]["fp"] + conf["unpr"]["tn"] )
-        tpr_priv = conf["priv"]["tp"]/( conf["priv"]["tp"] + conf["priv"]["fn"] )
-        fpr_priv = conf["priv"]["fp"]/( conf["priv"]["fp"] + conf["priv"]["tn"] )
-        return np.abs(((fpr_unpr - fpr_priv) + (tpr_unpr - tpr_priv)) / 2)
+        if (conf["unpr"]["tp"] + conf["unpr"]["fn"] > 0) and (conf["priv"]["tp"] + conf["priv"]["fn"] > 0)\
+            and ( conf["unpr"]["fp"] + conf["unpr"]["tn"] > 0) and ( conf["priv"]["fp"] + conf["priv"]["tn"] > 0 ):
+            tpr_unpr = conf["unpr"]["tp"]/( conf["unpr"]["tp"] + conf["unpr"]["fn"] )
+            fpr_unpr = conf["unpr"]["fp"]/( conf["unpr"]["fp"] + conf["unpr"]["tn"] )
+            tpr_priv = conf["priv"]["tp"]/( conf["priv"]["tp"] + conf["priv"]["fn"] )
+            fpr_priv = conf["priv"]["fp"]/( conf["priv"]["fp"] + conf["priv"]["tn"] )
+            return np.abs(((fpr_unpr - fpr_priv) + (tpr_unpr - tpr_priv)) / 2)
+        else:
+            # If there are no pos/neg predictions for (un)protected
+            # Thats very biased
+            return 1
 
 
-class EOD(MetricX):
+class EOD(MetricScorer):
     """
     Class:
         EOD
@@ -130,13 +145,20 @@ class EOD(MetricX):
         self.unifeature = True
         self.baseline = None
     
-    def _score_func(self, y_true, y_pred, X):
+    def _score_func(self, y_true, y_pred, X, estimator):
+        X = X[ self.feature ]
         conf = get_confusion(y_true, y_pred, X)
-        tpr_unpr = conf["unpr"]["tp"]/( conf["unpr"]["tp"] + conf["unpr"]["fn"] )
-        tpr_priv = conf["priv"]["tp"]/( conf["priv"]["tp"] + conf["priv"]["fn"] )
-        return np.abs(tpr_unpr - tpr_priv)
+        if conf["unpr"]["tp"] + conf["unpr"]["fn"] > 0 and conf["priv"]["tp"] + conf["priv"]["fn"] > 0:
+            tpr_unpr = conf["unpr"]["tp"]/( conf["unpr"]["tp"] + conf["unpr"]["fn"] )
+            tpr_priv = conf["priv"]["tp"]/( conf["priv"]["tp"] + conf["priv"]["fn"] )
+            return np.abs(tpr_unpr - tpr_priv)
+        else:
+            # No TP and FN?
+            # Thats very biased
+            return 1
+        
 
-class SPD(MetricX):
+class SPD(MetricScorer):
     """
     Class:
         SPD
@@ -157,13 +179,18 @@ class SPD(MetricX):
         self.unifeature = True
         self.baseline = None
     
-    def _score_func(self, y_true, y_pred, X):
+    def _score_func(self, y_true, y_pred, X, estimator):
+        X = X[ self.feature ]
         conf = get_confusion(y_true, y_pred, X)
-        p_favo_priv = (conf["priv"]["tp"] + conf["priv"]["fp"]) / (conf["priv"]["tp"] + conf["priv"]["fp"] + conf["priv"]["tn"] + conf["priv"]["fn"])
-        p_favo_unpr = (conf["unpr"]["tp"] + conf["unpr"]["fp"]) / (conf["unpr"]["tp"] + conf["unpr"]["fp"] + conf["unpr"]["tn"] + conf["unpr"]["fn"])
-        return np.abs(p_favo_unpr - p_favo_priv)
+        if conf["priv"]["tp"] + conf["priv"]["fp"] + conf["priv"]["tn"] + conf["priv"]["fn"] > 0 \
+                and conf["unpr"]["tp"] + conf["unpr"]["fp"] + conf["unpr"]["tn"] + conf["unpr"]["fn"] > 0:
+            p_favo_priv = (conf["priv"]["tp"] + conf["priv"]["fp"]) / (conf["priv"]["tp"] + conf["priv"]["fp"] + conf["priv"]["tn"] + conf["priv"]["fn"])
+            p_favo_unpr = (conf["unpr"]["tp"] + conf["unpr"]["fp"]) / (conf["unpr"]["tp"] + conf["unpr"]["fp"] + conf["unpr"]["tn"] + conf["unpr"]["fn"])
+            return np.abs(p_favo_unpr - p_favo_priv)
+        else:
+            return 1
 
-class DI(MetricX):
+class DI(MetricScorer):
     """
     Class:
         DI
@@ -184,16 +211,22 @@ class DI(MetricX):
         self.unifeature = True
         self.baseline = None
     
-    def _score_func(self, y_true, y_pred, X):
+    def _score_func(self, y_true, y_pred, X, estimator):
+        X = X[ self.feature ]
         conf = get_confusion(y_true, y_pred, X)
-        p_favo_priv = (conf["priv"]["tp"] + conf["priv"]["fp"]) / (conf["priv"]["tp"] + conf["priv"]["fp"] + conf["priv"]["tn"] + conf["priv"]["fn"])
-        p_favo_unpr = (conf["unpr"]["tp"] + conf["unpr"]["fp"]) / (conf["unpr"]["tp"] + conf["unpr"]["fp"] + conf["unpr"]["tn"] + conf["unpr"]["fn"])
-        if p_favo_priv != 0:
-            return np.abs(1 - p_favo_unpr / p_favo_priv)
+        if conf["priv"]["tp"] + conf["priv"]["fp"] + conf["priv"]["tn"] + conf["priv"]["fn"] > 0 \
+                and conf["unpr"]["tp"] + conf["unpr"]["fp"] + conf["unpr"]["tn"] + conf["unpr"]["fn"] > 0:
+            p_favo_priv = (conf["priv"]["tp"] + conf["priv"]["fp"]) / (conf["priv"]["tp"] + conf["priv"]["fp"] + conf["priv"]["tn"] + conf["priv"]["fn"])
+            p_favo_unpr = (conf["unpr"]["tp"] + conf["unpr"]["fp"]) / (conf["unpr"]["tp"] + conf["unpr"]["fp"] + conf["unpr"]["tn"] + conf["unpr"]["fn"])
+            if p_favo_priv != 0:
+                return np.abs(1 - p_favo_unpr / p_favo_priv)
+            else:
+                # Biased against 'priviledged' class
+                return 1
         else:
-            return 0
+            return 1
 
-class FR(MetricFull):
+class FR(MetricScorer):
     """
     Class:
         FR
