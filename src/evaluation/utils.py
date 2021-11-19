@@ -1,6 +1,6 @@
-from evaluation import MetricX
+from copy import copy
 
-def get_metrics_dataset(df, metrics, problem):
+def get_metrics_dataset(df, metrics, problem, names = None):
     """
         Function:
             get_metrics_dataset
@@ -14,16 +14,26 @@ def get_metrics_dataset(df, metrics, problem):
             - df,Dataset: Dataset object
             - metrics,list: List of Metric objects
             - problem,str: Type of problem
+            - names,list: If not none, only picks the names selected
         Output:
             List of metric objects that match problem
     """
     metrics = get_metrics_problem(metrics, problem)
+    all_metrics = metrics
+    if names is not None:
+        metrics = get_metrics_by_name( metrics, names )
     new_metrics = []
     for m in metrics:
-        if isinstance(m, MetricX):
+        if m.unifeature:
             new_metrics += get_metricx_list( m.__class__, df.secondary )
         else:
-            new_metrics += [m]
+            new_metrics += [copy(m)]
+    # Now, if metrics are composite, add depedant sub-metrics
+    for m in new_metrics:
+        if hasattr(m, 'composite') and type(m.composite) is list:
+            m.name += " (" + "+".join( m.composite ) + ")"
+            m.composite = [ mi for mi in all_metrics if mi.name in m.composite ] # Get metric object
+            m.composite = get_metrics_dataset(df, m.composite, problem) # Get correct settings
     return new_metrics
             
 
@@ -39,7 +49,7 @@ def get_metrics_problem(metrics, problem):
         Output:
             List of metric objects that match problem
     """
-    return [ e for e in metrics if e.problem == problem ]
+    return [ e for e in metrics if (e.problem == problem or e.problem == "both") ]
 
 def evaluate(y, y_pred, X, estimator, metrics):
     """
@@ -56,7 +66,7 @@ def evaluate(y, y_pred, X, estimator, metrics):
         Output:
             List of metric objects that match problem
     """
-    return dict( [(m.name, m.evaluate(y, y_pred, X = X, estimator = estimator)) for m in metrics ] )
+    return dict( [(m.name, m.evaluate(y, y_pred, X, estimator)) for m in metrics ] )
 
 def get_all_scorers( metrics ):
     """

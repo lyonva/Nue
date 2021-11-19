@@ -161,7 +161,12 @@ class DatabaseNoClass(Database):
                 base = {}
             for k in params:
                 base[k] = params[k]
-            return self.base_params[name]["class"]( name, **base )
+            # Check name override
+            real_name = name
+            if "name" in base.keys():
+                name = base["name"]
+                base.pop("name")
+            return self.base_params[real_name]["class"]( name, **base )
         except Exception as e:
             raise e
             return None

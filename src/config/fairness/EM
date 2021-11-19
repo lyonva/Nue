@@ -1,5 +1,3 @@
-#MAR
-#SA
 accuracy
 precision
 recall
@@ -9,3 +7,12 @@ eod
 spd
 di
 fr
+d2h:
+-name:d2h1
+-composite:accuracy,precision,recall,f1
+d2h:
+-name:d2h2
+-composite:aod,eod,spd,di,fr
+d2h:
+-name:d2h3
+-composite:accuracy,precision,recall,f1,aod,eod,spd,di,fr
