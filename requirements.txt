@@ -5,3 +5,4 @@ nevergrad
 geneticalgorithm
 Boruta
 hyperopt
+deap

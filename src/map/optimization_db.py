@@ -4,6 +4,7 @@ from sklearn.model_selection import RandomizedSearchCV
 from optimization import Optimizer, DefaultCV, DifferentialEvolutionCV, FlashCV, DodgeCV, \
     RandomRangeSearchCV, NeverGradCV, TabuSearchCV, HarmonySearchCV, HyperbandCV, \
     GeneticAlgorithmCV, BayesianOptimizationCV, TPECV
+from optimization.NSGACV import NSGACV
 
 
 # class DummyPT:
@@ -43,6 +44,8 @@ optimization_db = Database(Optimizer, {"none":DefaultCV,
                                         "hyperband":HyperbandCV,
                                         "ga":GeneticAlgorithmCV,
                                         "tpe":TPECV,
+                                        "nsga-ii":NSGACV,
+                                        "nsga-iii":NSGACV,
                                         },
                                      {"grid search":{"n_jobs":-1},
                                          "random search":{"n_jobs":-1},
@@ -58,5 +61,7 @@ optimization_db = Database(Optimizer, {"none":DefaultCV,
                                          "harmony":{"n_jobs":-1},
                                          "hyperband":{"n_jobs":-1},
                                          "ga":{"n_jobs":-1},
-                                         "tpe":{"n_jobs":-1, "budget":100}
+                                         "tpe":{"n_jobs":-1, "budget":100},
+                                         "nsga-ii":{"version":2,"n_jobs":-1},
+                                         "nsga-iii":{"version":3,"n_jobs":-1},
                                          })

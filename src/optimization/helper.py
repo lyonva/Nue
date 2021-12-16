@@ -56,3 +56,9 @@ def random_population(numerical, numerical_types, categorical, size):
                            for ind in population ])
     
     return population
+
+def zip_one( pars, vals ):
+    return dict(zip(pars, vals))
+
+def zip_many( pars, indivs ):
+    return [ zip_one(pars, ind) for ind in indivs ]

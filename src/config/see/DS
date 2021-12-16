@@ -1,7 +1,12 @@
-effort/desharnais.csv:
--problem:regression
+# effort/desharnais.csv:
+# -problem:regression
+# -predict:effort
+# -as_dummies:False
+# -na_values:"?"
+# -exclude:project,length,yearend,envergure,pointsnonajust,language
+# -drop:37,43,65,74
+
+effort/china.csv:
 -predict:effort
 -as_dummies:False
--na_values:"?"
--exclude:project,length,yearend,envergure,pointsnonajust,language
--drop:37,43,65,74
+-exclude:added,changed,deleted,pdr_afp,pdr_ufp,npdr_afp,npdu_ufp,dev.type,duration,n_effort,afp,id

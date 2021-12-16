@@ -1,7 +1,7 @@
 # Base
 from .Optimizer import Optimizer
 from .helper import (UnknownParameterTypeError, grid_to_bounds, grid_types,
-    cast_parameters,aggregate_dict, random_population)
+    cast_parameters,aggregate_dict, random_population, zip_one, zip_many)
 from .DefaultCV import DefaultCV
 
 # Concrete tuners
@@ -19,6 +19,7 @@ from .RandomRangeSearchCV import RandomRangeSearchCV
 from .TabuSearch import TabuSearch
 from .TabuSearchCV import TabuSearchCV
 from .TPECV import TPECV
+from .NSGACV import NSGACV
 
 __all__ = [ 
     "Optimizer",
@@ -35,11 +36,14 @@ __all__ = [
     "RandomRangeSearchCV",
     "TabuSearch",
     "TabuSearchCV",
-    "TPECV"
+    "TPECV",
+    "NSGACV",
     "UnknownParameterTypeError",
     "grid_to_bounds",
     "grid_types",
     "cast_parameters",
     "aggregate_dict",
-    "random_population"
+    "random_population",
+    "zip_one",
+    "zip_many"
 ]
