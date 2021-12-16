@@ -1,5 +1,5 @@
 from .Dataset import Dataset
-from .loader import Loader
+from .Loader import Loader
 
 __all__ = [
     "Dataset",

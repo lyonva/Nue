@@ -61,6 +61,8 @@ class MetricScorer(ABC, ps, _PredictScorer):
         self._kwargs = {}
         for k, v in kwargs.items():
             setattr(self, k, v)
+        if self.baseline is not None:
+            self.baseline = self.baseline() # New instance
     
     @abstractmethod
     def setConstants(self):

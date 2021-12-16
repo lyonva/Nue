@@ -3,7 +3,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
 from optimization import Optimizer, DefaultCV, DifferentialEvolutionCV, FlashCV, DodgeCV, \
     RandomRangeSearchCV, NeverGradCV, TabuSearchCV, HarmonySearchCV, HyperbandCV, \
-    GeneticAlgorithmCV, BayesianOptimizationCV
+    GeneticAlgorithmCV, BayesianOptimizationCV, TPECV
 
 
 # class DummyPT:
@@ -41,7 +41,8 @@ optimization_db = Database(Optimizer, {"none":DefaultCV,
                                         "tabu":TabuSearchCV,
                                         "harmony":HarmonySearchCV,
                                         "hyperband":HyperbandCV,
-                                        "ga":GeneticAlgorithmCV
+                                        "ga":GeneticAlgorithmCV,
+                                        "tpe":TPECV,
                                         },
                                      {"grid search":{"n_jobs":-1},
                                          "random search":{"n_jobs":-1},
@@ -56,5 +57,6 @@ optimization_db = Database(Optimizer, {"none":DefaultCV,
                                          "tabu":{"n_jobs":-1},
                                          "harmony":{"n_jobs":-1},
                                          "hyperband":{"n_jobs":-1},
-                                         "ga":{"n_jobs":-1}
+                                         "ga":{"n_jobs":-1},
+                                         "tpe":{"n_jobs":-1, "budget":100}
                                          })

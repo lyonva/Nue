@@ -55,8 +55,8 @@ def effect_size(self, y_true, y_pred):
         How different is a prediction with respect to baseline.
     """
     if self.baseline is not None:
-        base_c = self.baseline.predict( y_true ).center
-        base_s = self.baseline.predict( y_true ).center
+        base_c = self.baseline.predict( y_true )["center"]
+        base_s = self.baseline.predict( y_true )["scale"]
         if type(self.baseline) in [MARP0, MARP0LOO]:
             val = mar(self, y_true, y_pred)
         elif type(self.baseline) == MDARP0:
@@ -76,7 +76,7 @@ def sa(self, y_true, y_pred):
         Standardized by a baseline estimator.
     """
     if self.baseline is not None:
-        base = self.baseline.predict( y_true ).center
+        base = self.baseline.predict( y_true )["center"]
         if type(self.baseline) in [MARP0, MARP0LOO]:
             val = mar(self, y_true, y_pred)
         elif type(self.baseline) == MDARP0:
@@ -163,7 +163,7 @@ def sd(self, y_true, y_pred):
         With respect to baseline.
     """
     if self.baseline is not None:
-        base = self.baseline.predict( y_true ).scale
+        base = self.baseline.predict( y_true )["scale"]
         if type(self.baseline) in [MARP0, MDARP0, MARP0LOO]:
             val = sdar(self, y_true, y_pred)
         else: return None

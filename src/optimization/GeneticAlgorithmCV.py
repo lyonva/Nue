@@ -33,6 +33,7 @@ class GeneticAlgorithmCV(BaseSearchCV):
         self.max_iteration_without_improv = max_iteration_without_improv
     
     def _run_search(self, evaluate_candidates):
+        self.multimetric_ = isinstance(self.scoring, dict)
         self.rank_test_name_ = "rank_test_" + self.refit if self.multimetric_ else "rank_test_score"
         self.mean_test_name_ = "mean_test_" + self.refit if self.multimetric_ else "mean_test_score"
         self.scoring_sign_ = self.scoring[self.refit]._sign if self.multimetric_ else self.scoring._sign

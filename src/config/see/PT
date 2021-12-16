@@ -3,5 +3,11 @@ Default
 Random Search:
 -scoring: sa
 -n_iter,int: 64
--cv,int: 2
+-cv,int: 5
+-n_jobs,int: -1
+
+TPE:
+-scoring: sa
+-budget,int: 64
+-cv,int: 5
 -n_jobs,int: -1

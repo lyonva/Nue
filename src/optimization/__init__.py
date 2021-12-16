@@ -18,6 +18,7 @@ from .NeverGradCV import NeverGradCV
 from .RandomRangeSearchCV import RandomRangeSearchCV
 from .TabuSearch import TabuSearch
 from .TabuSearchCV import TabuSearchCV
+from .TPECV import TPECV
 
 __all__ = [ 
     "Optimizer",
@@ -34,6 +35,7 @@ __all__ = [
     "RandomRangeSearchCV",
     "TabuSearch",
     "TabuSearchCV",
+    "TPECV"
     "UnknownParameterTypeError",
     "grid_to_bounds",
     "grid_types",

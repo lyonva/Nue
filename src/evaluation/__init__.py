@@ -6,6 +6,7 @@ from .utils import get_metrics_problem, evaluate, get_all_scorers,\
 from .fairness import AOD, EOD, SPD, DI, FR
 from .accuracy import Accuracy, Precision, Recall, F1
 from .d2h import D2H
+from .regression import MAR, SA, SD
 
 __all__ = [
     "Evaluation",
@@ -28,4 +29,7 @@ __all__ = [
     "DI",
     "FR",
     "D2H",
+    "MAR",
+    "SA",
+    "SD",
 ]
