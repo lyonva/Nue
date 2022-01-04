@@ -1,4 +1,4 @@
-from .formulas_effort import sa, effect_size, mar, mdar, sd
+from .formulas_effort import sa, effect_size, mar, mdar, sd, sdar
 from .formulas_generic import distance_to_heaven
 
 __all__ = {
@@ -8,4 +8,5 @@ __all__ = {
     "mdar",
     "sd",
     "distance_to_heaven",
+    "sdar",
 }

@@ -20,6 +20,7 @@ from .TabuSearch import TabuSearch
 from .TabuSearchCV import TabuSearchCV
 from .TPECV import TPECV
 from .NSGACV import NSGACV
+from .MOEADCV import MOEADCV
 
 __all__ = [ 
     "Optimizer",
@@ -38,6 +39,7 @@ __all__ = [
     "TabuSearchCV",
     "TPECV",
     "NSGACV",
+    "MOEADCV"
     "UnknownParameterTypeError",
     "grid_to_bounds",
     "grid_types",

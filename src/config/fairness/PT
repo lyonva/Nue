@@ -6,18 +6,9 @@ Random Search:
 -cv,int: 5
 -n_jobs,int: -1
 
-# DE:
-# -scoring: d2h3
-# -mutation_rate,float: 0.8
-# -crossover_rate,float: 0.7
-# -population_size,int: 10
-# -iterations,int: 10
-# -cv,int: 5
-# -n_jobs,int: -1
-
 TPE:
 -scoring: d2h1, d2h2
--budget,int: 64
+-budget,int: 256
 -cv,int: 5
 -n_jobs,int: -1
 
@@ -26,7 +17,7 @@ NSGA-II:
 -mutation_rate,float: 0.8
 -crossover_rate,float: 0.7
 -population_size,int: 20
--iterations,int: 10
+-iterations,int: 20
 -cv,int: 5
 -n_jobs,int: -1
 
@@ -35,8 +26,18 @@ NSGA-III:
 -mutation_rate,float: 0.8
 -crossover_rate,float: 0.7
 -population_size,int: 20
--iterations,int: 10
+-iterations,int: 20
 -p,int: 4
 -scale,float: 1.0
+-cv,int: 5
+-n_jobs,int: -1
+
+MOEAD:
+-scoring: d2h1, d2h2
+-mutation_rate,float: 0.0
+-crossover_rate,float: 0.7
+-prob_neighbor_mating,float: 0.7
+-n_neighbors,int: 20
+-iterations,int: 20
 -cv,int: 5
 -n_jobs,int: -1

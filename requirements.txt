@@ -6,3 +6,4 @@ geneticalgorithm
 Boruta
 hyperopt
 deap
+pymoo
