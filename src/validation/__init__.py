@@ -4,6 +4,7 @@ from .KFold import KFold
 from .NxM import NxM
 from .TestCV import TestCV
 from .loadercv import LoaderCV
+from .VersionDropout import VersionDropout
 
 __all__ = [
     "Cross_Validation",
@@ -12,4 +13,5 @@ __all__ = [
     "NxM",
     "TestCV",
     "LoaderCV"
+    "VersionDropout"
 ]

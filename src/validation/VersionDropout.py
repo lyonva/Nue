@@ -26,7 +26,7 @@ class VersionDropout(BaseCrossValidator):
             yield train_idx_base[0:n_samples], test_idx_base
     
     def get_n_splits(self, X, y=None, groups=None):
-        return self.n_bootstraps
+        return self.n_repeats
 
 
 if __name__ == "__main__":

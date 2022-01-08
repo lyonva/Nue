@@ -1,6 +1,5 @@
 from sklearn.model_selection import *
-from validation import LoaderCV
-from validation import BootstrapCV
+from validation import LoaderCV, BootstrapCV, VersionDropout
 
 validation_db = { "repeatedkfold" : RepeatedKFold,
          "leaveoneout" : LeaveOneOut,
@@ -10,4 +9,5 @@ validation_db = { "repeatedkfold" : RepeatedKFold,
          "repeatedtraintest" : ShuffleSplit,
          "traintestsplit" : ShuffleSplit,
          "loader" : LoaderCV,
-         "bootstrap" : BootstrapCV}
+         "bootstrap" : BootstrapCV,
+         "versiondropout" : VersionDropout,}

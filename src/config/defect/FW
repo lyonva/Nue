@@ -1,0 +1,7 @@
+CV: versiondropout:
+-n_repeats,int: 60
+-dropout,float: 0.2
+
+Problem: classification
+
+Preprocessing:
