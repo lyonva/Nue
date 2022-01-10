@@ -43,7 +43,7 @@ simplefilter("ignore", category=ConvergenceWarning)
 ## Prelude: Setup of the framework
 
 # Load configuration
-FW, DS, PP, DT, AS, PT, LA, EM = Loader("config/see/").load_config()
+FW, DS, PP, DT, AS, PT, LA, EM = Loader("config/defect/").load_config()
 datasets = ds_db.get(DS)
 preprocessing = pp_db.get(PP)
 data_transformation = dt_db.get(DT)
