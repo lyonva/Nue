@@ -1,6 +1,6 @@
 from sklearn.model_selection._search import BaseSearchCV
 import numpy as np
-from optimization import grid_to_bounds, grid_types, cast_parameters, zip_one, random_population
+from optimization import grid_to_bounds_str, grid_types, cast_parameters, zip_one
 from pymoo.problems.functional import FunctionalProblem
 from pymoo.factory import get_reference_directions
 from pymoo.algorithms.moo.moead import MOEAD
@@ -42,7 +42,7 @@ class MOEADCV(BaseSearchCV):
         # Force our scorer to become a dict
         scoring = self.scoring if isinstance(self.scoring, dict) else { self.scoring.name : self.scoring }
         
-        bounds = grid_to_bounds(self.search_space)
+        bounds = grid_to_bounds_str(self.search_space)
         types = grid_types(self.search_space)
         # types = dict( [ (key, val) for key, val in types.items() if key in bounds.keys() ] ) # Only for bounded types
         dimensions = len(bounds)
@@ -50,6 +50,10 @@ class MOEADCV(BaseSearchCV):
         # For now work with non-str parameters
         # Define evaluation function
         def eval_one(individual, metric):
+            individual = list(individual)
+            for i, (n, t) in enumerate(types.items()):
+                if t in [str, np.character]:
+                    individual[i] = self.search_space[n][ int(individual[i]) ]
             individual = cast_parameters(individual, list(types.values()))
             individual = zip_one(self.search_space.keys(), individual)
             cache = evaluate_candidates([individual])

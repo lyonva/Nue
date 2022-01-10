@@ -1,0 +1,6 @@
+accuracy
+precision
+recall
+f1
+d2h:
+-composite:accuracy,precision,recall,f1

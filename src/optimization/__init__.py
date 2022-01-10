@@ -1,6 +1,6 @@
 # Base
 from .Optimizer import Optimizer
-from .helper import (UnknownParameterTypeError, grid_to_bounds, grid_types,
+from .helper import (UnknownParameterTypeError, grid_to_bounds, grid_to_bounds_str, grid_types,
     cast_parameters,aggregate_dict, random_population, zip_one, zip_many)
 from .DefaultCV import DefaultCV
 
@@ -42,6 +42,7 @@ __all__ = [
     "MOEADCV"
     "UnknownParameterTypeError",
     "grid_to_bounds",
+    "grid_to_bounds_str",
     "grid_types",
     "cast_parameters",
     "aggregate_dict",

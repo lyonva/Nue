@@ -1,5 +1,6 @@
 import numpy as np
 import numbers
+import sys
 
 class UnknownParameterTypeError(Exception):
     pass
@@ -12,6 +13,16 @@ def grid_to_bounds(param_grid):
             new_params[key] = [ np.min(params_float), np.max(params_float) ]
         #else:
         #    new_params[key] = params
+    return new_params
+
+def grid_to_bounds_str(param_grid):
+    new_params = {}
+    for key, params in param_grid.items():
+        params_float = np.array(params)[[ isinstance(x, numbers.Number) for x in params ]].astype(np.float)
+        if params_float.size > 0:
+            new_params[key] = [ np.min(params_float), np.max(params_float) ]
+        else: # strings
+           new_params[key] = [ 0, len(params) - sys.float_info.epsilon ]
     return new_params
 
 def grid_types(param_grid):

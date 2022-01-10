@@ -1,0 +1,9 @@
+defect/camel-all.csv:
+-problem:classification
+-predict:bug
+-exclude:name
+
+defect/velocity-all.csv:
+-problem:classification
+-predict:bug
+-exclude:name
