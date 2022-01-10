@@ -13,10 +13,14 @@ class VersionDropout(BaseCrossValidator):
         pass
     
     def split(self, X, y=None, groups=None):
-        cols = X.shape[1]
+        rows = X.shape[0]
         latest = sorted(np.unique(X["version"]))[-1]
-        train_idx_base = [i for i, j in zip(range(cols), X["version"] != latest) if j]
-        test_idx_base = [i for i, j in zip(range(cols), X["version"] == latest) if j]
+        train_idx_base = []
+        for i, j in zip(range(rows), X["version"] != latest):
+            if j: train_idx_base += [i]
+        test_idx_base = []
+        for i, j in zip(range(rows), X["version"] == latest):
+            if j: test_idx_base += [i]
         
         for i in range(self.n_repeats):
             n = len(train_idx_base)

@@ -77,9 +77,12 @@ output_tuning_df = None
 output_tuning_file = "result-hpt-" + right_now.strftime('%Y-%m-%d_%H-%M-%S') + ".csv"
 
 # Pareto-frint output df
-# output_pareto_df = pd.DataFrame(columns=out_cols)
-output_pareto_df = None
-output_pareto_file = "result-pareto-" + right_now.strftime('%Y-%m-%d_%H-%M-%S') + ".csv"
+output_pareto_train_df = None
+output_pareto_train_file = "result-pareto-train-" + right_now.strftime('%Y-%m-%d_%H-%M-%S') + ".csv"
+
+# Pareto-frint output df
+output_pareto_test_df = None
+output_pareto_test_file = "result-pareto-test-" + right_now.strftime('%Y-%m-%d_%H-%M-%S') + ".csv"
 
 # Dataset Loop
 for n_ds, ds in enumerate(datasets):
@@ -255,11 +258,36 @@ for n_ds, ds in enumerate(datasets):
                                 # Otherwise, just use the best parameters
                                 best_params = []
                                 if multiobj_optim:
-                                    pareto_front = get_pareto_front( search.cv_results_, pt_parameters["scoring"] )
+                                    pareto_front = get_pareto_front( search.cv_results_, pt_parameters["scoring"].values() )
                                     best_params = [ search.cv_results_["params"][i] for i in pareto_front ]
                                     multiobj_res_df = None # Separate dataset for pareto front
                                     duration_pareto = 0 # Duration counter
                                     models_built_pareto = 0 # Models built counter
+                                    
+                                    # Get pareto front in training set
+                                    for idx, current_params in zip(pareto_front, best_params):
+                                        results = dict( [ (met.name, search.cv_results_["mean_test_" + met.name][idx])  for met in pt_parameters["scoring"].values() ] )
+                                        
+                                        scoring = pst.parameters["scoring"] if "scoring" in pst.parameters.keys() else "None"
+                                        row = {"DS": ds.name,
+                                            "Iteration": iteration,
+                                            "PP" : ppt.name,
+                                            "DT" : dtt.name,
+                                            "AS" : ast.name,
+                                            "LA" : mlt.name,
+                                            "PT" : pst.name,
+                                            "PT scoring" : scoring,
+                                            "Duration" : search.cv_results_["mean_fit_time"][idx] * search.cv,
+                                            "Params" : str(search.best_params_),
+                                            **results
+                                        }
+                                        row = dict([ (k, [v]) for k, v in row.items() ])
+                                        result_frame = pd.DataFrame.from_dict(row)
+                                        if output_pareto_train_df is None:
+                                            output_pareto_train_df = result_frame
+                                        else:
+                                            output_pareto_train_df = pd.concat( [output_pareto_train_df, result_frame] )
+                                        output_pareto_train_df.to_csv(output_pareto_train_file, index=False)
                                 else:
                                     best_params = [ search.best_params_ ]
                                 
@@ -291,8 +319,7 @@ for n_ds, ds in enumerate(datasets):
                                         "PT" : pst.name,
                                         "PT scoring" : scoring,
                                         "Duration" : duration,
-                                        "Models built" : models_built,
-                                        "Best params" : str(search.best_params_),
+                                        "Params" : str(search.best_params_),
                                         **results
                                     }
                                     row = dict([ (k, [v]) for k, v in row.items() ])
@@ -301,11 +328,11 @@ for n_ds, ds in enumerate(datasets):
                                     # Save results as file
                                     # Each iteration just in case
                                     if multiobj_optim:
-                                        if output_pareto_df is None:
-                                            output_pareto_df = result_frame
+                                        if output_pareto_test_df is None:
+                                            output_pareto_test_df = result_frame
                                         else:
-                                            output_pareto_df = pd.concat( [output_pareto_df, result_frame] )
-                                        output_pareto_df.to_csv(output_pareto_file, index=False)
+                                            output_pareto_test_df = pd.concat( [output_pareto_test_df, result_frame] )
+                                        output_pareto_test_df.to_csv(output_pareto_test_file, index=False)
                                         duration_pareto += duration
                                         models_built_pareto += models_built
                                         
@@ -344,6 +371,8 @@ for n_ds, ds in enumerate(datasets):
                                     else:
                                         output_tuning_df = pd.concat( [output_tuning_df, hyper_frame] )
                                     
+                                    # Uncomment if you need it
+                                    # Files grow too large
                                     output_tuning_df.to_csv(output_tuning_file, index=False)
                                 
                                 # If we are on a pareto front, save average results

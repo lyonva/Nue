@@ -1,11 +1,8 @@
-from evaluation import Evaluation
 import numpy as np
 
-def get_pareto_front(cv_results, metric_names):
-    cv_names = [ "mean_test_" + metric for metric in metric_names ]
+def get_pareto_front(cv_results, metrics):
+    cv_names = [ "mean_test_" + metric.name for metric in metrics ]
     cv_metrics = [ cv_results[ name ] for name in cv_names ]
-    
-    eva = Evaluation() # To get metric sign
     pareto_front = []
     
     # Now, search for the pareto front
@@ -22,11 +19,11 @@ def get_pareto_front(cv_results, metric_names):
             overshadowed = True # Assume it is, until we find a case it isnt
             
             # Check for each metric
-            for name, metric in zip(metric_names, cv_metrics):
+            for m_object, metric in zip(metrics, cv_metrics):
                 # Gets around Nan values
                 if True in np.isnan(metric): break
                 
-                sign = 1 if eva.get_greater_is_better(name) else -1 # Metric sign
+                sign = m_object._sign # Metric sign
                 
                 # Check if metric is overshadowed
                 overshadowed = overshadowed and ( metric[fp] * sign >= metric[i] * sign )
@@ -43,8 +40,8 @@ def get_pareto_front(cv_results, metric_names):
                 overshadowed = True # Assume it is, until we find a case it isnt
                 
                 # Check for each metric
-                for name, metric in zip(metric_names, cv_metrics):
-                    sign = 1 if eva.get_greater_is_better(name) else -1 # Metric sign
+                for m_object, metric in zip(metrics, cv_metrics):
+                    sign = m_object._sign # Metric sign
                     
                     # Check if metric is overshadowed
                     overshadowed = overshadowed and ( metric[i] * sign >= metric[fp] * sign )
