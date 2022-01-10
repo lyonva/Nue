@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, MinMaxScaler
 from utils import ps
+import sklearn
 
 class DataTransformation(ps):
     
@@ -12,7 +13,10 @@ class DataTransformation(ps):
 class OneHotEncoding(OneHotEncoder):
     def transform(self, X):
         res = super().transform(X)
-        return pd.DataFrame(res, columns=self.get_feature_names_out(X.columns))
+        if sklearn.__version__[0] == "0":
+            return pd.DataFrame(res, columns=self.get_feature_names(X.columns))
+        else:
+            return pd.DataFrame(res, columns=self.get_feature_names_out(X.columns))
 
 class StandardScaling(StandardScaler):
     def transform(self, X, copy=None):
