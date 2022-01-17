@@ -4,13 +4,14 @@ from optimization import grid_to_bounds, grid_types, cast_parameters, aggregate_
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
+from optimization import BaseOptimizer
 
 # FLASH
 # Based on the implementation by Tianpei Xia
 # OIL framework
 # https://github.com/arennax/effort_oil_2019
 # Adapted to the scikit learn BaseSearchCV class
-class FlashCV(BaseSearchCV):
+class FlashCV(BaseOptimizer):
     def __init__(self, estimator, search_space, budget, population_size, initial_size,
                  *, scoring=None, n_jobs=None, refit=True,
                  cv=None, verbose=0, pre_dispatch='2*n_jobs', error_score=np.nan,

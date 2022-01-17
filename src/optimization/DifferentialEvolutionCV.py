@@ -1,13 +1,14 @@
 from sklearn.model_selection._search import BaseSearchCV
 import numpy as np
 from optimization import grid_to_bounds, grid_types, cast_parameters
+from optimization import BaseOptimizer
 
 # Differential Evolution
 # Based on the implementation by Tianpei Xia
 # OIL framework
 # https://github.com/arennax/effort_oil_2019
 # Adapted to the scikit learn BaseSearchCV class
-class DifferentialEvolutionCV(BaseSearchCV):
+class DifferentialEvolutionCV(BaseOptimizer):
     def __init__(self, estimator, search_space, mutation_rate, crossover_rate,
                  population_size, iterations, *, scoring=None, n_jobs=None,
                  refit=True, cv=None, verbose=0,

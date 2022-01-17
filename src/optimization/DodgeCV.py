@@ -4,13 +4,14 @@ from optimization import grid_to_bounds, grid_types, cast_parameters, aggregate_
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
+from optimization import BaseOptimizer
 
 # Dodge
 # Based on the implementation by Amritanshu Agrawal
 # Dodge framework
 # https://github.com/amritbhanu/Dodge
 # Adapted to the scikit learn BaseSearchCV class
-class DodgeCV(BaseSearchCV):
+class DodgeCV(BaseOptimizer):
     def __init__(self, estimator, search_space, epsilon,
                  initial_size, population_size,
                  *, scoring=None, n_jobs=None, refit=True,

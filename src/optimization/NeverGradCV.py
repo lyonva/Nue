@@ -4,13 +4,14 @@ from optimization import grid_to_bounds, grid_types, cast_parameters, aggregate_
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import nevergrad as ng
+from optimization import BaseOptimizer
 
 # Generic interface for a NeverGrad algorithm
 # Controlled using the method parameter
 # The name is searched in the optimizer registry
 # https://github.com/FacebookResearch/Nevergrad
 # Adapted to the scikit learn BaseSearchCV class
-class NeverGradCV(BaseSearchCV):
+class NeverGradCV(BaseOptimizer):
     def __init__(self, estimator, search_space, method, budget, *, scoring=None, n_jobs=None,
                  refit=True, cv=None, verbose=0,
                  pre_dispatch='2*n_jobs', error_score=np.nan, return_train_score=True, **kwargs):

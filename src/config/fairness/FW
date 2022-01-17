@@ -7,7 +7,7 @@
 
 CV: repeatedkfold:
 -n_splits,int: 3
--n_repeats,int: 1
+-n_repeats,int: 10
 
 Problem: classification
 

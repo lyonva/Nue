@@ -5,8 +5,9 @@ from optimization import grid_to_bounds, grid_types, cast_parameters, aggregate_
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from optimization import HarmonySearch
+from optimization import BaseOptimizer
 
-class HarmonySearchCV(BaseSearchCV):
+class HarmonySearchCV(BaseOptimizer):
     
     def __init__(self, estimator, search_space, memory_size, memory_considering_rate,
                  pitch_adjustment_rate, fret_width, max_steps, *, scoring=None, n_jobs=None,

@@ -1,5 +1,5 @@
 CV: versiondropout:
--n_repeats,int: 3
+-n_repeats,int: 30
 -dropout,float: 0.05
 
 Problem: classification

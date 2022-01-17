@@ -148,3 +148,11 @@ class MetricScorer(ABC, ps, _PredictScorer):
     
     def evaluate(self, y, y_pred, X = None, estimator = None):
         return self._score_func(y, y_pred, X, estimator)
+
+class GenericMetric:
+    
+    def __init__(self, name, sign):
+        self.name = name
+        self._sign = sign
+        self.greater_is_better = True if sign == 1 else False
+        

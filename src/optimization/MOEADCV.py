@@ -6,12 +6,13 @@ from pymoo.factory import get_reference_directions
 from pymoo.algorithms.moo.moead import MOEAD
 from pymoo.factory import get_crossover, get_mutation
 from pymoo.optimize import minimize
+from optimization import BaseOptimizer
 
 # MOEA/D algorithm
 # Using pymoo implementation
 # https://pymoo.org/
 # Adapted to the scikit learn BaseSearchCV class
-class MOEADCV(BaseSearchCV):
+class MOEADCV(BaseOptimizer):
     
     def __init__(self, estimator, search_space, mutation_rate, crossover_rate,
                  n_neighbors, iterations, prob_neighbor_mating,

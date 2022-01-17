@@ -4,12 +4,13 @@ from optimization import grid_to_bounds, grid_types, cast_parameters, zip_one
 from deap import base, creator, tools
 import random
 import warnings
+from optimization import BaseOptimizer
 
 # NSGA-II and NSGA-III algorithm
 # DEAP genetic algorithms adapted to optimization
 # https://github.com/DEAP/deap
 # Adapted to the scikit learn BaseSearchCV class
-class NSGACV(BaseSearchCV):
+class NSGACV(BaseOptimizer):
     
     def __init__(self, estimator, search_space, version,  mutation_rate, crossover_rate,
                  population_size, iterations, *, p = 4, scale = 1.0,  scoring=None, n_jobs=None,

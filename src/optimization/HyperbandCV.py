@@ -5,13 +5,14 @@ from optimization import grid_to_bounds, grid_types, cast_parameters, aggregate_
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from optimization import Hyperband
+from optimization import BaseOptimizer
 
 # Hyperband algorithm
 # Using the implementation of the Hyperband repository
 # https://github.com/zygmuntz/hyperband
 # Adapted to the scikit learn BaseSearchCV class
 
-class HyperbandCV(BaseSearchCV):
+class HyperbandCV(BaseOptimizer):
     
     def __init__(self, estimator, search_space, budget, eta, *, scoring=None, n_jobs=None,
                  refit=True, cv=None, verbose=0,

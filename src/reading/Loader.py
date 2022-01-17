@@ -167,5 +167,12 @@ class Loader:
         EM = self.load_file("EM")
         
         return FW, DS, PP, DT, AS, PT, LA, EM
+    
+    def load_config_model(self):
+        FW = self.load_file_large("FW")
+        MO = self.load_file("MO")
+        PT = self.load_file("PT")
+        
+        return FW, MO, PT
         
         

@@ -3,12 +3,13 @@ import numpy as np
 from optimization import grid_to_bounds, grid_types, cast_parameters, aggregate_dict, random_population, UnknownParameterTypeError
 import pandas as pd
 from geneticalgorithm import geneticalgorithm as ga
+from optimization import BaseOptimizer
 
 # GeneticAlgorithm
 # Based on the implementation by Ryan (Mohammad) Solgi
 # https://pypi.org/project/geneticalgorithm/
 # Adapted to the scikit learn BaseSearchCV class
-class GeneticAlgorithmCV(BaseSearchCV):
+class GeneticAlgorithmCV(BaseOptimizer):
     def __init__(self, estimator, search_space,
                  max_num_iteration, population_size, mutation_probability,
                  elit_ratio, crossover_probability, parents_portion,

@@ -5,13 +5,14 @@ from optimization import grid_to_bounds, grid_types, cast_parameters, aggregate_
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from optimization import TabuSearch
+from optimization import BaseOptimizer
 
 # Tabu Search for a NeverGrad algorithm
 # Using the implementation of the Solid library
 # https://github.com/100/Solid
 # Adapted to the scikit learn BaseSearchCV class
 
-class TabuSearchCV(BaseSearchCV):
+class TabuSearchCV(BaseOptimizer):
     
     def __init__(self, estimator, search_space, tabu_size, max_steps,
                  neighborhood_size = 5, *, scoring=None, n_jobs=None,

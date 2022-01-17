@@ -30,7 +30,7 @@ from optimization.NSGACV import NSGACV
 optimization_db = Database(Optimizer, {"none":DefaultCV,
                                         "default":DefaultCV,
                                         "grid search":GridSearchCV,
-                                        "random search":RandomizedSearchCV,
+                                        "random search":RandomRangeSearchCV,
                                         "random range search":RandomRangeSearchCV,
                                         "de":DifferentialEvolutionCV,
                                         "flash":FlashCV,

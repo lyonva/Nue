@@ -3,11 +3,11 @@ import numpy as np
 from optimization import grid_to_bounds, grid_types, cast_parameters, aggregate_dict, random_population
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeRegressor
+from optimization import BaseOptimizer
 
 # Random Search
 # Instead of grid, uses all posible values in the range
-class RandomRangeSearchCV(BaseSearchCV):
+class RandomRangeSearchCV(BaseOptimizer):
     def __init__(self, estimator, search_space, n_iter,
                  *, scoring=None, n_jobs=None, refit=True,
                  cv=None, verbose=0, pre_dispatch='2*n_jobs', error_score=np.nan,

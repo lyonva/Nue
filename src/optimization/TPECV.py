@@ -1,12 +1,13 @@
 from sklearn.model_selection._search import BaseSearchCV
 from hyperopt import fmin, tpe, hp
 import numpy as np
+from optimization import BaseOptimizer
 
 # TPE algorithm
 # Using the implementation of the hyperopt repository
 # http://hyperopt.github.io/hyperopt/
 # Adapted to the scikit learn BaseSearchCV class
-class TPECV(BaseSearchCV):
+class TPECV(BaseOptimizer):
     
     def __init__(self, estimator, search_space, budget, *, scoring=None, n_jobs=None,
                  refit=True, cv=None, verbose=0,
