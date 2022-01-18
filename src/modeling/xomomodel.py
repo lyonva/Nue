@@ -5,7 +5,7 @@ import random
 class XOMOModel( BaseSPLModel ):
     
     obj_names = ( "obj1", "obj2", "obj3", "obj4" )
-    obj_weights = (-1., -1., -1., -1)
+    obj_weights = (1, 1, 1, 1)
     
     def __init__(self, 
             aa = 1,

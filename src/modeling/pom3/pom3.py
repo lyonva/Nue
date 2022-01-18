@@ -25,8 +25,8 @@
 
 """
 
-from Benchmarks.POM3_Base.pom3_teams import *
-from Benchmarks.POM3_Base.pom3_requirements import *
+from modeling.pom3.pom3_teams import *
+from modeling.pom3.pom3_requirements import *
 import random
 
 

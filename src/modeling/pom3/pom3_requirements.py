@@ -25,7 +25,7 @@
 
 """
 
-from Benchmarks.POM3_Base.pom3_requirements_tree import *
+from modeling.pom3.pom3_requirements_tree import *
 import random
 
 

@@ -25,7 +25,7 @@
 
 """
 
-from Benchmarks.POM3_Base.pom3_team import *
+from modeling.pom3.pom3_team import *
 import math
 
 
