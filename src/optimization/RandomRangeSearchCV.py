@@ -21,10 +21,11 @@ class RandomRangeSearchCV(BaseOptimizer):
         self.n_iter = n_iter
     
     def _run_search(self, evaluate_candidates):
+        
         bounds = grid_to_bounds(self.search_space)
         categories = dict( [ (k,v) for k,v in self.search_space.items() if k not in bounds.keys() ] )
         types = grid_types(self.search_space)
-        
+        types = dict( [ (key, val) for key, val in types.items() if key in bounds.keys() ] ) # Only for bounded types
         # Generate and evaluate random population
         population = random_population( bounds, list(types.values()), categories, self.n_iter )
         evaluate_candidates(population)

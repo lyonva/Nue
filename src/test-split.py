@@ -1,19 +1,19 @@
 # Libraries
-import numpy as np
-import pandas as pd
+import os
+from sys import path
 
-# TODO fix imports
-from database.dataset_db import dataset_db
-from database.cv_db import cv_db
-from comp.Loader import Loader
+from map import dataset_db
+from map import validation_db as cv_db
+from reading import Loader
 from sklearn.model_selection import KFold
 
 # Prelude
 data_dir = "data/"
-groups = 10 # Partition the indexes into different datasets? For multiple PCs
+config_dir = "config/see/"
+groups = 1 # Partition the indexes into different datasets? For multiple PCs
 
 # Load configuration
-FW, DS, DT, AS, PT, LA, EM = Loader().load_config()
+FW, DS, PP, DT, AS, PT, LA, EM = Loader(config_dir).load_config()
 datasets = dataset_db.get(DS)
 
 # Cross Validation
@@ -35,7 +35,7 @@ for ds in datasets:
         # Save indices
         train_set = dataframe.iloc[train_index,:]
         test_set = dataframe.iloc[test_index,:]
-    
+
         # Save the indexes
         # Use dataset name
         train_set.to_csv( data_dir + ds.id + "_train.csv", index=False )

@@ -27,7 +27,8 @@ for file in files:
                 if len(values) > 0:
                     res[treatment] = values
             m = m.split(" ")[0]
-            to_file = ds.split("/")[1].split(".")[0].split("_")[0] + "_" + m + ".csv"
+            # to_file = ds.split("/")[1].split(".")[0].split("_")[0] + "_" + m + ".csv"
+            to_file = ds + "_" + m + ".csv"
             to_file = path = os.path.join( 'combo', 'reshaped', to_file )
             if len(res) > 0:
                 new_df = pd.DataFrame.from_dict( res, orient='index' )

@@ -35,7 +35,7 @@ for ds in ds_list:
         ranks = ranks.sort_values(by=['rank'])
         
         plt.clf()
-        fig, ax = plt.subplots(figsize=(8, 8.5))
+        fig, ax = plt.subplots(figsize=(8, 10))
         plt.ylim((bottom, top))
         plt.tight_layout(pad=2.25)
         ax.tick_params(axis='x', rotation=25)
@@ -85,7 +85,7 @@ for ds in ds_list:
         ranks = ranks.sort_values(by=['rank'])
         
         plt.clf()
-        fig, ax = plt.subplots(figsize=(8, 8.5))
+        fig, ax = plt.subplots(figsize=(8, 10))
         plt.ylim((bottom, top))
         plt.tight_layout(pad=2.25)
         ax.tick_params(axis='x', rotation=25)

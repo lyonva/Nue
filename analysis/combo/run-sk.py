@@ -1,5 +1,5 @@
-from sk.sk import Rx, xtile
 import os
+from sk.sk import Rx, xtile
 import pandas as pd
 
 def pos(lst, p): return sorted(lst)[int(len(lst)*p)]
@@ -39,7 +39,6 @@ df.to_csv( os.path.join("combo", "sk-res.csv"), index = False )
 files = ['result-see', 'result-fairness']
 for file in files:
     path = os.path.join( 'combo', file + "-simple.csv" )
-
     df_simple = pd.read_csv( path )
     df_simple = df_simple.melt(id_vars=["DS","PT"])
     df_join = df[ ["ds",  "pt", "m", "rank"] ]

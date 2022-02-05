@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import sys
 
 class Loader:
     
@@ -74,7 +75,8 @@ class Loader:
                                                 # Error, void config
                                                 config = []
                                                 break
-                                            val = list((lambda x : eval(fun))(np.arange(ini, end + inc, inc)))
+                                            eps = 1 if type(inc) == int else sys.float_info.epsilon
+                                            val = list((lambda x : eval(fun))(np.arange(ini, end + eps, inc)))
                                         else:
                                             # Error, void config
                                             config = []
