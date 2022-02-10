@@ -43,7 +43,8 @@ simplefilter("ignore", category=ConvergenceWarning)
 ## Prelude: Setup of the framework
 
 # Load configuration
-FW, DS, PP, DT, AS, PT, LA, EM = Loader("config/fairness/").load_config()
+config_dir = "config/see/"
+FW, DS, PP, DT, AS, PT, LA, EM = Loader(config_dir).load_config()
 datasets = ds_db.get(DS)
 preprocessing = pp_db.get(PP)
 data_transformation = dt_db.get(DT)
@@ -98,6 +99,7 @@ for n_ds, ds in enumerate(datasets):
     
     if type(cv) == LoaderCV:
         cv.set_data( ds.id )
+        cv.set_config( config_dir )
     
     # Cross validation
     for iteration, (train_index, test_index) in enumerate(cv.split(dataframe)):        

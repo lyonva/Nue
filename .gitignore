@@ -2,7 +2,9 @@
 .vscode
 
 # Specific to this repo
-*result*.csv
+src/result*.csv
+analysis/*.csv
+results/**/*-hpt-*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
