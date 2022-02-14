@@ -1,5 +1,5 @@
 from evaluation import Metric, Accuracy, Precision, Recall, F1,\
-    AOD, EOD, SPD, DI, FR, D2H, MAR, SA, SD, SDAR
+    AOD, EOD, SPD, DI, FR, D2H, MAR, SA, SD, SDAR, EFFECTSIZE, MMRE, PRED25
 from map import DatabaseNoClass
 from evaluation.formulas import mar, mdar, sa, effect_size
 
@@ -15,6 +15,9 @@ metric_db = DatabaseNoClass(
         "sa" : { "class" : SA },
         "sd" : { "class" : SD },
         "sdar" : { "class" : SDAR },
+        "effect size" : { "class" : EFFECTSIZE },
+        "mmre" : { "class" : MMRE },
+        "pred25" : { "class" : PRED25 },
         
         # Classification
         "accuracy" : { "class" : Accuracy },

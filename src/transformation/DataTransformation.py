@@ -1,7 +1,9 @@
+from calendar import c
 import pandas as pd
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, MinMaxScaler
+from sklearn.preprocessing import OneHotEncoder, StandardScaler, MinMaxScaler, FunctionTransformer
 from utils import ps
 import sklearn
+import numpy as np
 
 class DataTransformation(ps):
     
@@ -25,3 +27,9 @@ class StandardScaling(StandardScaler):
 class MinMaxScaling(MinMaxScaler):
     def transform(self, X, copy=None):
         return pd.DataFrame( super().transform(X), columns=X.columns )
+
+class LogMinMaxScaling(MinMaxScaling):
+    def transform(self, X, copy=None):
+        return super().transform( FunctionTransformer(np.log1p).fit_transform(X) )
+
+

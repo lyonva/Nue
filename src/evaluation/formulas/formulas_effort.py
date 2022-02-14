@@ -132,7 +132,7 @@ def pred(self, n, y_true, y_pred):
     """
     return np.sum( mre(self, y_true, y_pred) <= (n/100) ) / y_true.size
 
-def pred25(self, n, y_true, y_pred):
+def pred25(self, y_true, y_pred):
     """
         % of predictions above 25% of the MRE.
     """

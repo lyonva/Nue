@@ -1,5 +1,5 @@
 from evaluation import MetricScorer
-from .formulas import mar, sa, sd, sdar
+from .formulas import mar, sa, sd, sdar, effect_size, mmre, pred25
 from baseline import MARP0
 
 class MAR(MetricScorer):
@@ -30,7 +30,7 @@ class SDAR(MetricScorer):
         self.composite = None
     
     def _score_func(self, y_true, y_pred, X=None, estimator=None):
-        return mar(self, y_true, y_pred)
+        return sdar(self, y_true, y_pred)
 
 class SA(MetricScorer):
     
@@ -61,3 +61,45 @@ class SD(MetricScorer):
     
     def _score_func(self, y_true, y_pred, X=None, estimator=None):
         return sd(self, y_true, y_pred)
+
+class EFFECTSIZE(MetricScorer):
+    def setConstants(self):
+        self.name = "effect size"
+        self.problem = "regression"
+        self.greater_is_better = True
+        self.lo = 0
+        self.hi = 1 # Not really, but upped bound is infinity
+        self.baseline = MARP0
+        self.unifeature = False
+        self.composite = None
+    
+    def _score_func(self, y_true, y_pred, X=None, estimator=None):
+        return effect_size(self, y_true, y_pred)
+
+class MMRE(MetricScorer):
+    def setConstants(self):
+        self.name = "mmre"
+        self.problem = "regression"
+        self.greater_is_better = False
+        self.lo = 0
+        self.hi = 20000 # Not really, but upped bound is infinity
+        self.baseline = MARP0
+        self.unifeature = False
+        self.composite = None
+    
+    def _score_func(self, y_true, y_pred, X=None, estimator=None):
+        return mmre(self, y_true, y_pred)
+
+class PRED25(MetricScorer):
+    def setConstants(self):
+        self.name = "pred25"
+        self.problem = "regression"
+        self.greater_is_better = True
+        self.lo = 0
+        self.hi = 1 # Not really, but upped bound is infinity
+        self.baseline = MARP0
+        self.unifeature = False
+        self.composite = None
+    
+    def _score_func(self, y_true, y_pred, X=None, estimator=None):
+        return pred25(self, y_true, y_pred)
