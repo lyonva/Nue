@@ -255,7 +255,6 @@ for n_ds, ds in enumerate(datasets):
                                 search.fit(X_train, Y_train)
                                 models_built = len( search.cv_results_["params"] ) * search.n_splits_
                                 
-                                
                                 # If we are using multi-objective, get pareto front
                                 # Otherwise, just use the best parameters
                                 best_params = []
@@ -354,28 +353,27 @@ for n_ds, ds in enumerate(datasets):
                                         
                                         output_df.to_csv(output_file, index=False)
                                     
-                                    
-                                    # Hyper-parameter dataframe
-                                    hyper_dict = search.cv_results_
-                                    df_size = len( hyper_dict["params"] )
-                                    hyper_dict["DS"] = np.repeat(ds.name, df_size)
-                                    hyper_dict["Iteration"] = np.repeat(iteration, df_size)
-                                    hyper_dict["PP"] = np.repeat(ppt.name, df_size)
-                                    hyper_dict["DP"] = np.repeat(dtt.name, df_size)
-                                    hyper_dict["AS"] = np.repeat(ast.name, df_size)
-                                    hyper_dict["PT"] = np.repeat(pst.name, df_size)
-                                    hyper_dict["LA"] = np.repeat(mlt.name, df_size)
-                                    
-                                    hyper_frame = pd.DataFrame.from_dict(hyper_dict)
-                                    
-                                    if output_tuning_df is None:
-                                        output_tuning_df = hyper_frame
-                                    else:
-                                        output_tuning_df = pd.concat( [output_tuning_df, hyper_frame] )
-                                    
-                                    # Uncomment if you need it
-                                    # Files grow too large
-                                    output_tuning_df.to_csv(output_tuning_file, index=False)
+                                # Hyper-parameter dataframe
+                                hyper_dict = search.cv_results_
+                                df_size = len( hyper_dict["params"] )
+                                hyper_dict["DS"] = np.repeat(ds.name, df_size)
+                                hyper_dict["Iteration"] = np.repeat(iteration, df_size)
+                                hyper_dict["PP"] = np.repeat(ppt.name, df_size)
+                                hyper_dict["DP"] = np.repeat(dtt.name, df_size)
+                                hyper_dict["AS"] = np.repeat(ast.name, df_size)
+                                hyper_dict["PT"] = np.repeat(pst.name, df_size)
+                                hyper_dict["LA"] = np.repeat(mlt.name, df_size)
+                                
+                                hyper_frame = pd.DataFrame.from_dict(hyper_dict)
+                                
+                                if output_tuning_df is None:
+                                    output_tuning_df = hyper_frame
+                                else:
+                                    output_tuning_df = pd.concat( [output_tuning_df, hyper_frame] )
+                                
+                                # Uncomment if you need it
+                                # Files grow too large
+                                output_tuning_df.to_csv(output_tuning_file, index=False)
                                 
                                 # If we are on a pareto front, save average results
                                 if multiobj_optim:

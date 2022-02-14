@@ -1,7 +1,8 @@
 # Base
 from .Optimizer import Optimizer
 from .helper import (UnknownParameterTypeError, grid_to_bounds, grid_to_bounds_str, grid_types,
-    cast_parameters,aggregate_dict, random_population, zip_one, zip_many)
+    cast_parameters, aggregate_dict, unaggregate_dict, random_population, zip_one, zip_many, types_as_str,
+    binary_dominates)
 from .DefaultCV import DefaultCV
 from .baseoptimizer import BaseOptimizer
 
@@ -22,6 +23,7 @@ from .TabuSearchCV import TabuSearchCV
 from .TPECV import TPECV
 from .NSGACV import NSGACV
 from .MOEADCV import MOEADCV
+from .SWAYCV import SWAYCV
 
 __all__ = [ 
     "BaseOptimizer",
@@ -41,14 +43,18 @@ __all__ = [
     "TabuSearchCV",
     "TPECV",
     "NSGACV",
-    "MOEADCV"
+    "MOEADCV",
+    "SWAYCV",
     "UnknownParameterTypeError",
     "grid_to_bounds",
     "grid_to_bounds_str",
     "grid_types",
     "cast_parameters",
     "aggregate_dict",
+    "unaggregate_dict",
     "random_population",
     "zip_one",
-    "zip_many"
+    "zip_many",
+    "types_as_str",
+    "binary_dominates"
 ]

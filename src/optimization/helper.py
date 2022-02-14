@@ -31,6 +31,17 @@ def grid_types(param_grid):
         types[key] = type(params[0])
     return types
 
+def types_as_str(types):
+    new_types = {}
+    for t, v in types.items():
+        nv = "s" # string
+        if v in [float, np.float32, np.float64]:
+            nv = "f"
+        if v in [int, np.int32, np.int64]:
+            nv = "i"
+        new_types[t] = nv
+    return new_types
+
 def cast_parameters(params, types):
     if len(params) == len(types):
         result = []
@@ -49,6 +60,17 @@ def aggregate_dict(list_of_dict):
                 elem.append( dictt[key] )
             res[key] = elem
     return res
+
+def unaggregate_dict(dict_of_lists, idx = None):
+    if idx == None:
+        idx = [ i for i in range( len(dict_of_lists[ dict_of_lists.keys()[0] ]) ) ]
+    lis = []
+    for i in idx:
+        d = {}
+        for k in dict_of_lists.keys():
+            d[k] = dict_of_lists[k][i]
+        lis.append(d)
+    return lis
 
 def random_population(numerical, numerical_types, categorical, size):
     dimensions = len(numerical)
@@ -73,3 +95,12 @@ def zip_one( pars, vals ):
 
 def zip_many( pars, indivs ):
     return [ zip_one(pars, ind) for ind in indivs ]
+
+def binary_dominates(a, b):
+    """Returns whether a binary dominates b"""
+    for ai, bi in zip(a, b):
+        if bi > ai:
+            return False
+    if a == b:
+        return False
+    return True

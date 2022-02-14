@@ -3,7 +3,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
 from optimization import Optimizer, DefaultCV, DifferentialEvolutionCV, FlashCV, DodgeCV, \
     RandomRangeSearchCV, NeverGradCV, TabuSearchCV, HarmonySearchCV, HyperbandCV, \
-    GeneticAlgorithmCV, BayesianOptimizationCV, TPECV, MOEADCV
+    GeneticAlgorithmCV, BayesianOptimizationCV, TPECV, MOEADCV, SWAYCV
 from optimization.NSGACV import NSGACV
 
 
@@ -46,7 +46,8 @@ optimization_db = Database(Optimizer, {"none":DefaultCV,
                                         "tpe":TPECV,
                                         "nsga-ii":NSGACV,
                                         "nsga-iii":NSGACV,
-                                        "moead":MOEADCV
+                                        "moead":MOEADCV,
+                                        "sway" : SWAYCV,
                                         },
                                      {"grid search":{"n_jobs":-1},
                                          "random search":{"n_jobs":-1},
@@ -66,4 +67,5 @@ optimization_db = Database(Optimizer, {"none":DefaultCV,
                                          "nsga-ii":{"version":2,"n_jobs":-1},
                                          "nsga-iii":{"version":3,"n_jobs":-1},
                                          "moead":{"n_jobs":-1},
+                                         "sway":{"n_jobs":-1},
                                          })
