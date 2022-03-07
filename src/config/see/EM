@@ -1,7 +1,5 @@
-MAR
-SA
-SDAR
-SD
-EFFECT SIZE
-MMRE
-PRED25
+MAE
+MSE
+RMSE
+MAPE
+regression_accuracy

@@ -5,6 +5,7 @@ from deap import base, creator, tools
 import random
 import warnings
 from optimization import BaseOptimizer
+from tqdm import tqdm
 
 # NSGA-II and NSGA-III algorithm
 # DEAP genetic algorithms adapted to optimization
@@ -114,7 +115,8 @@ class NSGACV(BaseOptimizer):
         
         # Begin the generational process
         # -1 because of initial population
-        for gen in range(1, self.iterations):
+        for gen in (pbar := tqdm(range(1, self.iterations))):
+            pbar.set_description(f"NSGA Generation {gen}")
             # Vary the population
             if self.version == 2:
                 offspring = tools.selTournamentDCD(pop, len(pop))

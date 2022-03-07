@@ -1,9 +1,6 @@
-# CV: repeatedkfold:
-# -n_splits,int: 3
-# -n_repeats,int: 7
-
-CV: loader:
--offset,int: 0
+CV: TrainTestSplit:
+-n_splits,int: 1
+-train_size,float: 0.7
 
 Problem: regression
 
