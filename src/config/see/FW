@@ -1,6 +1,6 @@
 # CV: repeatedkfold:
 # -n_splits,int: 3
-# -n_repeats,int: 20
+# -n_repeats,int: 7
 
 CV: loader:
 -offset,int: 0

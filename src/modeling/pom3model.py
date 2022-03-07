@@ -4,8 +4,8 @@ import random
 
 class POM3Model( BaseSPLModel ):
     
-    obj_names = ( "obj1", "obj2", "obj3" )
-    obj_weights = (1, 1, 1)
+    obj_names = ("cost", "score", "idle_rate" )
+    obj_weights = (-1, 1, -1)
     
     def __init__(self, 
             culture = 1,

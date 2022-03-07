@@ -1,4 +1,6 @@
 import numpy as np
+from math import exp
+
 
 def distance_numeric_norm(df, col, i, j):
     c = df[col]
@@ -25,3 +27,30 @@ def distance_pair(df, types, i, j, p = 2):
 
 def distance_from(df, types, idx, i, p = 2):
     return [ distance_pair(df, types, i, j, p = p) for j in idx ]
+
+def binary_dominates(a, b):
+    """Returns whether a binary dominates b"""
+    for ai, bi in zip(a, b):
+        if bi > ai:
+            return False
+    if a == b:
+        return False
+    return True
+
+def zitler_dominates(a, b):
+    """Returns wether a zitler dominates b
+    Requires a and b to be normalized in [0, 1] range
+    1: a dominates b
+    -1: a is dominated by b
+    0: Neither dominates, equivalent"""
+    s1, s2 = 0, 0
+    n = len(a)
+    for ai, bi in zip(a, b):
+        s1 -= exp( (ai - bi)/n )
+        s2 -= exp( (bi - ai)/n )
+    if s1/n < s2/n:
+        return 1
+    elif s1/n > s2/n:
+        return -1
+    else:
+        return 0

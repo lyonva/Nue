@@ -30,6 +30,15 @@ def argsort(list, *, key = None, reverse = False):
 def sortarg(list, arg):
     return [ list[i] for i in arg ]
 
+def normalize_score( score, metrics ):
+    ret = []
+    for s, m in zip(score, metrics):
+        n = (s - m.lo) / (m.hi - m.lo)
+        if m._sign == -1:
+            n = 1 - n
+        ret.append(n)
+    return ret
+
 if __name__ == "__main__":
     from random import randint
 

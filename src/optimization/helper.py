@@ -96,11 +96,3 @@ def zip_one( pars, vals ):
 def zip_many( pars, indivs ):
     return [ zip_one(pars, ind) for ind in indivs ]
 
-def binary_dominates(a, b):
-    """Returns whether a binary dominates b"""
-    for ai, bi in zip(a, b):
-        if bi > ai:
-            return False
-    if a == b:
-        return False
-    return True

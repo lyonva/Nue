@@ -117,7 +117,7 @@ class pom3:
         else: completion = completion_sum / float(total_tasks)
 
         # return [cost, score, completion, idle]
-        return [cost, 1 - score, idle]
+        return [cost, score, idle]
 
 
 # Test Code

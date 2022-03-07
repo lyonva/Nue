@@ -1,10 +1,10 @@
 import numpy as np
 from optimization import grid_to_bounds, grid_types, cast_parameters, aggregate_dict, unaggregate_dict, \
-    random_population, types_as_str, binary_dominates
+    random_population, types_as_str
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from optimization import BaseOptimizer
-from utils import distance_pair, distance_from, argsort, sortarg
+from utils import distance_pair, distance_from, argsort, sortarg, zitler_dominates, normalize_score
 from random import sample
 
 # SWAY (Sampling the WAY) algorithm
@@ -41,7 +41,7 @@ class SWAYCV(BaseOptimizer):
         idx = [i for i in range(self.n_samples)]
 
         candidates = self._sway(evaluate_candidates, idx)
-        evaluate_candidates( unaggregate_dict(self.samples, candidates) )
+        # evaluate_candidates( unaggregate_dict(self.samples, candidates) )
     
     def _sway(self, evaluate_candidates, idx):
         if len(idx) < (self.min_group_size * self.n_samples):
@@ -55,19 +55,24 @@ class SWAYCV(BaseOptimizer):
 
         w_idx = cache["params"].index( west_d )
         if not self.multimetric_:
-            w_fitness =  cache[ self.mean_test_name_ ][w_idx],
+            w_fitness =  [cache[ self.mean_test_name_ ][w_idx]]
         else:
             w_fitness = tuple([ cache[ f'mean_test_{m}' ][w_idx] for m in self.scoring.keys() ])
 
         e_idx = cache["params"].index( east_d )
         if not self.multimetric_:
-            e_fitness =  cache[ self.mean_test_name_ ][e_idx] * self.scoring._sign,
+            e_fitness =  [cache[ self.mean_test_name_ ][e_idx]]
         else:
-            e_fitness = tuple([ cache[ f'mean_test_{m}' ][e_idx] * self.scoring[m]._sign for m in self.scoring.keys() ])
+            e_fitness = tuple([ cache[ f'mean_test_{m}' ][e_idx] for m in self.scoring.keys() ])
         
-        if not( binary_dominates(e_fitness, w_fitness) ):
+        met = list(self.scoring.values() if self.multimetric_ else [self.scoring])
+        w_fitness = normalize_score(w_fitness, met)
+        e_fitness = normalize_score(e_fitness, met)
+        better = zitler_dominates(w_fitness, e_fitness)
+
+        if better >= 0:
             d1 = self._sway(evaluate_candidates, west_items)
-        if not( binary_dominates(w_fitness, e_fitness) ):
+        if better <= 0:
             d2 = self._sway(evaluate_candidates, east_items)
 
         return d1 + d2

@@ -1,8 +1,7 @@
 # Base
 from .Optimizer import Optimizer
 from .helper import (UnknownParameterTypeError, grid_to_bounds, grid_to_bounds_str, grid_types,
-    cast_parameters, aggregate_dict, unaggregate_dict, random_population, zip_one, zip_many, types_as_str,
-    binary_dominates)
+    cast_parameters, aggregate_dict, unaggregate_dict, random_population, zip_one, zip_many, types_as_str)
 from .DefaultCV import DefaultCV
 from .baseoptimizer import BaseOptimizer
 
@@ -55,6 +54,5 @@ __all__ = [
     "random_population",
     "zip_one",
     "zip_many",
-    "types_as_str",
-    "binary_dominates"
+    "types_as_str"
 ]

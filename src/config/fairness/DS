@@ -8,10 +8,10 @@
 #-predict:Probability
 #-secondary:sex
 
-fairness/compas-scores-two-years_processed.csv:
--problem:classification
--predict:Probability
--secondary:sex,race
+# fairness/compas-scores-two-years_processed.csv:
+# -problem:classification
+# -predict:Probability
+# -secondary:sex,race
 
 #fairness/bank_processed.csv:
 #-problem:classification

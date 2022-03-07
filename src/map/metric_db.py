@@ -1,4 +1,4 @@
-from evaluation import Metric, Accuracy, Precision, Recall, F1,\
+from evaluation import Metric, Accuracy, Precision, Recall, F1, FalseAlarm, \
     AOD, EOD, SPD, DI, FR, D2H, MAR, SA, SD, SDAR, EFFECTSIZE, MMRE, PRED25
 from map import DatabaseNoClass
 from evaluation.formulas import mar, mdar, sa, effect_size
@@ -24,6 +24,7 @@ metric_db = DatabaseNoClass(
         "precision" : { "class" : Precision },
         "recall" : { "class" : Recall },
         "f1" : { "class" : F1 },
+        "falsealarm" : { "class" : FalseAlarm },
         
         # Fairness
         "aod" : { "class" : AOD },

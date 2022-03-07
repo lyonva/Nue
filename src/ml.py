@@ -26,7 +26,7 @@ from tempfile import mkdtemp
 from selection import NumericalSelector
 from transformation import FillImputer, SimplerImputer, KNNImputerDF
 from transformation import OneHotEncoding
-from evaluation import get_pareto_front, evaluate, \
+from evaluation import get_pareto_front, get_pareto_front_zitler, evaluate, \
     get_metrics_dataset, get_all_scorers, get_metrics_by_name
 from utils import get_problem_type
 
@@ -43,7 +43,7 @@ simplefilter("ignore", category=ConvergenceWarning)
 ## Prelude: Setup of the framework
 
 # Load configuration
-config_dir = "config/see/"
+config_dir = "config/fairness/"
 FW, DS, PP, DT, AS, PT, LA, EM = Loader(config_dir).load_config()
 datasets = ds_db.get(DS)
 preprocessing = pp_db.get(PP)
@@ -259,7 +259,7 @@ for n_ds, ds in enumerate(datasets):
                                 # Otherwise, just use the best parameters
                                 best_params = []
                                 if multiobj_optim:
-                                    pareto_front = get_pareto_front( search.cv_results_, pt_parameters["scoring"].values() )
+                                    pareto_front = get_pareto_front_zitler( search.cv_results_, list(pt_parameters["scoring"].values()) )
                                     best_params = [ search.cv_results_["params"][i] for i in pareto_front ]
                                     multiobj_res_df = None # Separate dataset for pareto front
                                     duration_pareto = 0 # Duration counter
