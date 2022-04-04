@@ -289,7 +289,13 @@ for n_ds, ds in enumerate(datasets):
                 
                 # Test the model
                 prediction = pipe.predict(X_test)
-                
+                # if pst.name == "default":
+                #     row = {
+                #         "y_pred" : prediction,
+                #         "y_test" : Y_test,
+                #     }                    
+                #     pred_frame = pd.DataFrame.from_dict(row)
+                #     pred_frame.to_csv('./pred_vals.csv', index=False)
                 end_time = time.time()
                 duration = end_time - start_time
                 

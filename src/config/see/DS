@@ -1,4 +1,4 @@
 effort/china.csv:
 -predict:effort
 -as_dummies:False
--exclude:n_effort
+-exclude:ID, n_effort

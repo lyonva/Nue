@@ -118,7 +118,8 @@ class MAE(MetricScorer):
         self.composite = None
     
     def _score_func(self, y_true, y_pred, X=None, estimator=None):
-        return metrics.mean_absolute_error(y_true, y_pred)
+        mae = metrics.mean_absolute_error(y_true, y_pred)
+        return mae
 
 class MSE(MetricScorer):
     def setConstants(self):
@@ -132,7 +133,8 @@ class MSE(MetricScorer):
         self.composite = None
     
     def _score_func(self, y_true, y_pred, X=None, estimator=None):
-        return metrics.mean_squared_error(y_true, y_pred)
+        mse = metrics.mean_squared_error(y_true, y_pred)
+        return mse
 
 class RMSE(MetricScorer):
     def setConstants(self):
@@ -146,7 +148,8 @@ class RMSE(MetricScorer):
         self.composite = None
     
     def _score_func(self, y_true, y_pred, X=None, estimator=None):
-        return np.sqrt(metrics.mean_squared_error(y_true, y_pred))
+        rmse = np.sqrt(metrics.mean_squared_error(y_true, y_pred))
+        return rmse
 
 class MAPE(MetricScorer):
     def setConstants(self):
@@ -161,7 +164,8 @@ class MAPE(MetricScorer):
     
     def _score_func(self, y_true, y_pred, X=None, estimator=None):
         mape = np.mean(np.abs((y_true - y_pred) / np.abs(y_true)))
-        return round(mape * 100, 2)
+        mape = round(mape * 100, 2)
+        return mape
 
 class RegressionAccuracy(MetricScorer):
     def setConstants(self):
@@ -176,4 +180,5 @@ class RegressionAccuracy(MetricScorer):
     
     def _score_func(self, y_true, y_pred, X=None, estimator=None):
         mape = np.mean(np.abs((y_true - y_pred) / np.abs(y_true)))
-        return round(100*(1 - mape), 2)
+        acc = round(100*(1 - mape), 2)
+        return acc
