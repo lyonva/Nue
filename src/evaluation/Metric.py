@@ -151,8 +151,9 @@ class MetricScorer(ABC, ps, _PredictScorer):
 
 class GenericMetric:
     
-    def __init__(self, name, sign):
+    def __init__(self, name, sign, lo, hi):
         self.name = name
         self._sign = sign
         self.greater_is_better = True if sign == 1 else False
-        
+        self.lo = lo
+        self.hi = hi

@@ -1,0 +1,22 @@
+\begin{table*}[t]
+\caption{Results for the osp2 model. Cells read as `mean [median iqr]'.}
+\label{tab-res-osp2}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Search & Wins & Defects- & Effort- & Months- & Risks- \\
+\midrule
+Random1024 & 4 & \cellcolor[HTML]{C0C0C0}140.9 [112.3 114.9] & \cellcolor[HTML]{C0C0C0}41.6 [35.4 33.8] & \cellcolor[HTML]{C0C0C0}11.3 [11.5 3.5] & \cellcolor[HTML]{C0C0C0}0.2 [0.0 0.5] \\
+\midrule
+NSGA-III & 3 & \cellcolor[HTML]{C0C0C0}205.3 [82.1 252.1] & \cellcolor[HTML]{C0C0C0}51.0 [36.1 43.4] & \cellcolor[HTML]{C0C0C0}11.8 [11.2 3.5] & 0.4 [0.3 0.5] \\
+\midrule
+NSGA-II & 2 & \cellcolor[HTML]{C0C0C0}172.7 [155.2 131.0] & \cellcolor[HTML]{C0C0C0}44.8 [30.8 43.9] & 12.3 [12.9 2.1] & 0.5 [0.5 0.5] \\
+TPE & 2 & \cellcolor[HTML]{C0C0C0}249.8 [146.3 150.9] & \cellcolor[HTML]{C0C0C0}60.6 [44.4 31.4] & 13.0 [13.0 4.5] & 0.4 [0.3 0.5] \\
+\midrule
+MOEA/D & 1 & 279.9 [210.3 364.2] & 67.9 [55.9 74.4] & 12.1 [13.0 5.0] & \cellcolor[HTML]{C0C0C0}0.2 [0.0 0.5] \\
+\midrule
+Random300 & 0 & 336.0 [217.6 395.9] & 97.4 [59.4 120.6] & 14.0 [13.2 6.4] & 0.3 [0.0 0.5] \\
+Random64 & 0 & 746.9 [579.1 905.5] & 165.4 [122.4 259.8] & 17.4 [18.3 7.6] & 0.6 [0.5 0.8] \\
+SWAY & 0 & 1882.3 [1806.0 2225.1] & 480.5 [347.1 362.1] & 20.1 [18.7 5.6] & 1.1 [0.8 1.3] \\
+\bottomrule
+\end{tabular}
+\end{table*}

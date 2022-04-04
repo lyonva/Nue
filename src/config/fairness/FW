@@ -6,5 +6,6 @@ CV: loader:
 -offset,int: 0
 
 Problem: classification
+Pareto: zitler
 
 Preprocessing:

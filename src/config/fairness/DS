@@ -13,10 +13,10 @@
 # -predict:Probability
 # -secondary:sex,race
 
-#fairness/bank_processed.csv:
-#-problem:classification
-#-predict:Probability
-#-secondary:age
+fairness/bank_processed.csv:
+-problem:classification
+-predict:Probability
+-secondary:age
 
 #fairness/h181_processed.csv:
 #-problem:classification

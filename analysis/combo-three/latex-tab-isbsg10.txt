@@ -1,0 +1,20 @@
+\begin{table*}[t]
+\caption{Results for the isbsg10 model. Cells read as `mean [median iqr]'.}
+\label{tab-res-isbsg10}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Search & Wins & MAR- & MdMRE- & Pred40+ & SA+ \\
+\midrule
+Default & 4 & \cellcolor[HTML]{C0C0C0}2156.0 [2073.9 786.8] & \cellcolor[HTML]{C0C0C0}93.1 [85.9 43.0] & \cellcolor[HTML]{C0C0C0}23.4 [25.0 14.1] & \cellcolor[HTML]{C0C0C0}24.3 [35.0 12.6] \\
+\midrule
+TPE & 1 & 2496.3 [2580.4 476.1] & \cellcolor[HTML]{C0C0C0}101.4 [85.7 51.8] & 21.1 [16.7 16.7] & 13.0 [19.3 18.3] \\
+\midrule
+MOEA/D & 0 & 2623.4 [2594.9 833.2] & 116.9 [98.1 56.0] & 18.3 [16.7 14.7] & 8.4 [17.9 20.5] \\
+NSGA-II & 0 & 2485.9 [2508.3 547.1] & 106.1 [88.7 55.3] & 20.7 [16.7 9.6] & 13.6 [20.0 18.5] \\
+NSGA-III & 0 & 2538.2 [2530.8 689.5] & 108.9 [96.8 64.2] & 20.0 [16.7 16.7] & 11.1 [18.4 20.3] \\
+random150 & 0 & 2527.4 [2584.9 634.4] & 116.0 [92.5 72.6] & 20.2 [16.7 16.7] & 11.6 [19.6 22.3] \\
+random60 & 0 & 2542.8 [2515.7 958.1] & 111.4 [89.4 61.0] & 17.5 [16.7 14.7] & 11.0 [19.4 19.6] \\
+SWAY & 0 & 2553.9 [2568.6 615.9] & 108.6 [87.9 61.1] & 19.1 [16.7 14.7] & 10.1 [19.8 17.6] \\
+\bottomrule
+\end{tabular}
+\end{table*}

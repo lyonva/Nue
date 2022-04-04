@@ -10,7 +10,7 @@ from sklearn.model_selection import KFold
 
 # Prelude
 idx_dir = "idx/"
-config_dir = "config/see/"
+config_dir = "config/fairness/"
 groups = 1 # Partition the indexes into different datasets? For multiple PCs
 
 # Load configuration

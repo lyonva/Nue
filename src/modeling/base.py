@@ -15,8 +15,8 @@ class BaseSPLModel( BaseEstimator ):
     
     def get_scorings(self):
         m = []
-        for n, s in zip(self.obj_names, self.obj_weights):
-            m += [ (n, GenericMetric(n, s)) ]
+        for n, s, hi, lo in zip(self.obj_names, self.obj_weights, self.obj_hi, self.obj_lo):
+            m += [ (n, GenericMetric(n, s, lo, hi)) ]
         return dict(m)
     
     

@@ -1,5 +1,24 @@
-Random Search:
--n_iter,int: 64
+Random60:
+-cv,int: 3
+-n_jobs,int: -1
+
+Random150:
+-cv,int: 3
+-n_jobs,int: -1
+
+Random300:
+-cv,int: 3
+-n_jobs,int: -1
+
+Random600:
+-cv,int: 3
+-n_jobs,int: -1
+
+Random1500:
+-cv,int: 3
+-n_jobs,int: -1
+
+Random3000:
 -cv,int: 3
 -n_jobs,int: -1
 

@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 from sklearn import preprocessing
+import argparse
 
 # Databases of techniques
 from map import dataset_db as ds_db
@@ -38,12 +39,19 @@ import time
 # Ingnore convergence warnings
 from warnings import simplefilter
 from sklearn.exceptions import ConvergenceWarning
-simplefilter("ignore", category=ConvergenceWarning)
+# simplefilter("ignore", category=ConvergenceWarning)
+
+## Argument parsing
+parser = argparse.ArgumentParser(description='Machine learning and optimization framework')
+parser.add_argument('config_dir', type=str,
+                    help='Directory inside config/ with settings to run')
+args = parser.parse_args()
+
 
 ## Prelude: Setup of the framework
 
 # Load configuration
-config_dir = "config/fairness/"
+config_dir = f"config/{args.config_dir}/"
 FW, DS, PP, DT, AS, PT, LA, EM = Loader(config_dir).load_config()
 datasets = ds_db.get(DS)
 preprocessing = pp_db.get(PP)
@@ -64,6 +72,9 @@ prep = Preprocessing( **(FW["preprocessing"] if "preprocessing" in FW.keys() els
 # Defaults to 80:20 train test split
 cv = cv_db[ FW["cv"][0] if "cv" in FW.keys() else "traintestsplit" ]( **(FW["cv"][1] if "cv" in FW.keys() else {"n_splits":1, "test_size":0.2}) )
 
+# Pareto front
+# Defaults to calculation by binary domination
+pf = FW["pareto"][0] if "pareto" in FW.keys() else "binary"
 
 # Output dataframe
 right_now = datetime.datetime.now()
@@ -259,7 +270,10 @@ for n_ds, ds in enumerate(datasets):
                                 # Otherwise, just use the best parameters
                                 best_params = []
                                 if multiobj_optim:
-                                    pareto_front = get_pareto_front_zitler( search.cv_results_, list(pt_parameters["scoring"].values()) )
+                                    if pf == "binary":
+                                        pareto_front = get_pareto_front( search.cv_results_, list(pt_parameters["scoring"].values()) )
+                                    elif pf == "zitler":
+                                        pareto_front = get_pareto_front_zitler( search.cv_results_, list(pt_parameters["scoring"].values()) )
                                     best_params = [ search.cv_results_["params"][i] for i in pareto_front ]
                                     multiobj_res_df = None # Separate dataset for pareto front
                                     duration_pareto = 0 # Duration counter

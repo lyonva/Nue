@@ -134,9 +134,15 @@ def pred(self, n, y_true, y_pred):
 
 def pred25(self, y_true, y_pred):
     """
-        % of predictions above 25% of the MRE.
+        % of predictions below 25% of the MRE.
     """
     return pred(self, 25, y_true, y_pred)
+
+def pred40(self, y_true, y_pred):
+    """
+        % of predictions below 40% of the MRE.
+    """
+    return pred(self, 40, y_true, y_pred)
 
 def mar(self, y_true, y_pred):
     """

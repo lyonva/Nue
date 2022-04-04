@@ -1,0 +1,21 @@
+\begin{table*}[t]
+\caption{Results for the china model. Cells read as `mean [median iqr]'.}
+\label{tab-res-china}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Search & Wins & MAR- & MdMRE- & Pred40+ & SA+ \\
+\midrule
+Default & 4 & \cellcolor[HTML]{C0C0C0}2793.7 [2881.3 466.4] & \cellcolor[HTML]{C0C0C0}65.4 [64.1 4.9] & \cellcolor[HTML]{C0C0C0}30.2 [30.1 4.8] & \cellcolor[HTML]{C0C0C0}42.7 [43.0 5.6] \\
+\midrule
+MOEA/D & 1 & 2919.2 [2905.9 310.5] & 75.2 [74.1 13.8] & \cellcolor[HTML]{C0C0C0}29.9 [30.1 2.8] & 40.2 [40.2 8.5] \\
+random150 & 1 & 2900.7 [2996.3 380.8] & 73.6 [71.9 12.4] & \cellcolor[HTML]{C0C0C0}29.4 [30.1 2.8] & 40.4 [41.1 6.6] \\
+random60 & 1 & 2918.4 [2907.3 387.6] & 76.2 [70.5 11.9] & \cellcolor[HTML]{C0C0C0}28.8 [30.1 4.8] & 40.2 [39.3 9.2] \\
+\midrule
+NSGA-II & 0 & 3020.0 [2970.4 692.0] & 77.6 [72.0 19.8] & 28.4 [28.3 5.0] & 38.0 [40.0 10.6] \\
+NSGA-III & 0 & 3174.1 [3175.6 622.6] & 88.0 [83.9 35.1] & 26.0 [27.1 7.8] & 34.7 [31.8 12.8] \\
+Random300 & 0 & 3026.9 [3004.6 354.2] & 83.9 [74.8 27.2] & 26.9 [26.3 5.4] & 37.7 [40.4 11.2] \\
+SWAY & 0 & 3060.7 [2947.2 483.4] & 83.4 [77.8 22.2] & 27.1 [28.9 7.4] & 37.2 [38.6 11.2] \\
+TPE & 0 & 3118.0 [3000.1 685.8] & 83.1 [75.5 22.1] & 26.8 [27.7 8.8] & 36.0 [36.2 13.0] \\
+\bottomrule
+\end{tabular}
+\end{table*}

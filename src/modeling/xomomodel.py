@@ -6,6 +6,8 @@ class XOMOModel( BaseSPLModel ):
     
     obj_names = ( "effort", "months", "defects", "risks" )
     obj_weights = (-1, -1, -1, -1)
+    obj_hi = (20000, 200, 50000, 15)
+    obj_lo = (0,0,0,0)
     
     def __init__(self, 
             aa = 1,
