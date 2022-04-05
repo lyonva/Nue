@@ -84,6 +84,8 @@ def sa(self, y_true, y_pred):
         else: return None
         
         if base == 0:
+            if val == 0:
+                return 1
             return 1 - ( (val + 1) / (base+1) )
         else:
             return 1 - ( val / base )
@@ -100,7 +102,20 @@ def mre(self, y_true, y_pred):
         Magnitude of relative error.
         Absolute error divided by the size of actual value.
     """
-    return ae_i(self, y_true, y_pred) / y_true
+    mmre_l = []
+    for y_t, y_p in zip(y_true, y_pred):
+        num = np.abs(y_p - y_t)
+        den = np.abs(y_t)
+        if den == 0:
+            if num != 0:
+                den+=1
+                num+=1
+                mmre_l.append(num/den)
+            else:
+                mmre_l.append(0)
+        else:
+            mmre_l.append(num/den)
+    return np.array(mmre_l)
 
 def mmre(self, y_true, y_pred):
     """
@@ -130,6 +145,8 @@ def pred(self, n, y_true, y_pred):
     """
         PRED(X), usually PRED(25). % of predictions above X% of the MRE.
     """
+    if y_true.size == 0:
+        return 0
     return np.sum( mre(self, y_true, y_pred) <= (n/100) ) / y_true.size
 
 def pred25(self, y_true, y_pred):
